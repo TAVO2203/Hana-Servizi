@@ -28,7 +28,7 @@
       <a href="error500.html"><i class="fa-solid fa-user"></i></a>
       <a href="#"><i class="fa-solid fa-bell"></i></a>
       <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
-      <a href="#"><button class="btn6"><strong> Iniciar Sesión</strong></button></a>
+      <a href="{{ route('login') }}"><button class="btn6"><strong>Iniciar Sesión</strong></button></a>
       <a href="{{ route('Usuarios.create') }}"><button class="btn6"><strong> Registrarse</strong></button></a>
       <div class="language">
         <div class="language-selected">

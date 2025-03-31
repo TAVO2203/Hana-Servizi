@@ -14,21 +14,17 @@ form.addEventListener('submit', (event) => {
                 const valor = input.value.trim();
 
                 // Validaciones específicas
-                if (input.name === 'nombre' && (!valor || valor.split(' ').length < 2)) {
+                if (input.name === 'Nombre' && (!valor || valor.split(' ').length < 2)) {
                         mensajeError = 'Nombre: Debes incluir al menos 2 carácteres.';
-                } else if (input.name === 'pais' && !valor) {
-                        mensajeError = 'Seleccione un país.';
-                } else if (input.name === 'fecha-nacimiento' && !esMayorDeEdad(valor)) {
-                        mensajeError = 'Fecha de nacimiento: Debes ser mayor de 18 años.';
                 } else if (input.name === 'direccion' && !valor) {
                         mensajeError = 'Dirección: La dirección no puede estar vacía.';
-                } else if (input.name === 'telefono' && !/^[0-9]{10,15}$/.test(valor)) {
+                } else if (input.name === 'Telefono' && !/^[0-9]{10,15}$/.test(valor)) {
                         mensajeError = 'Telefono: Debe contener entre 10 y 15 dígitos.';
-                } else if (input.name === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)) {
+                } else if (input.name === 'Email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)) {
                         mensajeError = 'Email: El correo electrónico no es válido.';
-                } else if (input.name === 'password' && !/^.{4,12}$/.test(valor)) {
+                } else if (input.name === 'Contraseña' && !/^.{4,12}$/.test(valor)) {
                         mensajeError = 'Contraseña: Debe tener al menos de 4 a 12 caracteres.';
-                } else if (input.name === 'confirm-password' && valor !== document.getElementById('password').value) {
+                } else if (input.name === 'Confirm-password' && valor !== document.getElementById('password').value) {
                         mensajeError = 'Las contraseñas no coinciden.';
                 }
 
@@ -56,15 +52,13 @@ function mostrarError(input, mensaje) {
 }
 
 // Validar mayoría de edad
-function esMayorDeEdad(fechaNacimiento) {
-        const fechaActual = new Date();
-        const fechaNacimientoDate = new Date(fechaNacimiento);
-        const diferencia = fechaActual.getFullYear() - fechaNacimientoDate.getFullYear();
-        const mes = fechaActual.getMonth() - fechaNacimientoDate.getMonth();
-        const dia = fechaActual.getDate() - fechaNacimientoDate.getDate();
-        return (
-            diferencia > 18 ||
-            (diferencia === 18 && mes > 0) ||
-            (diferencia === 18 && mes === 0 && dia >= 0)
-        );
-}
+//function esMayorDeEdad(fechaNacimiento) {
+       //const fechaNacimientoDate = new Date(fechaNacimiento);
+       // const diferencia = fechaActual.getFullYear() - fechaNacimientoDate.getFullYear();
+       // const mes = fechaActual.getMonth() - fechaNacimientoDate.getMonth();
+       // const dia = fechaActual.getDate() - fechaNacimientoDate.getDate();
+        //return (
+           // diferencia > 18 ||
+           // (diferencia === 18 && mes > 0) ||
+           // /);
+//}

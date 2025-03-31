@@ -47,9 +47,9 @@
                                 </td>
                                 <td>{{ $usuario->Nombre }}</td>
                                 <td>{{ $usuario->Email }}</td>
-                                <td>{{ $usuario->Contraseña }}</td>
-                                <td>{{ $usuario->Telefono }}</td>
                                 <td>{{ $usuario->Direccion }}</td>
+                                <td>{{ $usuario->Telefono }}</td>
+                                <td>{{ $usuario->Contraseña }}</td>
                             </tr>
                             @include('Usuarios.delete')
                         @endforeach

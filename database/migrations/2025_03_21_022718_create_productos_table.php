@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('Descripcion');
             $table->unsignedInteger('idCategoria');
             $table->unsignedInteger('idMarca');
+            $table->string('Imagen')->nullable();
             $table->timestamps();
 
             $table->foreign('idCategoria')->references('id')->on('categorias')->onDelete('cascade');
