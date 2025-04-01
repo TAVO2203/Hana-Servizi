@@ -717,6 +717,265 @@ footer .sec-contact .info{
     color: #f8f8f8;
     border: 1px solid rgba(0,0,0,0.15);
 }
+/* Responsive Design */
+@media (max-width: 1200px) {
+    #hero {
+        left: 300px;
+    }
+    
+    .btn-3 {
+        left: 300px;
+        padding: 17px 120px;
+    }
+    
+    .btn-4 {
+        left: 689px;
+        padding: 17px 100px;
+    }
+    
+    .linea-vertical {
+        right: 750px;
+    }
+    
+    .linea-vertical2 {
+        right: 460px;
+    }
+    
+    #product-1 {
+        left: 300px;
+    }
+}
 
+@media (max-width: 992px) {
+    .header_container {
+        padding: 0 30px;
+    }
+    
+    #hero {
+        left: 200px;
+        font-size: 20px;
+    }
+    
+    .container {
+        top: 100px;
+    }
+    
+    .select-menu {
+        width: 350px;
+    }
+    
+    .btn-3 {
+        left: 250px;
+        padding: 17px 80px;
+    }
+    
+    .btn-4 {
+        left: 550px;
+        padding: 17px 70px;
+    }
+    
+    .linea-vertical {
+        right: 650px;
+    }
+    
+    .linea-vertical2 {
+        right: 360px;
+    }
+    
+    .sidebar {
+        width: 350px;
+    }
+    
+    .ofertas, .ofertas2, .mas-vendidos {
+        width: 300px;
+    }
+    
+    .ofertas img, .ofertas2 img, .mas-vendidos img {
+        width: 100%;
+    }
+    
+    #product-1 {
+        left: 250px;
+    }
+    
+    #product-1 .pro {
+        width: 45%;
+    }
+}
 
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        overflow-x: hidden;
+    }
 
+    /* Header */
+    .header {
+        padding: 15px 20px;
+    }
+
+    .logo img {
+        height: 50px;
+    }
+
+    .name-project {
+        font-size: 1.2rem;
+    }
+
+    /* Hero section */
+    #hero {
+        position: static;
+        margin: 20px auto;
+        padding: 0 20px;
+        text-align: center;
+        left: 0;
+    }
+
+    .container {
+        position: static;
+        margin: 20px auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    input {
+        width: 250px;
+    }
+
+    #hero2 {
+        padding: 0 20px;
+        height: 50vh;
+        background-position: top 20% right 0;
+    }
+
+    #hero2 h1 {
+        font-size: 2.5rem;
+    }
+
+    /* Menú de categorías */
+    .select-menu {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    /* Botones de servicio y regalos */
+    .service-user {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    .btn-3, .btn-4 {
+        position: static;
+        width: 90%;
+        margin: 10px 0;
+        padding: 15px 0;
+        text-align: center;
+    }
+
+    .linea-vertical, .linea-vertical2 {
+        display: none;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        padding: 20px 0;
+        background-color: transparent;
+    }
+
+    .ofertas, .ofertas2, .mas-vendidos {
+        position: static;
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .ofertas p {
+        font-size: 1.8rem;
+        top: 50%;
+        left: 50%;
+    }
+
+    .ofertas2 p {
+        font-size: 1.5rem;
+        top: 50%;
+        left: 50%;
+    }
+
+    .down {
+        position: static;
+        text-align: center;
+        margin: 20px auto;
+    }
+
+    .down img, .down h2, .down p {
+        position: static;
+        margin: 10px auto;
+    }
+
+    .down .img2 {
+        position: static;
+        margin: 10px auto;
+    }
+
+    /* Productos */
+    #product-1 {
+        position: static;
+        padding: 20px;
+    }
+
+    #product-1 .container2 {
+        justify-content: center;
+        padding: 0;
+    }
+
+    #product-1 .pro {
+        width: 45%;
+        min-width: auto;
+        margin: 10px;
+    }
+
+    /* Footer */
+    .footer-col {
+        width: 50%;
+        margin-bottom: 30px;
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    #hero2 h1 {
+        font-size: 36px;
+    }
+    
+    .select-menu {
+        width: 90%;
+    }
+    
+    .btn-3, .btn-4 {
+        width: 90%;
+        padding: 15px 0;
+    }
+    
+    #product-1 .pro {
+        width: 100%;
+    }
+    
+    .footer-col {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .footer-col h4:before {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .links {
+        display: flex;
+        justify-content: center;
+    }
+}

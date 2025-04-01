@@ -307,35 +307,36 @@ footer .sec-contact .info{
 </header>
 <section>
     <div class="container">
-        <h1>Agregar Proveedor</h1>
-        <form action="{{ route('Proveedores.store') }}" method="POST">
+        <h1>Editar Proveedor</h1>
+        <form action="{{ route('Proveedores.update, $proveedor->id') }}" method="POST">
             @csrf
+            @method('PUT')
             <div class="mb-3">
                 <label for="Nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="Nombre" name="Nombre" required>
+                <input type="text" class="form-control" id="Nombre" name="Nombre" required value="{{$proveedor->Nombre}}">
             </div>
             <div class="mb-3">
                 <label for="Email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="Email" name="Email" required>
+                <input type="email" class="form-control" id="Email" name="Email" required value="{{$proveedor->Email}}">
             </div>
             <div class="mb-3">
                 <label for="Telefono" class="form-label">Telefono</label>
-                <input type="number" class="form-control" id="Telefono" name="Telefono" required>
+                <input type="number" class="form-control" id="Telefono" name="Telefono" required value="{{$proveedor->Telefono}}">
             </div>
             <div class="mb-3">
                 <label for="Ciudad" class="form-label">Ciudad</label>
-                <input class="form-select" id="Ciudad" name="Ciudad" required>
+                <input class="form-select" id="Ciudad" name="Ciudad" required value="{{$proveedor->Ciudad}}">
             </div>
             <div class="mb-3">
                 <label for="Direccion" class="form-label">Direccion</label>
-                <textarea class="form-control" id="Direccion" name="Direccion"></textarea>
+                <textarea class="form-control" id="Direccion" name="Direccion"></textarea value="{{$proveedor->Direccion}}">
             </div>
             <div class="mb-3">
                 <label for="idInventario" class="form-label">ID del inventario</label>
-                <input type="number" class="form-control" id="idInventario" name="idInventario">
+                <input type="number" class="form-control" id="idInventario" name="idInventario" value="{{$proveedor->idInventario}}">
             </div>
 
-            <button type="submit" class="btn btn-primary">Agregar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
             <a href="javascript:history.back()" class="btn btn-success w-100 m-1" >Volver</a>
         </form>
     </div>
@@ -363,7 +364,7 @@ footer .sec-contact .info{
         <h4> Contacto </h4>
         <ul class="info">
             <li>
-                <span><i class="fa-solid fa-phone"></i></span><p>+57 123 4567 890</p>
+                <span><i class="fa-solid fa-phone"></i></span><p>+57 123 456 7890</p>
             </li>
             <li>
                 <span><i class="fa-solid fa-envelope"></i></span><p>hanaservizi@gmail.com</p>

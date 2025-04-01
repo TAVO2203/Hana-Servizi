@@ -15,10 +15,10 @@ return new class extends Migration
             $table->increments('id');
             $table->string('Nombre', 100);
             $table->string('Email', 100);
-            $table->float('Telefono', 15);
+            $table->string('Telefono', 15);
             $table->string('Ciudad');
             $table->string('Direccion', 100);
-            $table->unsignedInteger('idInventario');
+            $table->unsignedInteger('idInventario')->nullable();
             $table->timestamps();
 
             $table->foreign('idInventario')->references('id')->on('inventario')->onDelete('cascade');
