@@ -22,9 +22,9 @@ return new class extends Migration
             $table->unsignedInteger('idMarca');
             $table->string('Imagen')->nullable();
             $table->timestamps();
-
-            $table->foreign('idCategoria')->references('id')->on('categorias')->onDelete('cascade');
-            $table->foreign('idMarca')->references('id')->on('marca')->onDelete('cascade');
+        
+            $table->foreign('idCategoria')->references('id')->on('categorias');
+            $table->foreign('idMarca')->references('id')->on('marca');
         });
     }
 

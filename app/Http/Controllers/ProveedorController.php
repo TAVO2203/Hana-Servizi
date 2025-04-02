@@ -17,7 +17,7 @@ class ProveedorController extends Controller
     {
         $pro = trim($request->get('pro'));
         $proveedor = DB::table('proveedor')
-        ->select('id', 'Nombre', 'Email', 'Telefono','Ciudad', 'Direccion',  'idInventario')
+        ->select('id', 'Nombre', 'Email', 'Telefono','Ciudad', 'Direccion')
         ->where('Nombre', 'LIKE', '%'. $pro .'%')
         ->orderBy('Nombre', 'asc')
         ->paginate(5);
@@ -44,7 +44,6 @@ class ProveedorController extends Controller
             'Telefono' => 'required|numeric',
             'Ciudad' => 'required|string|max:255',
             'Direccion' => 'required|string|max:255',
-            'idInventario' => 'required|integer',
         ]);
         $proveedor = new Proveedor();
         $proveedor->Nombre = $request-> Nombre;
@@ -52,7 +51,6 @@ class ProveedorController extends Controller
         $proveedor->Telefono = $request-> Telefono;
         $proveedor->Ciudad = $request-> Ciudad;
         $proveedor->Direccion = $request-> Direccion;
-        $proveedor->idInventario = $request-> idInventario;
 
         $proveedor->save();
 
@@ -72,7 +70,8 @@ class ProveedorController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $proveedor = Proveedor::findOrFail($id);
+        return view('Proveedores.edit', compact('proveedor'));
     }
 
     /**
@@ -86,7 +85,6 @@ class ProveedorController extends Controller
         $proveedor->Telefono = $request->input('Telefono');
         $proveedor->Ciudad = $request->input('Ciudad');
         $proveedor->Direccion = $request->input('Direccion');
-        $proveedor->idInventario = $request->input('idInventario');
 
         $proveedor->save();
 

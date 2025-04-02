@@ -55,13 +55,16 @@
                                     <td>{{ $prod->Descripcion }}</td>
                                     <td>{{ $prod->idCategoria }}</td>
                                     <td>{{ $prod->idMarca }}</td>
-                                    <td><img loading="lazy" src="{{ asset('storage/'.$prod->imagen) }}" width="75px"></td> 
+                                    <td><img loading="lazy" src="{{ asset('storage/'.$prod->Imagen) }}" width="75px"></td> 
                                 </tr>
                                 @include('Productos.delete')
                             @endforeach
                         @endif
                     </tbody>
                 </table> 
+                <div class="mt-4">
+                    {{ $producto->links() }}
+                </div>
             </div>
         </div>
     </div>

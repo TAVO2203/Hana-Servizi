@@ -328,13 +328,8 @@ footer .sec-contact .info{
             </div>
             <div class="mb-3">
                 <label for="Direccion" class="form-label">Direccion</label>
-                <textarea class="form-control" id="Direccion" name="Direccion"></textarea>
+                <input class="form-control" id="Direccion" name="Direccion"></input>
             </div>
-            <div class="mb-3">
-                <label for="idInventario" class="form-label">ID del inventario</label>
-                <input type="number" class="form-control" id="idInventario" name="idInventario">
-            </div>
-
             <button type="submit" class="btn btn-primary">Agregar</button>
             <a href="javascript:history.back()" class="btn btn-success w-100 m-1" >Volver</a>
         </form>

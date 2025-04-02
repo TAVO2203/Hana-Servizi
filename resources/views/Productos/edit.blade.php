@@ -38,9 +38,10 @@
 </header>
 <section>
     <div class="container">
-        <h1>Crear Producto</h1>
-        <form action="{{ route('Productos.store') }}" method="POST" enctype="multipart/form-data">
+        <h1>Editar Producto</h1>
+        <form action="{{ route('Productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="mb-3">
                 <label for="Nombre" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="Nombre" name="Nombre" required value="{{ $producto->Nombre }}">
@@ -55,15 +56,17 @@
             </div>
             <div class="mb-3">
                 <label for="EstadoProducto" class="form-label">Estado del Producto</label>
-                <select class="form-select" id="EstadoProducto" name="EstadoProducto" required value="{{ $producto->EstadoProducto }}">
+                <select class="form-select" id="EstadoProducto" name="EstadoProducto" required>
                     <option value="">Seleccione un estado</option>
-                    <option value="Disponible">Disponible</option>
-                    <option value="No disponible">No disponible</option>
+                    <option value="Disponible" {{ $producto->EstadoProducto == 'Disponible' ? 'selected' : '' }}>Disponible</option>
+                    <option value="No disponible" {{ $producto->EstadoProducto == 'No disponible' ? 'selected' : '' }}>No disponible</option>
                 </select>
+
             </div>
             <div class="mb-3">
                 <label for="Descripcion" class="form-label">Descripción</label>
-                <textarea class="form-control" id="Descripcion" name="Descripcion"></textarea value="{{ $producto->Descripcion }}"></textarea>
+                <textarea class="form-control" id="Descripcion" name="Descripcion">{{ $producto->Descripcion }}</textarea>
+
             </div>
             <div class="mb-3">
                 <label for="idCategoria" class="form-label">ID de Categoría</label>
@@ -73,15 +76,17 @@
                 <label for="idMarca" class="form-label">ID de Marca</label>
                 <input type="number" class="form-control" id="idMarca" name="idMarca" value="{{ $producto->idMarca }}">
             </div>
-            <p>{{$producto->Nombre}}</p>
             @if ($producto->imagen)
+                <p>Imagen actual:</p>
                 <img src="{{ asset('storage/' . $producto->imagen) }}" alt="Imagen del producto" class="img-fluid mb-3" width="100">
             @endif
+
             <div class="mb-3">
-                <label for="imagen" class="form-label">Carga una imagen</label>
-                <input class="form-control" type="file" id="imagen" name="imagen" value="{{ $producto->imagen }}">
+                <label for="imagen" class="form-label">Carga una nueva imagen</label>
+                <input class="form-control" type="file" id="imagen" name="imagen">
             </div>
-            <button type="submit" class="btn btn-primary">Crear Producto</button>
+
+            <button type="submit" class="btn btn-primary">Guardar Producto</button>
             <a href="javascript:history.back()" class="btn btn-success w-100 m-1" >Volver</a>
         </form>
     </div>

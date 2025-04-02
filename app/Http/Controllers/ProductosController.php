@@ -17,7 +17,7 @@ class ProductosController extends Controller
     public function index(Request $request){
         $prt = trim($request->get('prt'));
         $producto = DB::table('productos')
-        ->select('id', 'Nombre', 'Precio','Fecha_agregacion', 'EstadoProducto', 'Descripcion', 'idCategoria', 'idMarca', 'imagen')
+        ->select('id', 'Nombre', 'Precio','Fecha_agregacion', 'EstadoProducto', 'Descripcion', 'idCategoria', 'idMarca', 'Imagen')
         ->where('Nombre', 'LIKE', '%'. $prt .'%')
         ->orderBy('Nombre', 'asc')
         ->paginate(5);
@@ -47,7 +47,7 @@ class ProductosController extends Controller
             'Descripcion' => 'required|string|max:255',
             'idCategoria' => 'required|integer',
             'idMarca' => 'required|integer',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'Imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
         $producto = new Productos();
         $producto->Nombre = $request-> Nombre;
@@ -60,7 +60,7 @@ class ProductosController extends Controller
 
         if ($request->hasFile('imagen')) {
             $path = $request->file('imagen')->store('images', 'public');
-            $producto->imagen = $path;
+            $producto->Imagen = $path;
         }
         $producto->save();
 
@@ -101,7 +101,7 @@ class ProductosController extends Controller
         
         if ($request->hasFile('imagen')) {
             $path = $request->file('imagen')->store('images', 'public');
-            $producto->imagen = $path;
+            $producto->Imagen = $path;
         }
         $producto->save();
 
@@ -115,7 +115,7 @@ class ProductosController extends Controller
     {
         $producto = Productos::findOrFail($id);
 
-        if ($producto->imagen) {
+        if ($producto->Imagen) {
             Storage::disk('public')->delete($producto->imagen);
         }
         $producto->delete();

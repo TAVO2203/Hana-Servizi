@@ -30,7 +30,6 @@
                             <th>Telefono</th>
                             <th>Cuidad</th>
                             <th>Direccion</th>
-                            <th>idInventario</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,15 +48,17 @@
                                     <td>{{ $pro->Nombre }}</td>
                                     <td>{{ $pro->Email }}</td>
                                     <td>{{ $pro->Telefono }}</td>
-                                    <td>{{ $pro->Cuidad }}</td>
+                                    <td>{{ $pro->Ciudad }}</td>
                                     <td>{{ $pro->Direccion }}</td>
-                                    <td>{{ $pro->idInventario}}</td>
                                 </tr>
                                 @include('Proveedores.delete')
                             @endforeach
                         @endif
                     </tbody>
                 </table> 
+                <div class="mt-4">
+                    {{ $proveedor->links() }}
+                </div>
             </div>
         </div>
     </div>

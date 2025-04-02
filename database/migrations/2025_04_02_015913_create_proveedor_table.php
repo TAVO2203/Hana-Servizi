@@ -18,10 +18,7 @@ return new class extends Migration
             $table->string('Telefono', 15);
             $table->string('Ciudad');
             $table->string('Direccion', 100);
-            $table->unsignedInteger('idInventario')->nullable();
             $table->timestamps();
-
-            $table->foreign('idInventario')->references('id')->on('inventario')->onDelete('cascade');
         });
     }
 

@@ -308,7 +308,7 @@ footer .sec-contact .info{
 <section>
     <div class="container">
         <h1>Editar Proveedor</h1>
-        <form action="{{ route('Proveedores.update, $proveedor->id') }}" method="POST">
+        <form action="{{ route('Proveedores.update', $proveedor->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="mb-3">
@@ -329,14 +329,9 @@ footer .sec-contact .info{
             </div>
             <div class="mb-3">
                 <label for="Direccion" class="form-label">Direccion</label>
-                <textarea class="form-control" id="Direccion" name="Direccion"></textarea value="{{$proveedor->Direccion}}">
+                <input class="form-control" id="Direccion" name="Direccion" value="{{$proveedor->Direccion}}">
             </div>
-            <div class="mb-3">
-                <label for="idInventario" class="form-label">ID del inventario</label>
-                <input type="number" class="form-control" id="idInventario" name="idInventario" value="{{$proveedor->idInventario}}">
-            </div>
-
-            <button type="submit" class="btn btn-primary">Guardar</button>
+             <button type="submit" class="btn btn-primary">Guardar</button>
             <a href="javascript:history.back()" class="btn btn-success w-100 m-1" >Volver</a>
         </form>
     </div>

@@ -20,9 +20,11 @@ return new class extends Migration
             $table->Date('Fecha_agregacion');
             $table->string('EstadoProducto');
             $table->unsignedInteger('idProducto');
+            $table->unsignedInteger('idProveedor');
             $table->timestamps();
-
-            $table->foreign('idProducto')->references('id')->on('productos')->onDelete('cascade');
+        
+            $table->foreign('idProducto')->references('id')->on('productos');
+            $table->foreign('idProveedor')->references('id')->on('proveedor');
         });
     }
 
