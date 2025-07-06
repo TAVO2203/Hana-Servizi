@@ -493,7 +493,7 @@
 </header>
 <div class="product-detail-container">
     <div class="product-image-box">
-        <img class="product-image" th:src="@{${producto.imagen}}" alt="Imagen del producto">
+        <img class="product-image" th:src="@{'/uploads/' + ${producto.imagen}}" alt="Imagen del producto">
     </div>
     <div class="product-info-box">
         <h1 class="product-title" th:text="${producto.nombre}">Nombre del producto</h1>

@@ -49,10 +49,9 @@
         </div>
 
         <div class="input-field">
-          <i class="fa-solid fa-lock"></i>
-          <input type="password" name="password" placeholder="Contraseña" required>
+          <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('password', this)"></i>
+          <input type="password" id="password" name="password" placeholder="Contraseña" required>
         </div>
-
         <div class="remember-me">
           <label class="remember-label">
             <input type="checkbox" name="remember-me">
@@ -113,6 +112,16 @@
     <p>©2024 HanaServizi. ALL Rights Reserved.</p>
   </div>
   <script th:src="@{/JS/cambioColor.js}" defer></script>
+  <script>
+    function togglePassword(idInput, icon) {
+      const input = document.getElementById(idInput);
+      const isPassword = input.type === "password";
+
+      input.type = isPassword ? "text" : "password";
+      icon.classList.toggle("fa-eye");
+      icon.classList.toggle("fa-eye-slash");
+    }
+  </script>
 </footer>
 </body>
 </html>

@@ -56,18 +56,11 @@ public class ProductoController {
     @GetMapping("/index")
     public String mostrarProductosAleatorios(Model model) {
         List<Producto> todos = productoRepository.findAll();
-
-
         Collections.shuffle(todos);
+
         List<Producto> productosAleatorios = todos.stream()
                 .limit(6)
                 .toList();
-
-        for (Producto producto : productosAleatorios) {
-            if (producto.getImagen() != null && !producto.getImagen().startsWith("/img/")) {
-                producto.setImagen("/img/" + producto.getImagen());
-            }
-        }
 
         model.addAttribute("productos", productosAleatorios);
 
@@ -84,6 +77,7 @@ public class ProductoController {
 
         return "index";
     }
+
 
     @GetMapping("")
     public String home(
@@ -144,23 +138,23 @@ public class ProductoController {
 
         // Guardar imagen
         MultipartFile imagen = productoDto.getImagen();
-        String ruta = "src/main/resources/static/img/";
+        String ruta = "C:/uploads/hana/";
 
         try {
             if (imagen != null && !imagen.isEmpty()) {
                 byte[] bytes = imagen.getBytes();
                 Path rutaCompleta = Paths.get(ruta + imagen.getOriginalFilename());
                 Files.write(rutaCompleta, bytes);
+
                 producto.setImagen(imagen.getOriginalFilename());
 
-                logg.info("Imagen recibida: {}", imagen.getOriginalFilename());
-                logg.info("Imagen guardada en: {}", rutaCompleta.toAbsolutePath());
-                logg.info("Nombre de la imagen guardado en BD: {}", producto.getImagen());
+                logg.info("Imagen guardada correctamente: {}", producto.getImagen());
             }
         } catch (IOException e) {
             logg.error("Error al guardar la imagen: {}", e.getMessage());
             e.printStackTrace();
         }
+
 
         Marca marca = marcaRepository.findByNombreMarca(productoDto.getNombreMarca())
                 .orElseGet(() -> {
@@ -232,8 +226,8 @@ public class ProductoController {
         List<Producto> productos = productoRepository.findByCategoriasId(id);
 
         for (Producto producto : productos) {
-            if (producto.getImagen() != null && !producto.getImagen().startsWith("/img/")) {
-                producto.setImagen("/img/" + producto.getImagen());
+            if (producto.getImagen() != null && !producto.getImagen().startsWith("/uploads/")) {
+                producto.setImagen("/uploads/" + producto.getImagen());
             }
         }
 
@@ -246,6 +240,17 @@ public class ProductoController {
 
         return "FiltrosCategorias";
     }
+    @GetMapping("/productos/ver/{id}")
+    public String verProducto(@PathVariable Long id, Model model) {
+        Optional<Producto> producto = productoRepository.findById(Math.toIntExact(id));
+        if (producto.isPresent()) {
+            model.addAttribute("producto", producto.get());
+            return "detalle";
+        } else {
+            return "redirect:/productos";
+        }
+    }
+
 
 
 }

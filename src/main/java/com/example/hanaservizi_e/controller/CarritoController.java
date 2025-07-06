@@ -34,7 +34,7 @@ public class CarritoController {
             subtotal += precio * cantidad;
         }
 
-        double descuentoAplicado = 0; // Puedes agregar lógica de descuentos aquí
+        double descuentoAplicado = 0;
         double totalFinal = subtotal - descuentoAplicado;
 
         model.addAttribute("carrito", carrito.values());
@@ -121,7 +121,7 @@ public class CarritoController {
             if (cantidadActual > 1) {
                 carrito.get(id).put("cantidad", cantidadActual - 1);
             } else {
-                // Si llega a cero, podrías eliminar el producto:
+
                 carrito.remove(id);
             }
         }

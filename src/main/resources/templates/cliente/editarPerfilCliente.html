@@ -39,7 +39,7 @@
   <div class="form-container">
     <h2>Actualizar Información</h2>
 
-    <form th:action="@{/cliente/actualizar-perfil}" method="post" th:object="${clienteDto}">
+    <form th:action="@{/cliente/editar-perfil}" method="post" th:object="${clienteDto}">
       <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 
       <div class="input-group">
@@ -66,22 +66,20 @@
           <input type="text" placeholder="Dirección" th:field="*{address}" required>
         </div>
         <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error-message"></div>
+
         <div class="input-field">
-          <i class="fa-solid fa-lock"></i>
-          <input type="password" id="currentPassword" name="currentPassword" placeholder="Contraseña actual">
           <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('currentPassword', this)"></i>
+          <input type="password" id="currentPassword" name="currentPassword" placeholder="Contraseña actual">
         </div>
 
         <div class="input-field">
-          <i class="fa-solid fa-lock-open"></i>
-          <input type="password" id="newPassword" name="newPassword" placeholder="Nueva contraseña">
           <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('newPassword', this)"></i>
+          <input type="password" id="newPassword" name="newPassword" placeholder="Nueva contraseña">
         </div>
 
         <div class="input-field">
-          <i class="fa-solid fa-lock"></i>
-          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar nueva contraseña">
           <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar nueva contraseña">
         </div>
 
 

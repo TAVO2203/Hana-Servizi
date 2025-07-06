@@ -20,7 +20,7 @@
             <div class="line"></div>
         </div>
         <div class="logo">
-            <img th:src="@{/img/icon.png}" alt="Logo De HanaServizi" class="logo-img">
+            <img th:src="@{/img/icon.png}" alt="Logo De HanaServizi">
             <h2 class="name-project"> HanaServizi</h2>
         </div>
         <nav class="nav-menu">
@@ -112,7 +112,7 @@
     <div class="productos2">
         <div class="pro" th:each="prod : ${productos}">
             <a th:href="@{'/productos/ver/' + ${prod.id}}">
-                <img th:src="@{${prod.imagen}}" alt="">
+                <img th:src="@{'/uploads/' + ${prod.imagen}}" alt="Imagen producto">
             </a>
             <div class="content-container">
                 <span th:text="${prod.marca.nombreMarca}">Marca</span>

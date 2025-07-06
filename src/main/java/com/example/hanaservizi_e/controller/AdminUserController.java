@@ -88,7 +88,7 @@ public class AdminUserController {
 
     }
 
-    // Mostrar formulario para agregar nuevo admin@GetMapping("/nuevo-admin")
+    // Mostrar formulario para agregar nuevo admin
     @GetMapping("/nuevo-admin")
     public String mostrarFormularioNuevoAdmin(Authentication authentication, Model model) {
         agregarAdminAlModelo(authentication, model);

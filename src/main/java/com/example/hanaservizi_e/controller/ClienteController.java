@@ -3,11 +3,16 @@ package com.example.hanaservizi_e.controller;
 import com.example.hanaservizi_e.dto.ClienteDto;
 import com.example.hanaservizi_e.model.User;
 import com.example.hanaservizi_e.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -27,25 +32,75 @@ public class ClienteController {
         model.addAttribute("usuario", usuario);
         return "cliente/dashboard";
     }
-    @GetMapping("/editar-perfil")
-    public String mostrarEditarPerfil(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
 
-        if (email != null && !email.equals("anonymousUser")) {
-            User user = userService.buscarPorEmail(email).orElse(null);
-            if (user != null) {
-                ClienteDto dto = new ClienteDto();
-                dto.setUsername(user.getUsername());
-                dto.setEmail(user.getEmail());
-                dto.setPhone(user.getPhone());
-                dto.setAddress(user.getAddress());
-                model.addAttribute("clienteDto", dto);
-            }
+    @GetMapping("/editar-perfil")
+    public String mostrarFormularioEditarPerfil(Model model, Authentication authentication) {
+        String email = authentication.getName();
+        User user = userService.buscarPorEmail(email).orElse(null);
+
+        if (user != null) {
+            ClienteDto clienteDto = new ClienteDto();
+            clienteDto.setUsername(user.getUsername());
+            clienteDto.setEmail(user.getEmail());
+            clienteDto.setPhone(user.getPhone());
+            clienteDto.setAddress(user.getAddress());
+
+            model.addAttribute("clienteDto", clienteDto);
+            return "cliente/editarPerfilCliente";
         }
-        return "editarPerfilCliente";
+
+        return "redirect:/cliente/dashboard"; // o muestra un error
     }
 
+    @PostMapping("/editar-perfil")
+    public String actualizarPerfil(@Valid @ModelAttribute("clienteDto") ClienteDto clienteDto,
+                                   BindingResult result,
+                                   Model model,
+                                   Authentication authentication,
+                                   HttpServletRequest request) {
 
+        if (result.hasErrors()) {
+            model.addAttribute("clienteDto", clienteDto);
+            return "cliente/editarPerfilCliente";
+        }
 
+        String email = authentication.getName();
+        User user = userService.buscarPorEmail(email).orElse(null);
+
+        if (user != null) {
+            user.setUsername(clienteDto.getUsername());
+            user.setEmail(clienteDto.getEmail());
+            user.setPhone(clienteDto.getPhone());
+            user.setAddress(clienteDto.getAddress());
+
+            // actualización de contraseña
+            String currentPassword = request.getParameter("currentPassword");
+            String newPassword = request.getParameter("newPassword");
+            String confirmPassword = request.getParameter("confirmPassword");
+
+            if (currentPassword != null && !currentPassword.isBlank() &&
+                    newPassword != null && !newPassword.isBlank() &&
+                    confirmPassword != null && !confirmPassword.isBlank()) {
+
+                if (!userService.verificarPassword(currentPassword, user.getPassword())) {
+                    model.addAttribute("error", "La contraseña actual es incorrecta.");
+                    model.addAttribute("clienteDto", clienteDto);
+                    return "cliente/editarPerfilCliente";
+                }
+
+                if (!newPassword.equals(confirmPassword)) {
+                    model.addAttribute("error", "Las contraseñas nuevas no coinciden.");
+                    model.addAttribute("clienteDto", clienteDto);
+                    return "cliente/editarPerfilCliente";
+                }
+
+                String codificada = userService.codificarPassword(newPassword);
+                user.setPassword(codificada);
+            }
+
+            userService.guardar(user);
+        }
+
+        return "redirect:/cliente/dashboard";
+    }
 }

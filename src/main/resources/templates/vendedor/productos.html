@@ -51,7 +51,8 @@
             <td th:text="${producto.categorias != null ? producto.categorias.nombreCategoria : 'Sin categoría'}"></td>
             <td>
                 <div th:if="${producto.imagen != null}">
-                    <img th:src="@{/imagenes/{nombre}(nombre=${producto.imagen})}" width="75" height="75" alt="Imagen">
+                    <img th:src="@{'/uploads/' + ${producto.imagen}}" width="75" height="75" alt="Imagen">
+
                 </div>
                 <span th:if="${producto.imagen == null}">Sin imagen</span>
             </td>

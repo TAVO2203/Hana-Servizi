@@ -52,9 +52,7 @@ public class VendedorController {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    /**
-     * Dashboard principal del vendedor
-     */
+
     @GetMapping("/dashboard")
     public String mostrarDashboard(Authentication authentication, Model model) {
         String email = authentication.getName();
@@ -63,9 +61,7 @@ public class VendedorController {
         return "vendedor/dashboard";
     }
 
-    /**
-     * Listado de productos del vendedor con paginación
-     */
+
     @GetMapping("/productos")
     public String listarProductos(
             Authentication authentication,
@@ -88,9 +84,6 @@ public class VendedorController {
         return "vendedor/productos";
     }
 
-    /**
-     * Buscar productos del vendedor por keyword
-     */
     @GetMapping("/productos/buscar")
     public String buscarProductos(
             @RequestParam(value = "keyword", required = false) String keyword,
@@ -134,9 +127,6 @@ public class VendedorController {
         return "registerProducto";
     }
 
-    /**
-     * Formulario para editar producto
-     */
     @PostMapping("/productos/editar")
     public String actualizarProducto(
             @Valid @ModelAttribute("productoDto") ProductoDto productoDto,
@@ -190,9 +180,6 @@ public class VendedorController {
     }
 
 
-    /**
-     * Guardar nuevo producto
-     */
     @PostMapping("/productos/guardar")
     public String guardarProducto(
             @Valid @ModelAttribute("productoDto") ProductoDto productoDto,
@@ -240,9 +227,6 @@ public class VendedorController {
         return "redirect:/vendedor/productos";
     }
 
-    /**
-     * Eliminar producto
-     */
     @GetMapping("/productos/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id, Authentication authentication) {
         String email = authentication.getName();
@@ -260,9 +244,7 @@ public class VendedorController {
         return "redirect:/vendedor/productos";
     }
 
-    /**
-     * Exportar productos a PDF
-     */
+
     @GetMapping("/productos/reporte-pdf")
     public ResponseEntity<ByteArrayResource> generarReportePdf(Authentication authentication) {
         String email = authentication.getName();

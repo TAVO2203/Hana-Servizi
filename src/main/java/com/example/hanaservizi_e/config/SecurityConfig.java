@@ -41,7 +41,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/", "/login", "/usuarios/registro", "/usuarios/registro/**",
                                 "/CSS/**", "/JS/**", "/img/**", "/fondos/**", "/error", "/redireccionar-por-rol", "/productos/**",
-                                "/uploads/hana/**", "/filtros"
+                                "/uploads/**", "/filtros"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/vendedor/**").hasAnyRole("VENDEDOR", "ADMIN")

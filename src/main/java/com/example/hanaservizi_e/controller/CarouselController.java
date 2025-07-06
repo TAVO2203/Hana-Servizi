@@ -11,9 +11,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CarouselController {
@@ -44,8 +46,8 @@ public class CarouselController {
         }
 
         for (Producto producto : productos) {
-            if (producto.getImagen() != null && !producto.getImagen().startsWith("/img/")) {
-                producto.setImagen("/img/" + producto.getImagen());
+            if (producto.getImagen() != null && !producto.getImagen().startsWith("/uploads/")) {
+                producto.setImagen("/uploads/" + producto.getImagen());
             }
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -61,5 +63,15 @@ public class CarouselController {
 
         model.addAttribute("productos", productos);
         return "Filtros";
+    }
+    @GetMapping("/productos/ver/{id}")
+    public String verProducto(@PathVariable Long id, Model model) {
+        Optional<Producto> producto = productoRepository.findById(Math.toIntExact(id));
+        if (producto.isPresent()) {
+            model.addAttribute("producto", producto.get());
+            return "detalle"; // La vista HTML que muestra los detalles
+        } else {
+            return "redirect:/productos"; // O redireccionar a una lista si no existe
+        }
     }
 }
