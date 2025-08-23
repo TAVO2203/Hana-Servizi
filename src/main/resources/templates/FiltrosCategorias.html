@@ -478,16 +478,17 @@
             <div class="line"></div>
         </div>
         <div class="logo">
-            <img th:src="@{/img/icon.png}" alt="Logo De HanaServizi" class="logo-img">
+            <img th:src="@{/img/icon.png}" alt="Logo De HanaServizi">
             <h2 class="name-project"> HanaServizi</h2>
         </div>
         <nav class="nav-menu">
             <div th:if="${nombreUsuario}" class="nav-logged">
-        <span class="nav-user">
-            ¡Hola, <strong th:text="${nombreUsuario}">Usuario</strong>!
-        </span>
+                <span class="nav-user">
+                    ¡Hola, <strong th:text="${nombreUsuario}">Usuario</strong>!
+                </span>
                 <a th:href="${rolUsuario == 'ROLE_VENDEDOR'} ? @{/vendedor/dashboard} : @{/cliente/dashboard}"
-                   class="btn-icon">
+                   class="btn-icon"
+                   th:if="${nombreUsuario != null}">
                     <i class="fa-solid fa-user"></i>
                 </a>
                 <a href="#" class="btn-icon"><i class="fa-solid fa-bell"></i></a>
@@ -507,7 +508,6 @@
                 <span class="modo-text">Modo Oscuro</span>
             </button>
         </nav>
-
     </div>
 </header>
 <div class="container mt-5">

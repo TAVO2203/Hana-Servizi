@@ -19,7 +19,6 @@
             <input type="hidden" name="size" th:value="${page.size}" />
             <button type="submit" class="btn btn-dark btn-sm">Buscar</button>
         </form>
-
         <a th:href="@{/vendedor/productos/reporte-pdf}" class="btn btn-success btn-sm">Exportar PDF</a>
     </div>
 
@@ -35,6 +34,8 @@
             <th>Descripción</th>
             <th>Marca</th>
             <th>Categoría</th>
+            <th>Stock</th>
+            <th>Tallas/Stock</th>
             <th>Imagen</th>
             <th>Acciones</th>
         </tr>
@@ -45,14 +46,25 @@
             <td th:text="${producto.nombre}">Nombre</td>
             <td th:text="${producto.precio}">0</td>
             <td th:text="${#dates.format(producto.fechaAgregacion, 'yyyy-MM-dd')}">Fecha</td>
-            <td th:text="${producto.estadoProducto}">Activo</td>
+            <td th:text="${producto.estadoProducto}">Estado</td>
             <td th:text="${producto.descripcion}">Descripción</td>
             <td th:text="${producto.marca != null ? producto.marca.nombreMarca : 'Sin marca'}"></td>
             <td th:text="${producto.categorias != null ? producto.categorias.nombreCategoria : 'Sin categoría'}"></td>
             <td>
+                <span th:text="${producto.stock}"></span>
+            </td>
+            <td>
+                <ul class="list-unstyled mb-0" th:if="${producto.tallas != null and !#lists.isEmpty(producto.tallas)}">
+                    <li th:each="t : ${producto.tallas}">
+                        <span th:text="${t.talla}"></span>:
+                        <span th:text="${t.stock}"></span>
+                    </li>
+                </ul>
+                <span th:if="${producto.tallas == null or #lists.isEmpty(producto.tallas)}">Sin tallas</span>
+            </td>
+            <td>
                 <div th:if="${producto.imagen != null}">
                     <img th:src="@{'/uploads/' + ${producto.imagen}}" width="75" height="75" alt="Imagen">
-
                 </div>
                 <span th:if="${producto.imagen == null}">Sin imagen</span>
             </td>
@@ -60,18 +72,24 @@
                 <div class="d-flex flex-column gap-2">
                     <a th:href="@{/vendedor/productos/editar/{id}(id=${producto.id})}" class="btn btn-warning btn-sm">Editar</a>
 
+                    <!-- Si está activo, mostrar botón para desactivar -->
+                    <a th:if="${producto.activo == null or producto.activo}"
+                       th:href="@{/vendedor/productos/desactivar/{id}(id=${producto.id})}"
+                       class="btn btn-danger btn-sm">Desactivar</a>
 
-                    <a href="#" class="btn btn-danger btn-sm"
-                       data-bs-toggle="modal"
-                       data-bs-target="#confirmDeleteModal"
-                       th:attr="data-id=${producto.id}, data-nombre=${producto.nombre}">Eliminar</a>
+                    <!-- Si está inactivo, mostrar botón para activar -->
+                    <a th:if="${producto.activo != null and !producto.activo}"
+                       th:href="@{/vendedor/productos/activar/{id}(id=${producto.id})}"
+                       class="btn btn-success btn-sm">Reactivar</a>
                 </div>
             </td>
         </tr>
+        <!-- Mensaje cuando no hay productos -->
         <tr th:if="${#lists.isEmpty(productos)}">
             <td colspan="10" class="text-center text-muted">No tienes productos registrados.</td>
         </tr>
         </tbody>
+
     </table>
 
     <!-- Paginación -->
@@ -85,7 +103,6 @@
                     &laquo;
                 </a>
             </li>
-
             <!-- Páginas -->
             <li class="page-item"
                 th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
@@ -128,20 +145,36 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var modal = document.getElementById('confirmDeleteModal');
-        var deleteLink = document.getElementById('btnEliminarConfirmado');
-        var productoId = null;
+        const modal = document.getElementById('confirmDeleteModal');
+        const actionBtn = document.getElementById('btnEliminarConfirmado');
+        let productoId = null;
 
         modal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
+            const button = event.relatedTarget;
             productoId = button.getAttribute('data-id');
-            var nombre = button.getAttribute('data-nombre');
-            modal.querySelector('#nombreProducto').textContent = nombre;
-        });
+            const nombre = button.getAttribute('data-nombre');
+            const action = button.getAttribute('data-action');
 
-        deleteLink.addEventListener('click', function (e) {
-            e.preventDefault();
-            window.location.href = '/vendedor/productos/eliminar/' + productoId;
+            // Cambia título y mensaje del modal
+            const modalTitle = modal.querySelector('.modal-title');
+            const modalBody = modal.querySelector('.modal-body');
+            const productoSpan = modal.querySelector('#nombreProducto');
+
+            productoSpan.textContent = nombre;
+
+            if (action === 'desactivar') {
+                modalTitle.textContent = 'Confirmar desactivación';
+                modalBody.innerHTML = '¿Estás seguro de desactivar <strong id="nombreProducto">' + nombre + '</strong>?';
+                actionBtn.textContent = 'Desactivar';
+                actionBtn.className = 'btn btn-danger';
+                actionBtn.href = '/vendedor/productos/eliminar/' + productoId;
+            } else if (action === 'activar') {
+                modalTitle.textContent = 'Confirmar reactivación';
+                modalBody.innerHTML = '¿Deseas reactivar <strong id="nombreProducto">' + nombre + '</strong>?';
+                actionBtn.textContent = 'Reactivar';
+                actionBtn.className = 'btn btn-success';
+                actionBtn.href = '/vendedor/productos/activar/' + productoId;
+            }
         });
     });
 </script>

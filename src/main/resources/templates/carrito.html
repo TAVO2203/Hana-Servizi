@@ -718,6 +718,7 @@
                     <p>Precio: $<span class="precio" th:data-id="${item.id}"
                                       th:text="${#numbers.formatDecimal(item.precio, 1, 'COMMA', 2, 'POINT')}"></span></p>
 
+
                     <div class="quantity-controls">
                         <form th:action="@{'/carrito/decrementar/' + ${item.id}}" method="post" style="display:inline;">
                             <button type="submit" class="btn decrease">-</button>
@@ -732,6 +733,8 @@
 
                     <p>Total: $<span class="total-product" th:data-id="${item.id}"
                                      th:text="${#numbers.formatDecimal(item.precio * item.cantidad, 1, 'COMMA', 2, 'POINT')}"></span></p>
+
+
 
                     <form th:action="@{/carrito/eliminar/{id}(id=${item.id})}" method="post">
                         <input type="hidden" name="_method" value="delete"/>

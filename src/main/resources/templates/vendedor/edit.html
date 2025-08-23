@@ -512,22 +512,43 @@
         <p th:if="${#fields.hasErrors('categoriaId')}" th:errors="*{categoriaId}" class="text-danger"></p>
       </div>
 
-      <div class="mb-3" th:if="${productoDto.imagenActual != null and productoDto.imagenActual != ''}">
-        <label class="form-label">Imagen actual:</label>
-        <div>
-          <img th:src="@{'/img/' + *{imagenActual}}"
-               alt="Imagen producto"
-               style="max-width: 100px; border-radius: 10px; box-shadow: 0 0 10px #aaa; margin-bottom: 2px" class="img-1">
-        </div>
-      </div>
       <div class="mb-3">
-        <label for="imagen" class="form-label">Carga una imagen</label>
-        <input type="file" id="imagen"
-               th:field="*{imagen}"
+        <label for="stock" class="form-label">Stock General</label>
+        <input type="number" id="stock" th:field="*{stock}"
+               class="form-control" min="0" required>
+      </div>
+
+      <div th:if="${productoDto.categoriaId == 3}">
+        <label class="form-label">Tallas y Stock</label>
+        <div id="tallasContainer">
+          <div th:each="talla, iterStat : *{tallas}">
+            <div class="row mb-2">
+              <div class="col">
+                <input type="text"
+                       th:field="*{tallas[__${iterStat.index}__].talla}"
+                       class="form-control"
+                       placeholder="Talla (ej: S, M, L)">
+              </div>
+              <div class="col">
+                <input type="number"
+                       th:field="*{tallas[__${iterStat.index}__].stock}"
+                       class="form-control"
+                       placeholder="Stock por talla">
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-success mt-2" onclick="agregarTalla()">+ Agregar Talla</button>
+      </div>
+
+      <div class="mb-3">
+        <label for="nuevaImagen" class="form-label">Carga una nueva imagen (opcional)</label>
+        <input type="file" id="nuevaImagen"
+               th:field="*{nuevaImagen}"
                class="form-control"
-               th:classappend="${#fields.hasErrors('imagen')} ? ' input-rojo' : ''"
+               th:classappend="${#fields.hasErrors('nuevaImagen')} ? ' input-rojo' : ''"
                accept="image/*">
-        <p th:if="${#fields.hasErrors('imagen')}" th:errors="*{imagen}" class="text-danger"></p>
+        <p th:if="${#fields.hasErrors('nuevaImagen')}" th:errors="*{nuevaImagen}" class="text-danger"></p>
       </div>
 
       <button type="submit" class="btn btn-primary">Actualizar</button>
@@ -578,5 +599,27 @@
   <p>©2024 HanaServizi. ALL Rights Reserved.</p>
 </div>
 <script th:src="@{/JS/cambioColor.js}" defer></script>
+<script>
+  function agregarTalla() {
+    const container = document.getElementById("tallasContainer");
+
+    const index = container.children.length;
+    const row = document.createElement("div");
+    row.classList.add("row", "mb-2");
+
+    row.innerHTML = `
+        <div class="col">
+            <input type="text" name="tallas[${index}].talla"
+                   class="form-control" placeholder="Talla (ej: S, M, L)">
+        </div>
+        <div class="col">
+            <input type="number" name="tallas[${index}].stock"
+                   class="form-control" placeholder="Stock">
+        </div>
+    `;
+    container.appendChild(row);
+  }
+</script>
+
 </body>
 </html>

@@ -1,11 +1,17 @@
 package com.example.hanaservizi_e.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "producto")
+@Getter
+@Setter
 public class Producto {
 
     @Id
@@ -19,86 +25,23 @@ public class Producto {
     private String estadoProducto;
     private String descripcion;
     private String imagen;
+    private Integer stock;
+
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TallaStock> tallas = new ArrayList<>();
 
 
-    public Long getId() {
-        return id;
+    @Column(name = "activo", nullable = false)
+    private boolean activo = true;
+
+    public boolean getActivo() {
+        return activo;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-    }
-
-    public Date getFechaAgregacion() {
-        return fechaAgregacion;
-    }
-
-    public void setFechaAgregacion(Date fechaAgregacion) {
-        this.fechaAgregacion = fechaAgregacion;
-    }
-
-    public String getEstadoProducto() {
-        return estadoProducto;
-    }
-
-    public void setEstadoProducto(String estadoProducto) {
-        this.estadoProducto = estadoProducto;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-    public Marca getMarca() {
-        return marca;
-    }
-
-    public void setMarca(Marca marca) {
-        this.marca = marca;
-    }
-
-    public Categorias getCategorias() {
-        return categorias;
-    }
-
-    public void setCategorias(Categorias categorias) {
-        this.categorias = categorias;
-    }
-
-    public User getVendedor() {
-        return vendedor;
-    }
-
-    public void setVendedor(User vendedor) {
-        this.vendedor = vendedor;
-    }
 
     @Override
     public String toString() {
@@ -111,7 +54,7 @@ public class Producto {
                 ", descripcion='" + descripcion + '\'' +
                 ", imagen='" + imagen + '\'' +
                 ", marca=" + marca +
-                ", categorias=" + categorias+
+                ", categorias=" + categorias +
                 '}';
     }
 
@@ -122,6 +65,6 @@ public class Producto {
     private Categorias categorias;
 
     @ManyToOne
-    @JoinColumn(name="vendedor_id")
-    private User  vendedor;
+    @JoinColumn(name = "vendedor_id")
+    private User vendedor;
 }

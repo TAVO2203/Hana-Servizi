@@ -530,15 +530,36 @@
             </div>
 
             <div class="mb-3">
-                <label for="imagen" class="form-label">Carga una imagen</label>
-                <input type="file" id="imagen"
-                       th:field="*{imagen}"
+                <label for="stock" class="form-label">Stock General</label>
+                <input type="number" id="stock"
+                       th:field="*{stock}"
                        class="form-control"
-                       th:classappend="${#fields.hasErrors('imagen')} ? ' input-rojo' : ''"
-                       accept="image/*">
-                <p th:if="${#fields.hasErrors('imagen')}" th:errors="*{imagen}" class="text-danger"></p>
+                       th:classappend="${#fields.hasErrors('stock')} ? ' input-rojo' : ''"
+                       placeholder="Cantidad total en stock">
+                <p th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" class="text-danger"></p>
             </div>
 
+            <div class="mb-3" id="tallasSection" style="display: none;">
+                <label class="form-label">Tallas y Stock</label>
+                <div id="tallasContainer">
+                    <div class="d-flex mb-2">
+                        <input type="text" name="tallas[0].talla" class="form-control me-2" placeholder="Talla (ej. M)">
+                        <input type="number" name="tallas[0].stock" class="form-control" placeholder="Stock">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="addTalla()">+ Añadir talla</button>
+            </div>
+
+
+            <div class="mb-3">
+                <label for="imagenes" class="form-label">Carga imágenes</label>
+                <input type="file" id="imagenes"
+                       th:field="*{imagenes}"
+                       class="form-control"
+                       multiple
+                       accept="image/*">
+                <p th:if="${#fields.hasErrors('imagenes')}" th:errors="*{imagenes}" class="text-danger"></p>
+            </div>
             <button type="submit" class="btn btn-primary">Crear Producto</button>
             <a th:href="@{/vendedor/productos}" class="btn btn-success w-100 mt-2">Volver</a>
         </form>
@@ -586,5 +607,43 @@
     <p>©2024 HanaServizi. ALL Rights Reserved.</p>
 </div>
 <script th:src="@{/JS/cambioColor.js}" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const categoriaSelect = document.getElementById("categoriaId");
+        const tallasSection = document.getElementById("tallasSection");
+
+        function toggleTallas() {
+            // Obtiene el texto de la opción seleccionada
+            const selectedOption = categoriaSelect.options[categoriaSelect.selectedIndex].text;
+
+            if (selectedOption.toLowerCase() === "moda") {
+                tallasSection.style.display = "block";
+            } else {
+                tallasSection.style.display = "none";
+            }
+        }
+
+        // Al cargar la página (para edición)
+        toggleTallas();
+
+        // Al cambiar categoría
+        categoriaSelect.addEventListener("change", toggleTallas);
+    });
+
+    function addTalla() {
+        const container = document.getElementById("tallasContainer");
+        const index = container.children.length;
+
+        const div = document.createElement("div");
+        div.classList.add("d-flex", "mb-2");
+        div.innerHTML = `
+            <input type="text" name="tallas[${index}].talla" class="form-control me-2" placeholder="Talla (ej. M)">
+            <input type="number" name="tallas[${index}].stock" class="form-control" placeholder="Stock">
+        `;
+        container.appendChild(div);
+    }
+</script>
+
+
 </body>
 </html>

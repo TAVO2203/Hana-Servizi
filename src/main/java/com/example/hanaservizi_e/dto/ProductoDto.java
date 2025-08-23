@@ -7,11 +7,13 @@ import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ProductoDto {
 
-    private Long id;
+    private int id;
 
     @NotBlank(message = "El nombre es obligatorio.")
     @Size(max = 50, message = "El nombre no puede exceder 100 caracteres.")
@@ -33,28 +35,57 @@ public class ProductoDto {
 
     private MultipartFile imagen;
 
-
     @NotBlank(message = "El nombre de la marca es obligatorio.")
     private String nombreMarca;
 
     @NotNull(message = "Debe seleccionar una categoría.")
     private Long categoriaId;
 
-    private String imagenActual;
+    private List<TallasStockDTO> tallas = new ArrayList<>();
 
-    public String getImagenActual() {
-        return imagenActual;
+    @NotNull(message = "El stock es obligatorio.")
+    @Positive(message = "El stock debe ser mayor a 0.")
+    private Integer stock;   // 👈 este es el stock general
+
+    public Integer getStock() {return stock;}
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
-    public void setImagenActual(String imagenActual) {
-        this.imagenActual = imagenActual;
+    public List<TallasStockDTO> getTallas() {
+        return tallas;
     }
 
-    public Long getId() {
+    public void setTallas(List<TallasStockDTO> tallas) {
+        this.tallas = tallas;
+    }
+
+    private List<MultipartFile> imagenes;
+    private MultipartFile nuevaImagen; // no "imagen", para no chocar con la String
+
+    public MultipartFile getNuevaImagen() {
+        return nuevaImagen;
+    }
+
+    public void setNuevaImagen(MultipartFile nuevaImagen) {
+        this.nuevaImagen = nuevaImagen;
+    }
+
+    public List<MultipartFile> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(List<MultipartFile> imagenes) {
+        this.imagenes = imagenes;
+    }
+
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

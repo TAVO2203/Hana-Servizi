@@ -6,8 +6,8 @@ import com.example.hanaservizi_e.model.Producto;
 public class ItemCarrito {
     private Producto producto;
     private int cantidad;
-    private String talla; // solo si es ropa
-    private String color; // solo si es accesorio u otro
+    private String talla;
+    private String color;
 
     public Producto getProducto() {
         return producto;
