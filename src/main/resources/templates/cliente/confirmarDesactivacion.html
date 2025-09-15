@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Desactivación</title>
+    <link rel="icon" type="image" th:href="@{/img/icon.png}">
+    <link rel="stylesheet" th:href="@{/css/clientedashboard.css}">
+</head>
+<body>
+<header class="top-navbar">
+    <div class="logo">HS</div>
+    <div class="navbar-title">Confirmar desactivación</div>
+</header>
+
+<div class="wrapper">
+    <aside class="sidebar collapsed">
+        <ul>
+            <li><a th:href="@{/cliente/dashboard}"><i class="fas fa-home"></i><span>Volver</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="dashboard-main">
+        <h2>¿Estás seguro que deseas desactivar tu cuenta?</h2>
+        <p>Tu cuenta será desactivada y ya no podrás iniciar sesión hasta que un administrador la reactive.</p>
+
+        <form th:action="@{/cliente/desactivar-cuenta}" method="post">
+            <button type="submit" style="background-color: crimson; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
+                Sí, desactivar mi cuenta
+            </button>
+        </form>
+
+        <br>
+        <a th:href="@{/cliente/dashboard}">Cancelar</a>
+    </main>
+</div>
+</body>
+</html>

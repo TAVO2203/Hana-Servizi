@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil del Cliente</title>
+    <link rel="stylesheet" th:href="@{/css/clientedashboard.css}">
+    <link rel="icon" type="image" th:href="@{/img/icon.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .profile-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-header i {
+            font-size: 2.5rem;
+            color: #c0392b;
+        }
+
+        .profile-info li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .profile-info i {
+            margin-right: 10px;
+            color: #c0392b;
+            width: 25px;
+            text-align: center;
+        }
+
+        .profile-actions {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .profile-actions a,
+        .profile-actions button {
+            flex: 1;
+            padding: 0.8rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        .profile-actions a {
+            background: #2980b9;
+        }
+
+        .profile-actions a:hover {
+            background: #1f618d;
+        }
+
+        .profile-actions button {
+            background: #c0392b;
+        }
+
+        .profile-actions button:hover {
+            background: #a93226;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Caja del modal */
+        .modal-content {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            transform: scale(0.7);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Animación al abrir */
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Botón confirmar */
+        .btn-confirm {
+            background: #e74c3c;
+            color: white;
+            padding: 0.7rem 1.4rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 0.6rem;
+            transition: background 0.3s;
+        }
+
+        .btn-confirm:hover {
+            background: #c0392b;
+        }
+
+        /* Botón cancelar */
+        .btn-cancel {
+            background: #ecf0f1;
+            color: #333;
+            padding: 0.7rem 1.4rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+
+<header class="top-navbar">
+    <div id="logoToggle" class="logo">HS</div>
+    <div class="navbar-title">Perfil del Cliente</div>
+    <div class="user-info"></div>
+</header>
+
+<div class="wrapper">
+    <aside id="sidebar" class="sidebar collapsed">
+        <ul>
+            <li><a th:href="@{/productos/index}"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
+            <li><a th:href="@{/cliente/perfil}"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
+            <li><a th:href="@{/cliente/compras}"><i class="fas fa-shopping-bag"></i> <span>Mis Compras</span></a></li>
+            <li>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> <span>Salir</span>
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="profile-card">
+            <div class="profile-header">
+                <i class="fas fa-user-circle"></i>
+                <h2 th:text="'Perfil de ' + ${usuario.username}">Perfil</h2>
+            </div>
+
+            <ul class="profile-info">
+                <li><i class="fas fa-user"></i><strong>Usuario:</strong> <span th:text="${usuario.username}"></span></li>
+                <li><i class="fas fa-envelope"></i><strong>Email:</strong> <span th:text="${usuario.email}"></span></li>
+                <li><i class="fas fa-phone"></i><strong>Teléfono:</strong> <span th:text="${usuario.phone}"></span></li>
+                <li><i class="fas fa-map-marker-alt"></i><strong>Dirección:</strong> <span th:text="${usuario.address}"></span></li>
+            </ul>
+            <div class="profile-actions">
+                <a th:href="@{/cliente/editarPerfil}">
+                    <i class="fas fa-edit"></i> Editar Perfil
+                </a>
+
+                <form th:action="@{/cliente/desactivar}" method="post">
+                    <!-- Botón que abre el modal -->
+                    <button type="button" onclick="abrirModal()" style="background:#c0392b; color:white;">
+                        <i class="fas fa-user-slash"></i> Eliminar Cuenta
+                    </button>
+
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+<div id="modalEliminar" class="modal">
+    <div class="modal-content animate">
+        <h3 style="margin-bottom: 0.5rem;">¿Estás seguro?</h3>
+        <p>Tu cuenta será desactivada y no podrás iniciar sesión hasta que un administrador la reactive.</p>
+
+        <form th:action="@{/cliente/perfil/eliminar}" method="post" style="margin-top: 1.2rem;">
+            <button type="submit" class="btn-confirm">
+                <i class="fas fa-check-circle"></i> Sí, desactivar
+            </button>
+
+            <button type="button" onclick="cerrarModal()" class="btn-cancel">
+                <i class="fas fa-times-circle"></i> Cancelar
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    const logo = document.getElementById('logoToggle');
+    const sidebar = document.getElementById('sidebar');
+    let expanded = false;
+
+    logo.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        expanded = !expanded;
+        logo.textContent = expanded ? 'Hana Servizi' : 'HS';
+    });
+    function abrirModal() {
+        let modal = document.getElementById("modalEliminar");
+        modal.style.display = "flex";
+        setTimeout(() => modal.classList.add("show"), 10);
+    }
+
+    function cerrarModal() {
+        let modal = document.getElementById("modalEliminar");
+        modal.classList.remove("show");
+        setTimeout(() => modal.style.display = "none", 300);
+    }
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Categorías - HanaServizi</title>
+  <link rel="icon" type="image" th:href="@{/img/icon.png}">
+  <link rel="stylesheet" th:href="@{/css/admindashboard.css}">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<header class="top-navbar">
+  <div id="logoToggle" class="logo">HS</div>
+  <div class="navbar-title">Panel de Administrador</div>
+</header>
+
+<div class="wrapper">
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar collapsed">
+    <ul>
+      <li th:class="'menu-item ' + (${activePage} == 'dashboard' ? 'active' : '')">
+        <a th:href="@{/productos/index}"><i class="fas fa-home"></i> <span>Inicio</span></a>
+      </li>
+      <li th:class="'menu-item ' + (${activePage} == 'usuarios' ? 'active' : '')">
+        <a th:href="@{/admin/usuarios}"><i class="fas fa-users"></i> <span>Usuarios</span></a>
+      </li>
+      <li th:class="'menu-item ' + (${activePage} == 'nuevoAdmin' ? 'active' : '')">
+        <a th:href="@{/admin/usuarios/nuevo-admin}"><i class="fas fa-user-plus"></i> <span>Agregar Admin</span></a>
+      </li>
+      <li th:class="'menu-item ' + (${activePage} == 'categorias' ? 'active' : '')">
+        <a th:href="@{/admin/categorias}">
+          <i class="fas fa-tags"></i> <span>Categorías</span>
+        </a>
+      </li>
+      <li>
+        <form th:action="@{/logout}" method="post">
+          <button type="submit" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> <span>Salir</span>
+          </button>
+        </form>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main content -->
+  <main class="dashboard-main">
+    <h1>Gestión de Categorías</h1>
+
+    <!-- Formulario para agregar categoría -->
+    <form th:action="@{/admin/categorias/guardar}" th:object="${categoriaNueva}" method="post" class="filtro-form" style="margin-bottom: 20px;">
+      <input type="text" th:field="*{nombreCategoria}" placeholder="Nueva categoría" required style="flex:1;">
+      <button type="submit" style="background:#28a745; color:white; padding:6px 12px; border:none; border-radius:4px;">
+        <i class="fas fa-plus"></i> Agregar
+      </button>
+    </form>
+
+    <!-- Tabla de categorías -->
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="cat : ${categorias}">
+        <td th:text="${cat.id}"></td>
+        <td th:text="${cat.nombreCategoria}"></td>
+        <td>
+          <a th:href="@{/admin/categorias/eliminar/{id}(id=${cat.id})}"
+             onclick="return confirm('¿Seguro que quieres eliminar esta categoría?')"
+             style="color:#c0392b; text-decoration:none;">
+            <i class="fas fa-trash"></i> Eliminar
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Mensaje cuando no hay categorías -->
+    <p th:if="${#lists.isEmpty(categorias)}" style="margin-top: 10px; color: gray;">
+      No hay categorías registradas aún.
+    </p>
+  </main>
+</div>
+
+<script>
+  const logo = document.getElementById('logoToggle');
+  const sidebar = document.getElementById('sidebar');
+  let expanded = false;
+  logo.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+    expanded = !expanded;
+    logo.textContent = expanded ? 'Hana Servizi' : 'HS';
+  });
+</script>
+</body>
+</html>

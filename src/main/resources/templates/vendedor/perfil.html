@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil del Vendedor</title>
+    <link rel="stylesheet" th:href="@{/css/clientedashboard.css}">
+    <link rel="icon" type="image" th:href="@{/img/icon.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<header class="top-navbar">
+    <div id="logoToggle" class="logo">HS</div>
+    <div class="navbar-title">Perfil del Vendedor</div>
+</header>
+
+<div class="wrapper">
+    <aside id="sidebar" class="sidebar collapsed">
+        <ul>
+            <li><a th:href="@{/productos/index}"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
+            <li><a th:href="@{/vendedor/perfil}"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
+            <li><a th:href="@{/vendedor/productos}"><i class="fas fa-box"></i> <span>Mis Productos</span></a></li>
+            <li><a th:href="@{/vendedor/pedidos}"><i class="fas fa-shopping-basket"></i> <span>Pedidos</span></a></li>
+
+            <li>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> <span>Salir</span>
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="profile-card">
+            <div class="profile-header">
+                <i class="fas fa-user-circle"></i>
+                <h2 th:text="'Perfil de ' + ${usuario.username}">Perfil</h2>
+            </div>
+
+            <ul class="profile-info">
+                <li><i class="fas fa-user"></i><strong>Usuario:</strong> <span th:text="${usuario.username}"></span></li>
+                <li><i class="fas fa-envelope"></i><strong>Email:</strong> <span th:text="${usuario.email}"></span></li>
+                <li><i class="fas fa-phone"></i><strong>Teléfono:</strong> <span th:text="${usuario.phone}"></span></li>
+                <li><i class="fas fa-map-marker-alt"></i><strong>Dirección:</strong> <span th:text="${usuario.address}"></span></li>
+
+                <!-- Mostrar ciudad solo si el vendedor no es null -->
+                <li th:if="${usuario.vendedor != null}">
+                    <i class="fas fa-city"></i><strong>Ciudad:</strong>
+                    <span th:text="${usuario.vendedor.city}"></span>
+                </li>
+            </ul>
+
+            <div class="profile-actions">
+                <a th:href="@{/vendedor/editarPerfil}" class="btn"><i class="fas fa-edit"></i> Editar Perfil</a>
+
+                <button type="button" onclick="mostrarModal()" style="background:#c0392b; color:white;">
+                    <i class="fas fa-user-slash"></i> Eliminar Cuenta
+                </button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal -->
+<div id="modalEliminar" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;">
+    <div style="background:#fff; padding:1.5rem; width:90%; max-width:400px; margin:10% auto; border-radius:10px; text-align:center;">
+        <h3>¿Estás seguro?</h3>
+        <p>Tu cuenta será eliminada</p>
+        <form th:action="@{/perfil/eliminar}" method="post" style="margin-top: 1rem;">
+            <button type="submit" style="background:#c0392b; color:white; padding:0.6rem 1.2rem; border:none; border-radius:6px;">
+                <i class="fas fa-check-circle"></i> Sí, eliminar
+            </button>
+            <button type="button" onclick="cerrarModal()" style="background:#e0e0e0; color:#333; padding:0.6rem 1.2rem; border:none; border-radius:6px; margin-left:10px;">
+                <i class="fas fa-times-circle"></i> Cancelar
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const logo = document.getElementById('logoToggle');
+    const sidebar = document.getElementById('sidebar');
+    let expanded = false;
+    logo.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        expanded = !expanded;
+        logo.textContent = expanded ? 'Hana Servizi' : 'HS';
+    });
+    function mostrarModal() { document.getElementById("modalEliminar").style.display = "block"; }
+    function cerrarModal() { document.getElementById("modalEliminar").style.display = "none"; }
+</script>
+
+</body>
+</html>
