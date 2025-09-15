@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Panel de Vendedor - Hana Servizi</title>
+  <link rel="icon" type="image" th:href="@{/img/icon.png}">
   <link rel="stylesheet" th:href="@{/css/vendedordashboard.css}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -21,6 +22,7 @@
   <aside id="sidebar" class="sidebar collapsed">
     <ul>
       <li><a th:href="@{/productos/index}"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
+      <li><a th:href="@{/vendedor/perfil}"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
       <li><a th:href="@{/vendedor/productos}"><i class="fas fa-box"></i> <span>Mis Productos</span></a></li>
       <li><a th:href="@{/vendedor/productos/agregar}"><i class="fas fa-plus-circle"></i> <span>Agregar Producto</span></a></li>
       <li><a th:href="@{/vendedor/pedidos}"><i class="fas fa-shopping-basket"></i> <span>Pedidos</span></a></li>

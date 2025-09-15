@@ -1,4 +1,4 @@
-package com.example.hanaservizi_e.security;
+/*package com.example.hanaservizi_e.security;
 
 import com.example.hanaservizi_e.model.User;
 import com.example.hanaservizi_e.repository.UserRepository;
@@ -35,3 +35,4 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
 }
+*/

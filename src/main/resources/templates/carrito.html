@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito de Compras - HanaServizi</title>
+    <link rel="icon" type="image" th:href="@{/img/icon.png}">
     <script th:src="@{/JS/carrito.js}" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -294,7 +295,7 @@
     }
 
     .btn-cart i {
-        color: #f4c542; /* amarillo suave para el carrito */
+        color: #fff; /* amarillo suave para el carrito */
         font-size: 16px;
     }
 
@@ -370,6 +371,10 @@
         align-items: center;
     }
 
+    .nav-menu a span{
+        color: yellow;
+        font-weight:bold ;
+    }
     .quantity-controls .cantidad {
         min-width: 32px;
         text-align: center;
@@ -660,11 +665,14 @@
 
             <!-- Botón usuario -->
             <a th:if="${nombreUsuario != null}"
-               th:href="${rolUsuario == 'ROLE_VENDEDOR'} ? @{/vendedor/dashboard} : @{/cliente/dashboard}"
-               class="btn-icon btn-user">
+               th:href="${rolUsuario == 'ROLE_VENDEDOR'} ? @{/vendedor/dashboard}
+            : (${rolUsuario == 'ROLE_ADMIN'} ? @{/admin/dashboard}
+            : @{/cliente/dashboard})"
+               class="btn-icon">
                 <i class="fa-solid fa-user"></i>
                 <span th:text="${nombreUsuario}"></span>
             </a>
+
 
             <a href="#" class="btn-icon">
                 <i class="fa-solid fa-bell"></i>

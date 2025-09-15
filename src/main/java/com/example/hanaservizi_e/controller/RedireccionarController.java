@@ -14,13 +14,17 @@ public class RedireccionarController {
         if (authentication != null && authentication.isAuthenticated()) {
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
+            // Log temporal para debug
+            System.out.println("Authorities en redirección: " + authorities);
+
             if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
                 return "redirect:/admin/dashboard";
             } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_VENDEDOR"))) {
                 return "redirect:/vendedor/dashboard";
+            } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_CLIENTE"))) {
+                return "redirect:/cliente/dashboard";
             }
         }
-        // Por defecto redirige al dashboard de cliente
         return "redirect:/cliente/dashboard";
     }
 }

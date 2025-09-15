@@ -148,7 +148,29 @@ body {
     position: relative;
 }
 
-
+.btn-volver {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 200;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #ff4d4d;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.btn-volver:hover {
+    background: #a93226;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
 
 /* Input */
 .form-group input[type="text"],

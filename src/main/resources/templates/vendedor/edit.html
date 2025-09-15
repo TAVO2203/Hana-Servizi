@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Hana Servizi</title>
-  <link rel="icon" th:href="@{/images/icon.png}" />
+  <link rel="icon" type="image" th:href="@{/img/icon.png}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -521,24 +521,12 @@
       <div th:if="${productoDto.categoriaId == 3}">
         <label class="form-label">Tallas y Stock</label>
         <div id="tallasContainer">
-          <div th:each="talla, iterStat : *{tallas}">
-            <div class="row mb-2">
-              <div class="col">
-                <input type="text"
-                       th:field="*{tallas[__${iterStat.index}__].talla}"
-                       class="form-control"
-                       placeholder="Talla (ej: S, M, L)">
-              </div>
-              <div class="col">
-                <input type="number"
-                       th:field="*{tallas[__${iterStat.index}__].stock}"
-                       class="form-control"
-                       placeholder="Stock por talla">
-              </div>
-            </div>
+          <div th:each="talla, iterStat : *{tallas}" class="d-flex mb-2">
+            <input type="text" th:field="*{tallas[__${iterStat.index}__].talla}" class="form-control me-2" placeholder="Talla (ej. M)">
+            <input type="number" th:field="*{tallas[__${iterStat.index}__].stock}" class="form-control stock-talla" placeholder="Stock" oninput="calcularStockGeneral()">
           </div>
         </div>
-        <button type="button" class="btn btn-sm btn-success mt-2" onclick="agregarTalla()">+ Agregar Talla</button>
+        <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="addTalla()">+ Añadir talla</button>
       </div>
 
       <div class="mb-3">
@@ -602,23 +590,47 @@
 <script>
   function agregarTalla() {
     const container = document.getElementById("tallasContainer");
-
     const index = container.children.length;
     const row = document.createElement("div");
     row.classList.add("row", "mb-2");
 
     row.innerHTML = `
-        <div class="col">
-            <input type="text" name="tallas[${index}].talla"
-                   class="form-control" placeholder="Talla (ej: S, M, L)">
-        </div>
-        <div class="col">
-            <input type="number" name="tallas[${index}].stock"
-                   class="form-control" placeholder="Stock">
-        </div>
+      <div class="col">
+        <input type="text"
+               name="tallas[${index}].talla"
+               class="form-control"
+               placeholder="Talla (ej: S, M, L)">
+      </div>
+      <div class="col">
+        <input type="number"
+               name="tallas[${index}].stock"
+               class="form-control stock-talla"
+               placeholder="Stock por talla"
+               min="0"
+               value="0"
+               oninput="calcularStockGeneral()">
+      </div>
     `;
+
     container.appendChild(row);
   }
+
+  // 👉 Función para recalcular stock general
+  function calcularStockGeneral() {
+    let total = 0;
+    document.querySelectorAll(".stock-talla").forEach(input => {
+      total += parseInt(input.value || 0);
+    });
+    document.getElementById("stock").value = total;
+  }
+
+  // 👉 Al cargar la página también calculamos el stock si ya hay tallas
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".stock-talla").forEach(input => {
+      input.addEventListener("input", calcularStockGeneral);
+    });
+    calcularStockGeneral();
+  });
 </script>
 
 </body>

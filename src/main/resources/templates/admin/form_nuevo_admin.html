@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Agregar Nuevo Administrador</title>
     <link rel="stylesheet" th:href="@{/css/form_nuevo_admin.css}">
+    <link rel="icon" type="image" th:href="@{/img/icon.png}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -15,12 +16,17 @@
 </header>
 
 <div class="wrapper">
-    <aside id="sidebar" class="sidebar">
+    <aside id="sidebar" class="sidebar collapsed">
         <ul>
             <li><a th:href="@{/admin/dashboard}"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
             <li><a th:href="@{/admin/usuarios}"><i class="fas fa-users"></i> <span>Usuarios</span></a></li>
             <li class="active"><a th:href="@{/admin/usuarios/nuevo-admin}"><i class="fas fa-user-plus"></i> <span>Agregar Admin</span></a></li>
             <li>
+            <li th:class="'menu-item ' + (${activePage} == 'categorias' ? 'active' : '')">
+                <a th:href="@{/admin/categorias}">
+                    <i class="fas fa-tags"></i> <span>Categorías</span>
+                </a>
+            </li>
                 <form th:action="@{/logout}" method="post">
                     <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> <span>Salir</span></button>
                 </form>
@@ -29,6 +35,9 @@
     </aside>
 
     <main class="dashboard-main">
+        <a th:href="@{/admin/dashboard}" class="btn-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
         <h1>Agregar Nuevo Administrador</h1>
 
         <p th:if="${error}" th:text="${error}" class="error-message"></p>
@@ -72,11 +81,10 @@
     const logo = document.getElementById('logoToggle');
     const sidebar = document.getElementById('sidebar');
     let expanded = false;
-
     logo.addEventListener('click', () => {
         sidebar.classList.toggle('collapsed');
         expanded = !expanded;
-        logo.textContent = expanded ? 'HS' : 'Hana Servizi';
+        logo.textContent = expanded ? 'Hana Servizi' : 'HS';
     });
 </script>
 

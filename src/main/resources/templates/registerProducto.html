@@ -544,12 +544,11 @@
                 <div id="tallasContainer">
                     <div class="d-flex mb-2">
                         <input type="text" name="tallas[0].talla" class="form-control me-2" placeholder="Talla (ej. M)">
-                        <input type="number" name="tallas[0].stock" class="form-control" placeholder="Stock">
+                        <input type="number" name="tallas[0].stock" class="form-control stock-talla" placeholder="Stock" value="0" oninput="calcularStockGeneral()">
                     </div>
                 </div>
                 <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="addTalla()">+ Añadir talla</button>
             </div>
-
 
             <div class="mb-3">
                 <label for="imagenes" class="form-label">Carga imágenes</label>
@@ -638,10 +637,24 @@
         div.classList.add("d-flex", "mb-2");
         div.innerHTML = `
             <input type="text" name="tallas[${index}].talla" class="form-control me-2" placeholder="Talla (ej. M)">
-            <input type="number" name="tallas[${index}].stock" class="form-control" placeholder="Stock">
+            <input type="number" name="tallas[${index}].stock" class="form-control stock-talla" placeholder="Stock" value="0" oninput="calcularStockGeneral()">
         `;
         container.appendChild(div);
     }
+    function calcularStockGeneral() {
+        let total = 0;
+        document.querySelectorAll(".stock-talla").forEach(input => {
+            total += parseInt(input.value || 0);
+        });
+        document.getElementById("stock").value = total;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Recalcular stock cuando hay tallas visibles
+        document.querySelectorAll(".stock-talla").forEach(input => {
+            input.addEventListener("input", calcularStockGeneral);
+        });
+    });
 </script>
 
 

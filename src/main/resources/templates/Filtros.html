@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project HanaServizi</title>
     <link rel="stylesheet" th:href="@{/CSS/style2.css}">
+    <link rel="icon" type="image" th:href="@{/img/icon.png}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,7 +27,9 @@
             <a th:href="@{/productos/index}" class="active btn-icon"><strong>Inicio</strong></a>
 
             <a th:if="${nombreUsuario != null}"
-               th:href="${rolUsuario == 'ROLE_VENDEDOR'} ? @{/vendedor/dashboard} : @{/cliente/dashboard}"
+               th:href="${rolUsuario == 'ROLE_VENDEDOR'} ? @{/vendedor/dashboard}
+            : (${rolUsuario == 'ROLE_ADMIN'} ? @{/admin/dashboard}
+            : @{/cliente/dashboard})"
                class="btn-icon">
                 <i class="fa-solid fa-user"></i>
                 <span th:text="${nombreUsuario}"></span>

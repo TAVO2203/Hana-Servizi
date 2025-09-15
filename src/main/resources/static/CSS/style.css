@@ -161,13 +161,49 @@ body.dark-mode .footer-col .info p {
     margin-left: 10px;
 }
 
-.nav-menu{
+.nav-menu {
     display: flex;
     align-items: center;
     padding: 10px;
     gap: 10px;
 }
 
+/* Bloque logueado */
+.nav-logged {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Contenedor imagen + nombre */
+.usuario-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Imagen perfil */
+.foto-header {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+}
+
+/* Texto usuario */
+.nav-user {
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 0.95em;
+    white-space: nowrap; /* evita que se corte en varias líneas */
+}
+
+.nav-user strong {
+    color: #ffdd00;
+}
+
+/* Botones iconos */
 .nav-logged a.btn-icon,
 .nav-not-logged a.btn-icon {
     color: #ffffff;
@@ -190,33 +226,26 @@ body.dark-mode .footer-col .info p {
     box-shadow: 0 0 5px #7a0c0c, 0 0 10px #7a0c0c;
     color: #fff;
 }
-/* Bloque contenedor si está logueado */
-.nav-logged {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.nav-logged .nav-user {
-    color: #ffffff;
-    font-weight: 500;
-    font-size: 0.95em;
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 6px 12px;
+.btn-catalog {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: rgba(255,255,255,0.15);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
     border-radius: 20px;
-    transition: background-color 0.3s ease;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-.nav-logged .nav-user strong {
-    color: #ffdd00; /* Color distinto para el nombre */
+.btn-catalog:hover {
+    background-color: #7a0c0c;
+    box-shadow: 0 0 5px #7a0c0c, 0 0 10px #7a0c0c;
+    color: #fff;
 }
 
-.nav-logged .nav-user:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    cursor: default;
-}
-
-/* Si no está logueado */
+/* Bloque no logueado */
 .nav-not-logged {
     display: flex;
     align-items: center;

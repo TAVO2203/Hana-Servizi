@@ -1,12 +1,13 @@
 package com.example.hanaservizi_e.service.impl;
 
+import com.example.hanaservizi_e.dto.VistaUsuarioDTO;
+import com.example.hanaservizi_e.model.User;
 import com.example.hanaservizi_e.repository.RolRepository;
+import com.example.hanaservizi_e.repository.UserRepository;
+import com.example.hanaservizi_e.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.hanaservizi_e.service.UserService;
-import com.example.hanaservizi_e.model.User;
-import com.example.hanaservizi_e.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registrarUsuario(User user){
+    public User registrarUsuario(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
         user.setCreatedAt(LocalDateTime.now());
@@ -36,7 +37,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> buscarPorId(Long id){
+    public VistaUsuarioDTO convertirAUsuarioDto(User usuario) {
+        return mapearUsuarioAUsuarioDto(usuario);
+    }
+
+    private VistaUsuarioDTO mapearUsuarioAUsuarioDto(User usuario) {
+        VistaUsuarioDTO dto = new VistaUsuarioDTO();
+        dto.setId(usuario.getId());
+        dto.setUsername(usuario.getUsername());
+        dto.setEmail(usuario.getEmail());
+        dto.setPhone(usuario.getPhone());
+        dto.setAddress(usuario.getAddress());
+        dto.setRol(usuario.getRol().getRolname());
+
+        if (usuario.getVendedor() != null) {
+            dto.setCity(usuario.getVendedor().getCity());
+        }
+
+        return dto;
+    }
+
+    @Override
+    public Optional<User> buscarPorId(Long id) {
         return userRepository.findById(id);
     }
 
@@ -88,6 +110,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void actualizar(User user) {
-        guardar(user); // Puedes delegar a guardar si el comportamiento es igual
+        if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
     }
+    @Override
+    public void desactivarCuenta(Long idUsuario) {
+        Optional<User> usuarioOpt = userRepository.findById(idUsuario);
+
+        if (usuarioOpt.isPresent()) {
+            User user = usuarioOpt.get();
+            user.setActive(false);
+            userRepository.save(user); // guarda el cambio
+        } else {
+            throw new RuntimeException("Usuario no encontrado con ID: " + idUsuario);
+        }
+    }
+
+    @Override
+    public Optional<User> buscarInactivoPorEmail(String email){
+        return userRepository.findByEmailAndIsActiveFalse(email);
+    }
+
+
 }

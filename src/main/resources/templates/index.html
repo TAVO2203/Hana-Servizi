@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project HanaServizi</title>
+    <title>Hana Servizi</title>
     <link rel="stylesheet" th:href="@{/CSS/style.css}">
-    <link rel="icon" type="image" th:href="@{/img/logo.png}">
+    <link rel="icon" type="image" th:href="@{/img/icon.png}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -25,22 +25,33 @@
         </div>
         <nav class="nav-menu">
             <div th:if="${nombreUsuario}" class="nav-logged">
-                <span class="nav-user">
-                    ¡Hola, <strong th:text="${nombreUsuario}">Usuario</strong>!
-                </span>
-                <a th:href="${rolUsuario == 'ROLE_VENDEDOR'} ? @{/vendedor/dashboard} : @{/cliente/dashboard}"
-                   class="btn-icon"
-                   th:if="${nombreUsuario != null}">
+                <div class="usuario-info">
+                    <span class="nav-user">
+            ¡Hola, <strong th:text="${nombreUsuario}">Usuario</strong>!
+        </span>
+                </div>
+                <a th:if="${rolUsuario == 'ROLE_VENDEDOR'}" th:href="@{/vendedor/dashboard}" class="btn-icon">
                     <i class="fa-solid fa-user"></i>
                 </a>
+
+                <a th:if="${rolUsuario == 'ROLE_CLIENTE'}" th:href="@{/cliente/dashboard}" class="btn-icon">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+
+                <a th:if="${rolUsuario == 'ROLE_ADMIN'}" th:href="@{/admin/dashboard}" class="btn-icon">
+                    <i class="fa-solid fa-user-shield"></i>
+                </a>
+                <a th:href="@{/productos/catalogo}" class="btn-catalog">Catalogo De Productos</a>
                 <a href="#" class="btn-icon"><i class="fa-solid fa-bell"></i></a>
                 <a th:href="@{/carrito}" class="btn-icon">
                     <i class="fa-solid fa-cart-shopping"></i>
                 </a>
             </div>
+
             <div th:unless="${nombreUsuario}" class="nav-not-logged">
                 <a href="#" class="btn-icon"><i class="fa-solid fa-user"></i></a>
                 <a href="#" class="btn-icon"><i class="fa-solid fa-bell"></i></a>
+                <a th:href="@{/productos/catalogo}" class="btn-catalog">Catalogo De Productos</a>
                 <a th:href="@{/login}"><button class="btn6"><strong>Iniciar Sesión</strong></button></a>
                 <a th:href="@{/usuarios/registro}"><button class="btn6"><strong>Registrarse</strong></button></a>
             </div>
@@ -68,33 +79,12 @@
             <i class="fa-solid fa-chevron-down"></i>
         </div>
         <ul class="options">
-            <li class="option">
-                <a th:href="@{'/productos/categoria/2'}">
-                <i class="fa-solid fa-laptop"></i><span class="option-text"> Tecnología</span>
-                </a>
-            </li>
-            <li class="option">
-                <a th:href="@{'/productos/categoria/3'}">
-                <i class="fa-solid fa-shirt"></i><span class="option-text"> Moda</span>
-                </a>
-            </li>
-            <li class="option">
-                <a th:href="@{'/productos/categoria/4'}">
-                <i class="fa-solid fa-couch"></i><span class="option-text"> Muebles</span>
-                </a>
-            </li>
-            <li class="option">
-                <a th:href="@{'/productos/categoria/1'}">
-                <i class="fa-solid fa-hat-wizard"></i><span class="option-text"> Accesorios</span>
-                </a>
-            </li>
-            <li class="option">
-                <a th:href="@{'/productos/categoria/5'}">
-                <i class="fa-solid fa-medal"></i><span class="option-text"> Deportes</span>
+            <li class="option" th:each="categoria : ${categorias}">
+                <a th:href="@{'/productos/categoria/' + ${categoria.id}}">
+                    <span class="option-text" th:text="${categoria.nombreCategoria}"></span>
                 </a>
             </li>
         </ul>
-
     </div>
 
     <a href="#" class="btn-3"><h2>Servicio Al Cliente</h2></a>

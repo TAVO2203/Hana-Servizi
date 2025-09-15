@@ -1,6 +1,7 @@
 package com.example.hanaservizi_e.service;
 
 
+import com.example.hanaservizi_e.dto.VistaUsuarioDTO;
 import com.example.hanaservizi_e.model.User;
 import com.example.hanaservizi_e.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
+
+    VistaUsuarioDTO convertirAUsuarioDto(User usuario);
 
     User registrarUsuario(User user);
 
@@ -33,5 +36,14 @@ public interface UserService {
     void guardar(User user); // guarda cambios y actualiza updatedAt
 
     void actualizar(User user); // opcionalmente igual a guardar()
+
+    void desactivarCuenta(Long idUsuario);
+
+    Optional<User> buscarInactivoPorEmail(String email);
+
+
+
+
+
 }
 

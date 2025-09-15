@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
@@ -59,5 +60,17 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     List<Producto> findByVendedor(User vendedor);
 
     Page<Producto> findByVendedorId(Long vendedorId, Pageable pageable);
+
+    @Query("SELECT p FROM Producto p WHERE p.nombre = :nombre AND p.precio = :precio " +
+            "AND p.categorias.id = :categoriaId AND p.marca.id = :marcaId AND p.descripcion = :descripcion")
+    Optional<Producto> findProductoDuplicado(
+            @Param("nombre") String nombre,
+            @Param("precio") Double precio,
+            @Param("categoriaId") Long categoriaId,
+            @Param("marcaId") Long marcaId,
+            @Param("descripcion") String descripcion
+    );
+
+
 
 }

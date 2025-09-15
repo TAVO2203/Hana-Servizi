@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="'Detalle: ' + ${producto.nombre}">Detalle del Producto</title>
+    <link rel="icon" type="image" th:href="@{/img/icon.png}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         *{
@@ -467,11 +468,18 @@
                 <span class="nav-user">
                     ¡Hola, <strong th:text="${nombreUsuario}">Usuario</strong>!
                 </span>
-                <a th:href="${rolUsuario == 'ROLE_VENDEDOR'} ? @{/vendedor/dashboard} : @{/cliente/dashboard}"
-                   class="btn-icon"
-                   th:if="${nombreUsuario != null}">
+                <a th:if="${rolUsuario == 'ROLE_VENDEDOR'}" th:href="@{/vendedor/dashboard}" class="btn-icon">
                     <i class="fa-solid fa-user"></i>
                 </a>
+
+                <a th:if="${rolUsuario == 'ROLE_CLIENTE'}" th:href="@{/cliente/dashboard}" class="btn-icon">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+
+                <a th:if="${rolUsuario == 'ROLE_ADMIN'}" th:href="@{/admin/dashboard}" class="btn-icon">
+                    <i class="fa-solid fa-user-shield"></i>
+                </a>
+
                 <a href="#" class="btn-icon"><i class="fa-solid fa-bell"></i></a>
                 <a th:href="@{/carrito}" class="btn-icon">
                     <i class="fa-solid fa-cart-shopping"></i>
@@ -525,7 +533,6 @@
                             )}" class="add-to-cart btn">
                 <i class="fa-solid fa-cart-shopping"></i> Agregar al carrito
             </a>
-            <button class="fav-btn"><i class="fa fa-heart"></i></button>
         </div>
 
         <a th:href="@{/productos/index}" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver</a>

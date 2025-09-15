@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Editar Perfil - HanaServizi</title>
-  <link rel="icon" href="/images/icon.png">
+  <link rel="icon" type="image" th:href="@{/img/icon.png}">
   <link rel="stylesheet" th:href="@{/CSS/editarPerfilCliente.css}">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -34,12 +34,16 @@
 </header>
 
 <div class="container3">
-    <h1>Editar Perfil</h1>
+  <h1>Editar Perfil</h1>
 
   <div class="form-container">
     <h2>Actualizar Información</h2>
 
-    <form th:action="@{/cliente/editar-perfil}" method="post" th:object="${clienteDto}">
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+    <div th:if="${success}" class="success-message" th:text="${success}"></div>
+
+
+    <form th:action="@{/cliente/editarPerfil}" method="post" th:object="${perfilDto}">
       <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 
       <div class="input-group">
@@ -68,19 +72,16 @@
         <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error-message"></div>
 
         <div class="input-field">
-          <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('currentPassword', this)"></i>
-          <input type="password" id="currentPassword" name="currentPassword" placeholder="Contraseña actual">
-        </div>
-
-        <div class="input-field">
           <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('newPassword', this)"></i>
-          <input type="password" id="newPassword" name="newPassword" placeholder="Nueva contraseña">
+          <input type="password" id="newPassword" th:field="*{newPassword}" placeholder="Nueva contraseña">
         </div>
 
         <div class="input-field">
           <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
-          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar nueva contraseña">
+          <input type="password" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Confirme la contraseña">
         </div>
+
+
 
 
 

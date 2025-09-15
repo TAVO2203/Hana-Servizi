@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Enviar Correo Masivo</title>
+    <link rel="stylesheet" th:href="@{/css/admindashboard.css}">
+    <link rel="icon" type="image" th:href="@{/img/icon.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div id="modalResultado" class="modal" th:if="${success != null or error != null}">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div th:if="${success}" class="mensaje-success">
+            <i class="fas fa-check-circle"></i>
+            <p th:text="${success}"></p>
+        </div>
+        <div th:if="${error}" class="mensaje-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <p th:text="${error}"></p>
+        </div>
+    </div>
+</div>
+<header class="top-navbar">
+    <div id="logoToggle" class="logo">HS</div>
+    <div class="navbar-title">Panel de Administrador</div>
+    <div></div>
+</header>
+
+<div class="wrapper">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar collapsed">
+        <ul>
+            <li th:class="'menu-item ' + (${activePage} == 'dashboard' ? 'active' : '')">
+                <a th:href="@{/productos/index}"><i class="fas fa-home"></i> <span>Inicio</span></a>
+            </li>
+            <li th:class="'menu-item ' + (${activePage} == 'usuarios' ? 'active' : '')">
+                <a th:href="@{/admin/usuarios}"><i class="fas fa-users"></i> <span>Usuarios</span></a>
+            </li>
+            <li th:class="'menu-item ' + (${activePage} == 'nuevoAdmin' ? 'active' : '')">
+                <a th:href="@{/admin/usuarios/nuevo-admin}"><i class="fas fa-user-plus"></i> <span>Agregar Admin</span></a>
+            </li>
+            <li th:class="'menu-item ' + (${activePage} == 'categorias' ? 'active' : '')">
+                <a th:href="@{/admin/categorias}">
+                    <i class="fas fa-tags"></i> <span>Categorías</span>
+                </a>
+            </li>
+            <li>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> <span>Salir</span>
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </aside>
+<div class="dashboard-main">
+    <a th:href="@{/admin/dashboard}" class="btn-volver">
+        <i class="fas fa-arrow-left"></i> Volver
+    </a>
+    <h2 class="color-change">Enviar Correos</h2>
+
+    <form th:action="@{/admin/usuarios/enviar-correo-masivo}" method="post" class="correo-form">
+        <div class="form-group">
+            <label for="asunto">Asunto:</label>
+            <input type="text" id="asunto" name="asunto" required>
+        </div>
+
+        <div class="form-group">
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" name="mensaje" rows="6" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-enviar">Enviar a todos</button>
+    </form>
+</div>
+</div>
+
+
+
+<script>
+        const logo = document.getElementById('logoToggle');
+        const sidebar = document.getElementById('sidebar');
+        let expanded = false;
+
+        logo.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        expanded = !expanded;
+        logo.textContent = expanded ? 'Hana Servizi' : 'HS';
+    });
+
+        // Script para el modal de resultados
+        document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.getElementById("modalResultado");
+
+        if (modal) {
+        const closeBtn = modal.querySelector(".close");
+
+        // Mostrar el modal automáticamente
+        modal.style.display = "block";
+
+        // Cerrar con la X
+        if (closeBtn) {
+        closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+    }
+
+        // Cerrar si hace clic fuera del modal
+        window.onclick = function(event) {
+        if (event.target === modal) {
+        modal.style.display = "none";
+    }
+    }
+
+        // Cerrar automáticamente después de 5 segundos
+        setTimeout(function() {
+        if (modal.style.display === "block") {
+        modal.style.display = "none";
+    }
+    }, 5000);
+    }
+    });
+</script>
+</body>
+</html>

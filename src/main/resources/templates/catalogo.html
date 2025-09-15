@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Productos por Categoría</title>
+    <title>Catálogo de Productos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="icon" type="image" th:href="@{/img/icon.png}">
-    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
         *{
             margin: 0;
@@ -14,10 +16,9 @@
             box-sizing: border-box;
             line-height: 1.2;
         }
-
         body{
             font-family: "Poppins", monospace;
-            height: 263vh;
+            height: 265vh;
             display: flex;
             flex-direction: column;
             background-color: white;
@@ -170,29 +171,37 @@
             margin-left: 10px;
         }
 
-        .nav-menu{
+        .nav-menu {
             display: flex;
             align-items: center;
             padding: 10px;
             gap: 10px;
         }
 
-        .nav-menu > a.btn-icon {
-            color: #ffffff;
-            font-size: 0.95em;
-            padding: 8px 12px;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: all 0.3s ease;
+        .nav-logged {
             display: flex;
             align-items: center;
+            gap: 15px;
         }
 
-        .nav-menu > a.btn-icon:hover {
-            background-color: #7a0c0c;
-            box-shadow: 0 0 5px #7a0c0c, 0 0 10px #7a0c0c;
-            color: #fff;
+        .usuario-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
+
+        .nav-user {
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 0.95em;
+            white-space: nowrap;
+        }
+
+        .nav-user strong {
+            color: #ffdd00;
+        }
+
         .nav-logged a.btn-icon,
         .nav-not-logged a.btn-icon {
             color: #ffffff;
@@ -215,33 +224,26 @@
             box-shadow: 0 0 5px #7a0c0c, 0 0 10px #7a0c0c;
             color: #fff;
         }
-        /* Bloque contenedor si está logueado */
-        .nav-logged {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-logged .nav-user {
-            color: #ffffff;
-            font-weight: 500;
-            font-size: 0.95em;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 6px 12px;
+        .btn-catalog {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: rgba(255,255,255,0.15);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
             border-radius: 20px;
-            transition: background-color 0.3s ease;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
 
-        .nav-logged .nav-user strong {
-            color: #ffdd00; /* Color distinto para el nombre */
+        .btn-catalog:hover {
+            background-color: #7a0c0c;
+            box-shadow: 0 0 5px #7a0c0c, 0 0 10px #7a0c0c;
+            color: #fff;
         }
 
-        .nav-logged .nav-user:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            cursor: default;
-        }
-
-        /* Si no está logueado */
+        /* Bloque no logueado */
         .nav-not-logged {
             display: flex;
             align-items: center;
@@ -272,10 +274,163 @@
             box-shadow: 0 0 5px #FFFFFF, 0 0 25px #FFFFFF,
             0 0 50px #FFFFFF, 0 0 100px #FFFFFF, 0 0 300px #FFFFFF;
         }
-        .card-img-top {
+        /*end header*/
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #fff; }
+            to { text-shadow: 0 0 20px #ffcccc, 0 0 30px #ff9999; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h2, h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            background: #fff;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            text-align: center;
+            padding-bottom: 15px;
+            flex: 0 0 250px;
+            margin-bottom: 15px;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .product-card img {
+            width: 198px;
             height: 200px;
             object-fit: cover;
         }
+        .product-card .card-body {
+            padding: 15px;
+        }
+        .product-card h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .product-card p {
+            font-size: 14px;
+            color: #777;
+        }
+
+        .btn-add-cart {
+            background: linear-gradient(90deg, #ff4b2b, #ff416c);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 30px;
+            padding: 10px;
+            width: 100%;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-add-cart:hover {
+            background: linear-gradient(90deg, #ff6a3d, #ff2e63);
+            box-shadow: 0 0 10px rgba(255, 75, 43, 0.5);
+        }
+
+        .cart-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            font-size: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            z-index: 1001;
+        }
+        .cart-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 65, 108, 0.6);
+        }
+
+        .floating-cart {
+            position: fixed;
+            bottom: 90px;
+            left: 25px;
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            display: none;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .floating-cart h5 {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f8f8;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .remove-btn {
+            background: transparent;
+            border: none;
+            color: red;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .checkout-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 10px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .checkout-btn:hover {
+            background: #218838;
+        }
+        /*start footer*/
         footer{
             display: flex;
             flex-wrap: wrap;
@@ -387,90 +542,10 @@
             color: #f8f8f8;
             border: 1px solid rgba(0,0,0,0.15);
         }
-        h2 {
-            font-weight: 600;
-        }
-
-        .card-img-top {
-            height: 120px;
-            object-fit: contain;
-            background-color: #f8f9fa;
-            padding: 10px;
-        }
-        .card {
-            border: none;
-            transition: transform 0.3s ease;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .brand {
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-        .stars {
-            color: #ffc107;
-            margin-bottom: 5px;
-        }
-        .price-badge {
-            background: linear-gradient(135deg, #ff8c42, #ff3c83);
-            color: #fff;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: inline-block;
-        }
-        .btn-back {
-            margin-bottom: 20px;
-        }
-
-        body.dark-mode .alert-warning {
-            background-color: #333333;
-            color: #ffffff;
-            border-color: #555555;
-        }
-
-        body.dark-mode .card {
-            background-color: #292929;
-            color: #ffffff;
-            border: 1px solid #444444;
-        }
-
-        body.dark-mode .card-footer {
-            background-color: #222222;
-            border-top: 1px solid #444444;
-        }
-
-        body.dark-mode .price-badge {
-            background: linear-gradient(135deg, #ffa500, #ff69b4);
-            color: #ffffff;
-        }
-
-        body.dark-mode .btn-outline-primary {
-            color: #ffffff;
-            border-color: #ffffff;
-        }
-
-        body.dark-mode .btn-outline-primary:hover {
-            background-color: #ffffff;
-            color: #000000;
-        }
-        body.dark-mode .btn-outline-secondary {
-            color: #ffffff;
-            border-color: #ffffff;
-        }
-
-        body.dark-mode .btn-outline-secondary:hover {
-            background-color: #ffffff;
-            color: #000000;
-        }
     </style>
 </head>
 <body>
+
 <header class="header">
     <div class="header_container">
         <div class="bars">
@@ -484,9 +559,11 @@
         </div>
         <nav class="nav-menu">
             <div th:if="${nombreUsuario}" class="nav-logged">
-                <span class="nav-user">
-                    ¡Hola, <strong th:text="${nombreUsuario}">Usuario</strong>!
-                </span>
+                <div class="usuario-info">
+                    <span class="nav-user">
+            ¡Hola, <strong th:text="${nombreUsuario}">Usuario</strong>!
+        </span>
+                </div>
                 <a th:if="${rolUsuario == 'ROLE_VENDEDOR'}" th:href="@{/vendedor/dashboard}" class="btn-icon">
                     <i class="fa-solid fa-user"></i>
                 </a>
@@ -499,12 +576,15 @@
                     <i class="fa-solid fa-user-shield"></i>
                 </a>
 
+                <a th:href="@{/productos/index}" class="btn-icon">Inicio</a>
                 <a href="#" class="btn-icon"><i class="fa-solid fa-bell"></i></a>
                 <a th:href="@{/carrito}" class="btn-icon">
                     <i class="fa-solid fa-cart-shopping"></i>
                 </a>
             </div>
+
             <div th:unless="${nombreUsuario}" class="nav-not-logged">
+                <a th:href="@{/productos/index}" class="btn-icon">Inicio</a>
                 <a href="#" class="btn-icon"><i class="fa-solid fa-user"></i></a>
                 <a href="#" class="btn-icon"><i class="fa-solid fa-bell"></i></a>
                 <a th:href="@{/login}"><button class="btn6"><strong>Iniciar Sesión</strong></button></a>
@@ -518,51 +598,50 @@
         </nav>
     </div>
 </header>
-<div class="container mt-5">
-    <a href="javascript:history.back()" class="btn btn-outline-secondary btn-back">
-        <i class="fa-solid fa-arrow-left"></i> Volver
-    </a>
-    <h2 class="mb-4 text-center" th:text="'Productos de la categoría: ' + ${categoriaNombre}"></h2>
 
-    <div th:if="${#lists.isEmpty(productos)}" class="alert alert-warning text-center">
-        <h4>No se encontraron productos para esta categoría.</h4>
+<div class="container">
+    <h2>Catálogo de Productos</h2>
+    <div class="row" id="catalogo">
+        <div th:each="producto : ${productos}" class="product-card">
+            <a th:href="@{'/productos/ver/' + ${producto.id}}" style="text-decoration:none; color:inherit;">
+                <img th:src="@{'/uploads/' + ${producto.imagen}}" alt="Imagen producto">
+            </a>
+            <div class="card-body">
+                <h5 th:text="${producto.nombre}">Nombre</h5>
+                <p th:text="${producto.descripcion}">Descripción</p>
+                <p class="fw-bold">$<span th:text="${producto.precio}">0</span></p>
+                <button class="btn-add-cart"
+                        th:attr="data-id=${producto.id},data-nombre=${producto.nombre}, data-precio=${producto.precio}">
+                    Agregar al carrito
+                </button>
+            </div>
+        </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4" th:if="${!#lists.isEmpty(productos)}">
-        <div class="col" th:each="producto : ${productos}">
-            <div class="card h-100">
-                <img th:src="@{'/uploads/' + ${producto.imagen}}" class="card-img-top" alt="Imagen producto" width="100" height="100">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${producto.nombre}"></h5>
-                    <span th:text="${producto.marca.nombreMarca}"></span>
-                    <p class="card-text mt-2" th:text="${producto.descripcion ?: 'Sin descripción'}"></p>
-                    <div class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between align-items-center">
-                        <span class="price-badge"
-                               th:text="${producto.precio}">
-                          </span>
-                        <a th:href="@{/carrito/agregar(
-                                 id=${producto.id},
-                                 nombre=${producto.nombre},
-                                 precio=${producto.precio},
-                                 cantidad=1
-                            )}" class="btn btn-sm btn-outline-primary">
-                            <i class="fa-solid fa-cart-shopping"></i> Comprar
-                        </a>
-
-                    </div>
-                </div>
+    <h3>Te recomendamos</h3>
+    <div class="row">
+        <div th:each="producto : ${productos}" class="product-card">
+            <img th:src="@{'/uploads/' + ${producto.imagen}}" alt="Recomendado">
+            <div class="card-body">
+                <h6 th:text="${producto.nombre}">Nombre</h6>
+                <p class="fw-bold">$<span th:text="${producto.precio}">0</span></p>
             </div>
         </div>
     </div>
 </div>
-<script th:src="@{/JS/cambioColor.js}" defer></script>
+
+
+<button class="cart-toggle" onclick="toggleCart()">🛒</button>
+
+
+<div class="floating-cart" id="cart">
+    <h5>Mi Carrito</h5>
+    <ul id="cart-items" class="list-group"></ul>
+    <p><strong>Total: $<span id="cart-total">0</span></strong></p>
+
+    <button type="button" class="checkout-btn" onclick="finalizarCompra()">Finalizar Compra</button>
+</div>
+
 <footer>
     <div class="footer-col">
         <h4>Nuestras Redes</h4>
@@ -604,5 +683,106 @@
 <div class="copyright">
     <p>©2024 HanaServizi. ALL Rights Reserved.</p>
 </div>
+<script>
+    let cart = [];
+
+    // Función para agregar productos al carrito
+    function addToCart(id, name, price) {
+        // Verificar si el producto ya está en el carrito
+        const existingItem = cart.find(item => item.id === id);
+
+        if (existingItem) {
+            existingItem.cantidad += 1;
+        } else {
+            cart.push({
+                id: id,
+                name: name,
+                price: price,
+                cantidad: 1
+            });
+        }
+
+        renderCart();
+        document.getElementById("cart").style.display = "block";
+
+        // Guardar en sessionStorage para persistencia
+        sessionStorage.setItem('carrito', JSON.stringify(cart));
+
+        // Enviar al servidor inmediatamente (usando el endpoint existente)
+        fetch(`/carrito/agregar?id=${id}&nombre=${encodeURIComponent(name)}&precio=${price}&cantidad=1`, {
+            method: 'GET'
+        }).catch(error => console.error('Error:', error));
+    }
+
+    // Función para eliminar productos del carrito
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        renderCart();
+        sessionStorage.setItem('carrito', JSON.stringify(cart));
+    }
+
+    // Función para renderizar el carrito
+    function renderCart() {
+        let items = document.getElementById("cart-items");
+        items.innerHTML = "";
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            let li = document.createElement("li");
+            li.className = "list-group-item";
+            li.innerHTML = `
+                    ${item.name} <span>$${item.price} x ${item.cantidad}</span>
+                    <button class="remove-btn" onclick="removeFromCart(${index})">❌</button>
+                `;
+            items.appendChild(li);
+            total += item.price * item.cantidad;
+        });
+
+        document.getElementById("cart-total").textContent = total.toFixed(2);
+    }
+
+    // Función para mostrar/ocultar el carrito
+    function toggleCart() {
+        let cartBox = document.getElementById("cart");
+        cartBox.style.display = cartBox.style.display === "none" ? "block" : "none";
+    }
+
+    // Función para finalizar la compra
+    function finalizarCompra() {
+        if (cart.length === 0) {
+            alert('El carrito está vacío');
+            return;
+        }
+
+        // Los productos ya están en el servidor, solo redirigir
+        window.location.href = '/carrito';
+
+        // Limpiar el carrito local
+        cart = [];
+        sessionStorage.removeItem('carrito');
+        renderCart();
+    }
+
+    // Agregar event listeners a los botones de agregar al carrito
+    document.querySelectorAll(".btn-add-cart").forEach(btn => {
+        btn.addEventListener("click", () => {
+            let id = btn.getAttribute("data-id");
+            let name = btn.getAttribute("data-nombre");
+            let price = parseFloat(btn.getAttribute("data-precio"));
+            addToCart(id, name, price);
+        });
+    });
+
+    // Cargar carrito desde sessionStorage al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+        const carritoGuardado = sessionStorage.getItem('carrito');
+        if (carritoGuardado) {
+            cart = JSON.parse(carritoGuardado);
+            renderCart();
+        }
+    });
+
+</script>
+<script th:src="@{/JS/cambioColor.js}" defer></script>
 </body>
 </html>

@@ -154,7 +154,7 @@ public class UserController {
 
             VistaUsuarioDTO vistaDto = new VistaUsuarioDTO();
             vistaDto.setId(usuario.getId());
-            vistaDto.setName(usuario.getUsername());
+            vistaDto.setUsername(usuario.getUsername());
             vistaDto.setEmail(usuario.getEmail());
             vistaDto.setPhone(usuario.getPhone());
             vistaDto.setAddress(usuario.getAddress());
@@ -183,7 +183,7 @@ public class UserController {
         User user = userService.buscarPorEmail(principal.getName())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        user.setUsername(usuarioDto.getName());
+        user.setUsername(usuarioDto.getUsername());
         user.setPhone(usuarioDto.getPhone());
         user.setAddress(usuarioDto.getAddress());
 

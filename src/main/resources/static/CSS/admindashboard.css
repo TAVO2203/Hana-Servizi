@@ -3,10 +3,9 @@ body {
     font-family: 'Poppins', sans-serif;
     background: #f4f6f8;
 }
-
 /* Navbar superior */
 .top-navbar {
-    background: rgba(241, 6, 6, 0.8);
+    background: #ff4d4d;
     color: #fff;
     display: flex;
     align-items: center;
@@ -48,7 +47,7 @@ body {
 /* Sidebar */
 .sidebar {
     width: 200px;
-    background: rgba(241, 6, 6, 0.8);
+    background: #ff4d4d;
     color: #fff;
     height: calc(100vh - 60px);
     position: fixed;
@@ -115,7 +114,90 @@ body {
     width: 0;
     overflow: hidden;
 }
+.btn-volver {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 200;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #ff4d4d;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.btn-volver:hover {
+    background: #a93226;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
 
+
+.color-change {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 2.3rem;
+    font-weight: bold;
+    background: linear-gradient(270deg, #ff4d4d, #a93226);
+    background-size: 800% 800%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: coloresSuaves 6s ease infinite;
+}
+
+@keyframes coloresSuaves {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+.container {
+    padding: 2rem;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+    color: #111827;
+    font-size: 24px;
+}
+
+.stats {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat-box {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    width: 250px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.stat-box i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: red;
+}
+
+.stat-box h2 {
+    margin-top: 10px;
+    font-size: 2rem;
+    color: #333;
+}
 /* Contenido principal */
 .dashboard-main {
     margin-left: 200px;
@@ -216,4 +298,173 @@ table tbody td {
 
 table tbody tr:nth-child(even) {
     background: #fafafa;
+}
+.rol-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.rol-select {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background: #f9f9f9;
+    transition: all 0.2s ease-in-out;
+}
+
+.rol-select:hover {
+    border-color: #007bff;
+}
+
+.rol-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.rol-btn:hover {
+    background: #0056b3;
+}
+
+/*Form de correos*/
+/* ===== Formulario de correos masivos ===== */
+.correo-form {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.correo-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.correo-form label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+    font-size: 14px;
+}
+
+.correo-form input[type="text"],
+.correo-form textarea {
+    width: 95%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    resize: none;
+}
+
+.correo-form input[type="text"]:focus,
+.correo-form textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0,123,255,0.3);
+    outline: none;
+}
+
+.correo-form .btn-enviar {
+    padding: 12px;
+    background: #007bff;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.correo-form .btn-enviar:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+./* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+}
+
+.mensaje-success {
+    color: #28a745;
+}
+
+.mensaje-success i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.mensaje-error {
+    color: #dc3545;
+}
+
+.mensaje-error i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+
+/* Responsive */
+@media (max-width: 600px) {
+    .correo-form {
+        max-width: 90%;
+        padding: 20px;
+    }
 }

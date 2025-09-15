@@ -128,6 +128,4 @@ public class CarritoController {
         session.setAttribute("carrito", carrito);
         return "redirect:/carrito";
     }
-
-
 }

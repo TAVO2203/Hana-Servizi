@@ -171,3 +171,109 @@ body {
     font-size: 0.9rem;
     color: #555;
 }
+/* ----------- CARD DE PERFIL ----------- */
+.profile-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 2rem auto;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-header i {
+    font-size: 2.5rem;
+    color: #c0392b;
+}
+
+.profile-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Lista de info */
+.profile-info {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.profile-info li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.profile-info strong {
+    margin-right: 0.5rem;
+    color: #2c3e50;
+}
+
+.profile-info i {
+    margin-right: 10px;
+    color: #c0392b;
+    width: 25px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Acciones */
+.profile-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.profile-actions a,
+.profile-actions button {
+    flex: 1;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: white;
+    transition: background 0.3s ease;
+}
+
+.profile-actions a {
+    background: #2980b9;
+}
+
+.profile-actions a:hover {
+    background: #1f618d;
+}
+
+.profile-actions button {
+    background: #c0392b;
+}
+
+.profile-actions button:hover {
+    background: #a93226;
+}
+
+/* Animación */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
