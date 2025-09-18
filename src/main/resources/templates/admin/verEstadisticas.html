@@ -43,7 +43,7 @@
 
     <!-- Contenido principal que se mueve junto con el sidebar -->
     <div class="dashboard-main">
-        <a th:href="@{/admin/dashboard}" class="btn-volver">
+        <a th:href="@{/admin/dashboard}" class="btn-return">
             <i class="fas fa-arrow-left"></i> Volver
         </a>
         <h2 class="color-change">Tus estadísticas</h2>
@@ -54,9 +54,16 @@
                     <i class="fas fa-users"></i>
                     <p>Total de Usuarios</p>
                     <h2 th:text="${totalUsuarios}">0</h2>
+                    <button class="btn-PDF" onclick="descargarPDF()">Descargar PDF</button>
                 </div>
             </div>
         </div>
+        <canvas id="usuariosChart" width="400" height="200"></canvas>
+
+        <form id="pdfForm" th:action="@{/admin/usuarios/estadisticas/reporte-pdf}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <input type="hidden" name="graficoBase64" id="graficoBase64"/>
+        </form>
     </div>
 </div>
 
@@ -69,6 +76,58 @@
         expanded = !expanded;
         logo.textContent = expanded ? 'Hana Servizi' : 'HS';
     });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script th:inline="javascript">
+    const labels = [[${labels}]];
+    const dataUsuarios = [[${data}]];
+
+    function descargarPDF() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 600;
+        canvas.height = 300;
+        const ctx = canvas.getContext('2d');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Usuarios registrados',
+                    data: dataUsuarios,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: false,
+                animation: {
+                    onComplete: () => {
+                        const chartImage = canvas.toDataURL("image/png");
+                        document.getElementById("graficoBase64").value = chartImage;
+                        document.getElementById("pdfForm").submit();
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Cantidad de usuarios'
+                        },
+                        ticks: {
+                            stepSize: 1 // sube de 1 en 1
+                        },
+                        suggestedMax: 10 // opcional: escala hasta 10 aunque tengas menos
+                    }
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>

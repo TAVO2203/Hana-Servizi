@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -14,24 +13,9 @@ body {
     font-family: "Poppins", monospace;
 }
 
-body.dark-mode {
-    background-color: #121212;
-    color: white;
-}
-
-body.dark-mode .modo-btn {
-    background-color: #222;
-    color: #fff;
-}
-
-body.dark-mode .modo-btn .modo-text {
-    color: #fff;
-}
-
-
-.modo-btn {
+.modo-btn{
     background-color: #fff;
-    color: #000;
+    color: #000 !important;
     padding: 12px 13px;
     border-radius: 10px;
     border: none;
@@ -45,43 +29,132 @@ body.dark-mode .modo-btn .modo-text {
     transition: all 0.3s ease;
 }
 
+.modo-btn .modo-text {
+    color: #000 ;
+}
+
 .modo-btn i {
     font-size: 15px;
     color: #f4c542;
 }
 
+body.dark-mode {
+    background-color: #121212;
+    color: white;
+}
 
-.header {
-    position: fixed;
-    top: 0;
-    width: 100%;
+
+body.dark-mode .modo-btn {
+    background-color: #222;
+    color: #fff ;
+}
+
+body.dark-mode .modo-btn .modo-text {
+    color: #fff ;
+}
+
+body.dark-mode #hero2 h2,
+body.dark-mode #hero2 p{
+    color: black;
+}
+body.dark-mode .sidebar {
+    background-color: #1a1a1a;
+}
+
+
+body.dark-mode .btn-3,
+body.dark-mode .btn-4,
+body.dark-mode .select-btn {
+    background: #333;
+    color: white;
+    border: 1px solid white;
+    text-decoration: none;
+}
+
+
+body.dark-mode .name-project {
+    color: white;
+}
+
+
+body.dark-mode .product-card {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+body.dark-mode .product-title,
+body.dark-mode .product-subtitle,
+body.dark-mode .product-price {
+    color: white;
+}
+
+
+body.dark-mode span,
+body.dark-mode h4,
+body.dark-mode h5 {
+    color: white !important;
+}
+
+body.dark-mode .select-menu span {
+    color: black !important;
+}
+
+body.dark-mode .select-menu h2 {
+    color: white !important;
+}
+
+body.dark-mode .promo-box {
+    background: #292929;
+    color: white;
+}
+
+body.dark-mode .promo-box p {
+    color: white;
+}
+
+body.dark-mode .promo-box button {
+    background: white;
+    color: black;
+}
+
+/* Footer */
+body.dark-mode .footer-col .info p {
+    color: white !important;
+}
+
+/* header start*/
+
+.header{
+    position: relative;
     background-color: #ff0000;
     height: 105px;
     padding: 20px 0;
     box-shadow: 0 5px 15px rgba(0,0,0,0.06);
-    z-index: 1000;
 }
 
-.header_container {
+.header_container{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 40px; /* espacio horizontal */
 }
-
-
-.name-project {
+.name-project{
     color: #FFFFFF;
     font-weight: 500;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    margin-right: 700px;
+.bars{
+    display: none;
 }
 
-.logo img {
+.nav-menu a .active{
+    color: #1a1a1a;
+    background-color: #FFFFFF;
+}
+.logo{
+    display: flex;
+    align-items: center;
+}
+.logo img{
     height: 70px;
     margin-left: 10px;
 }
@@ -93,7 +166,44 @@ body.dark-mode .modo-btn .modo-text {
     gap: 10px;
 }
 
-.nav-menu a.btn-icon {
+/* Bloque logueado */
+.nav-logged {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Contenedor imagen + nombre */
+.usuario-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Imagen perfil */
+.foto-header {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+}
+
+/* Texto usuario */
+.nav-user {
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 0.95em;
+    white-space: nowrap; /* evita que se corte en varias líneas */
+}
+
+.nav-user strong {
+    color: #ffdd00;
+}
+
+/* Botones iconos */
+.nav-logged a.btn-icon,
+.nav-not-logged a.btn-icon {
     color: #ffffff;
     font-size: 1.1em;
     padding: 8px 10px;
@@ -108,10 +218,61 @@ body.dark-mode .modo-btn .modo-text {
     background-color: rgba(255,255,255,0.15);
 }
 
-.nav-menu a.btn-icon:hover {
+.nav-logged a.btn-icon:hover,
+.nav-not-logged a.btn-icon:hover {
     background-color: #7a0c0c;
     box-shadow: 0 0 5px #7a0c0c, 0 0 10px #7a0c0c;
     color: #fff;
+}
+.btn-catalog {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: rgba(255,255,255,0.15);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-catalog:hover {
+    background-color: #7a0c0c;
+    box-shadow: 0 0 5px #7a0c0c, 0 0 10px #7a0c0c;
+    color: #fff;
+}
+
+/* Bloque no logueado */
+.nav-not-logged {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+button{
+    background: red;
+    border: 2px;
+    border-radius: 20px;
+    color: #FFF;
+    text-transform: uppercase;
+    position: relative;
+    border: none;
+    height: 40px;
+    width: 100px;
+    transition: .3s linear;
+    cursor: pointer;
+}
+button:hover{
+    background: white;
+    color: #000;
+}
+
+.btn6:hover{
+    background-color: #FFFFFF;
+    box-shadow: 0 0 5px #FFFFFF, 0 0 25px #FFFFFF,
+    0 0 50px #FFFFFF, 0 0 100px #FFFFFF, 0 0 300px #FFFFFF;
 }
 
 
@@ -127,6 +288,7 @@ body.dark-mode .modo-btn .modo-text {
 .container3 h1{
     margin-bottom: 8px;
 }
+
 .input-field {
     position: relative;
 }
@@ -236,23 +398,27 @@ body.dark-mode .error-message {
 
 /* BOTÓN GUARDAR */
 .btn-field {
-    margin-top: 30px;
+    margin-top: 10px;
+    margin-left: 150px;
 }
 
 .btn-register {
     background: linear-gradient(45deg, #007bff, #0056b3);
     border: none;
     border-radius: 25px;
-    padding: 14px 30px;
+    padding: 25px;
     color: white;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-left: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 
 .btn-register:hover {
     background: linear-gradient(45deg, #0056b3, #007bff);
@@ -271,8 +437,8 @@ body.dark-mode .btn-register:hover {
 
 /* ENLACE VOLVER */
 .existing-account {
-    margin-top: 15px;
-    margin-left: 140px;
+    margin-top: 10px;
+    margin-left: 152px;
 }
 
 .existing-account p {

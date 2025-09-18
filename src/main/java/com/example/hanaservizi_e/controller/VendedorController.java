@@ -287,7 +287,6 @@ public class VendedorController {
             }
         }
 
-        // ✅ Mensaje flash de éxito
         redirectAttributes.addFlashAttribute("success",
                 "El producto '" + producto.getNombre() + "' se agregó correctamente.");
 
@@ -325,15 +324,13 @@ public class VendedorController {
                     .toList();
             productoDto.setTallas(tallasDto);
 
-            // 🔹 Calcular stock total desde tallas
             int stockTotal = tallasDto.stream()
                     .mapToInt(TallasStockDTO::getStock)
                     .sum();
             productoDto.setStock(stockTotal);
         } else {
-            // 🔹 Producto sin tallas → usar stock general
-            productoDto.setTallas(null); // limpiamos explícitamente
             productoDto.setStock(producto.getStock());
+            productoDto.setTallas(new ArrayList<>());
         }
 
 

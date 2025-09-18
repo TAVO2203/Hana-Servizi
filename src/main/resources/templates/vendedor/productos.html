@@ -77,8 +77,8 @@
             <td th:text="${producto.descripcion}">Descripción</td>
             <td th:text="${producto.marca != null ? producto.marca.nombreMarca : 'Sin marca'}"></td>
             <td th:text="${producto.categorias != null ? producto.categorias.nombreCategoria : 'Sin categoría'}"></td>
-            <td>
-                <span th:text="${producto.stock}"></span>
+            <td
+                th:text="${producto.stock}">
             </td>
             <td>
                 <ul class="list-unstyled mb-0" th:if="${producto.tallas != null and !#lists.isEmpty(producto.tallas)}">

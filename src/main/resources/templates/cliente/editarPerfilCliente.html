@@ -11,20 +11,46 @@
 <body>
 <header class="header">
   <div class="header_container">
-    <div class="bars">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
-    </div>
     <div class="logo">
-      <img th:src="@{/img/icon.png}" alt="Logo De HanaServizi" class="logo-img">
+      <img th:src="@{/img/icon.png}" alt="Logo De HanaServizi">
       <h2 class="name-project"> HanaServizi</h2>
     </div>
     <nav class="nav-menu">
-      <a th:href="@{/productos/index}" class="active btn-icon"><strong>Inicio</strong></a>
-      <a th:href="@{/cliente/dashboard}" class="btn-icon"><i class="fa-solid fa-user"></i></a>
-      <a href="#" class="btn-icon"><i class="fa-solid fa-bell"></i></a>
-      <a th:href="@{/carrito}" class="btn-icon"><i class="fa-solid fa-cart-shopping"></i></a>
+
+      <!--not logged-->
+      <div th:unless="${nombreUsuario}" class="nav-not-logged">
+        <a th:href="@{/productos/catalogo}" class="btn-catalog">Catalogo De Productos</a>
+        <a th:href="@{/login}"><button class="btn6"><strong>Iniciar Sesión</strong></button></a>
+        <a th:href="@{/usuarios/registro}"><button class="btn6"><strong>Registrarse</strong></button></a>
+      </div>
+
+      <!-- log in-->
+      <div th:if="${nombreUsuario}" class="nav-logged">
+        <div class="usuario-info">
+                    <span class="nav-user">
+            ¡Hola, <strong th:text="${nombreUsuario}">Usuario</strong>!
+        </span>
+        </div>
+        <a th:if="${rolUsuario == 'ROLE_VENDEDOR'}" th:href="@{/vendedor/dashboard}" class="btn-icon">
+          <i class="fa-solid fa-user"></i>
+        </a>
+
+        <a th:if="${rolUsuario == 'ROLE_CLIENTE'}" th:href="@{/cliente/dashboard}" class="btn-icon">
+          <i class="fa-solid fa-user"></i>
+        </a>
+
+        <a th:if="${rolUsuario == 'ROLE_ADMIN'}" th:href="@{/admin/dashboard}" class="btn-icon">
+          <i class="fa-solid fa-user-shield"></i>
+        </a>
+        <a th:href="@{/productos/catalogo}" class="btn-catalog">Catalogo De Productos</a>
+
+        <a href="#" class="btn-icon"><i class="fa-solid fa-bell"></i></a>
+
+        <a th:href="@{/carrito}" class="btn-icon">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </a>
+      </div>
+
       <button id="toggle-dark-mode" class="modo-btn">
         <i class="fa-solid fa-moon"></i>
         <span class="modo-text">Modo Oscuro</span>
@@ -35,6 +61,7 @@
 
 <div class="container3">
   <h1>Editar Perfil</h1>
+
 
   <div class="form-container">
     <h2>Actualizar Información</h2>
@@ -80,10 +107,6 @@
           <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
           <input type="password" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Confirme la contraseña">
         </div>
-
-
-
-
 
         <div class="btn-field">
           <button type="submit" class="btn-register">Guardar Cambios</button>

@@ -21,7 +21,6 @@
             <li><a th:href="@{/admin/dashboard}"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
             <li><a th:href="@{/admin/usuarios}"><i class="fas fa-users"></i> <span>Usuarios</span></a></li>
             <li class="active"><a th:href="@{/admin/usuarios/nuevo-admin}"><i class="fas fa-user-plus"></i> <span>Agregar Admin</span></a></li>
-            <li>
             <li th:class="'menu-item ' + (${activePage} == 'categorias' ? 'active' : '')">
                 <a th:href="@{/admin/categorias}">
                     <i class="fas fa-tags"></i> <span>Categorías</span>
@@ -35,7 +34,7 @@
     </aside>
 
     <main class="dashboard-main">
-        <a th:href="@{/admin/dashboard}" class="btn-volver">
+        <a th:href="@{/admin/dashboard}" class="btn-revert">
             <i class="fas fa-arrow-left"></i> Volver
         </a>
         <h1>Agregar Nuevo Administrador</h1>

@@ -10,7 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -134,5 +136,33 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmailAndIsActiveFalse(email);
     }
 
+    @Override
+    public Map<String, Long> obtenerUsuariosPorMes() {
+        // Consulta a la base de datos (mes como número y cantidad)
+        List<Object[]> resultados = userRepository.contarUsuariosPorMes();
+
+        // Nombres de meses en español
+        String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+
+        // Usamos LinkedHashMap para mantener el orden
+        Map<String, Long> usuariosPorMes = new LinkedHashMap<>();
+
+        // Inicializamos todos los meses en 0
+        for (String mes : meses) {
+            usuariosPorMes.put(mes, 0L);
+        }
+
+        // Llenamos con los datos de la BD
+        for (Object[] fila : resultados) {
+            Integer numeroMes = ((Number) fila[0]).intValue(); // 1 = Enero, 2 = Febrero...
+            Long cantidad = ((Number) fila[1]).longValue();
+
+            String nombreMes = meses[numeroMes - 1]; // -1 porque el array es 0-based
+            usuariosPorMes.put(nombreMes, cantidad);
+        }
+
+        return usuariosPorMes;
+    }
 
 }

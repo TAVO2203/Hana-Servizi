@@ -2,6 +2,7 @@ package com.example.hanaservizi_e.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.hanaservizi_e.model.User;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
@@ -16,4 +17,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByRolRolname(String rolname);
     List<User> findByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(String username, String email);
     Optional<User> findByEmailAndIsActiveFalse(String email);
+
+    @Query("SELECT FUNCTION('MONTH', u.createdAt) as mes, COUNT(u) as cantidad " +
+            "FROM User u GROUP BY FUNCTION('MONTH', u.createdAt) ORDER BY mes")
+    List<Object[]> contarUsuariosPorMes();
 }

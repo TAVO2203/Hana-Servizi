@@ -65,6 +65,16 @@ public class ClienteController {
         perfilDto.setPhone(usuario.getPhone());
         perfilDto.setAddress(usuario.getAddress());
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        if (email != null && !email.equals("anonymousUser")) {
+            User user = userService.buscarPorEmail(email).orElse(null);
+            if (user != null) {
+                model.addAttribute("nombreUsuario", user.getUsername());
+                model.addAttribute("rolUsuario", user.getRol().getRolname());
+            }
+        }
         model.addAttribute("perfilDto", perfilDto);
         model.addAttribute("usuario", usuario);
 

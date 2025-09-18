@@ -12,6 +12,7 @@
 <header class="top-navbar">
   <div id="logoToggle" class="logo">HS</div>
   <div class="navbar-title">Panel de Administrador</div>
+  <div></div>
 </header>
 
 <div class="wrapper">
@@ -45,7 +46,9 @@
   <!-- Main content -->
   <main class="dashboard-main">
     <h1>Gestión de Categorías</h1>
-
+      <a th:href="@{/admin/dashboard}" class="btn-return">
+        <i class="fas fa-arrow-left"></i> Volver
+      </a>
     <!-- Formulario para agregar categoría -->
     <form th:action="@{/admin/categorias/guardar}" th:object="${categoriaNueva}" method="post" class="filtro-form" style="margin-bottom: 20px;">
       <input type="text" th:field="*{nombreCategoria}" placeholder="Nueva categoría" required style="flex:1;">

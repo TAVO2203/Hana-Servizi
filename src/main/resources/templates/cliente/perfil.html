@@ -7,6 +7,35 @@
     <link rel="icon" type="image" th:href="@{/img/icon.png}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        .btn-volver {
+            background: linear-gradient(45deg, #FF5454, #E01212);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 25px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+
+        .btn-volver i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .btn-volver:hover {
+            background: linear-gradient(45deg, #E01212, #FF5454);
+            transform: translateY(-2px);
+        }
+
         .profile-card {
             background: #fff;
             border-radius: 12px;
@@ -174,6 +203,12 @@
     </aside>
 
     <main class="dashboard-main">
+        <div class="btn-field">
+            <a th:href="@{/cliente/dashboard}" class="btn-volver">
+                <i class="fa-solid fa-arrow-left"></i> Volver
+            </a>
+        </div>
+
         <div class="profile-card">
             <div class="profile-header">
                 <i class="fas fa-user-circle"></i>

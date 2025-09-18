@@ -5,10 +5,14 @@ import com.example.hanaservizi_e.model.User;
 import com.example.hanaservizi_e.model.Rol;
 import com.example.hanaservizi_e.repository.UserRepository;
 import com.example.hanaservizi_e.service.EmailService;
+import com.example.hanaservizi_e.service.NotificacionService;
 import com.example.hanaservizi_e.service.ReportePdfService;
 import com.example.hanaservizi_e.service.UserService;
 import com.example.hanaservizi_e.repository.RolRepository;
 
+import com.lowagie.text.Document;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -143,7 +148,7 @@ public class AdminUserController {
         }
     }
 
-    @PostMapping("/admin/usuarios/cambiar-rol/{id}")
+    @PostMapping("/cambiar-rol/{id}")
     public String cambiarRol(@PathVariable Long id,
                              @RequestParam("nuevoRol") String nuevoRol) {
         User usuario = userService.buscarPorId(id)
@@ -179,17 +184,57 @@ public class AdminUserController {
 
     @GetMapping("/estadisticas")
     public String verEstadisticas(Model model) {
-
         long totalUsuarios = userRepository.count();
+
+        // 🔹 traer los usuarios agrupados por mes
+        Map<String, Long> usuariosPorMes = userService.obtenerUsuariosPorMes();
+
+        // asegurar que salgan los 12 meses, aunque estén en 0
+        String[] meses = {"Enero","Febrero","Marzo","Abril","Mayo","Junio",
+                "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
+
+        for (String mes : meses) {
+            usuariosPorMes.putIfAbsent(mes, 0L);
+        }
 
         model.addAttribute("activePage", "dashboard");
         model.addAttribute("totalUsuarios", totalUsuarios);
-
-
+        model.addAttribute("labels", usuariosPorMes.keySet()); // meses
+        model.addAttribute("data", usuariosPorMes.values());   // cantidades
 
         return "admin/verEstadisticas";
-
     }
+
+    @PostMapping("/estadisticas/reporte-pdf")
+    public void descargarReporteEstadisticas(
+            @RequestParam("graficoBase64") String graficoBase64,
+            HttpServletResponse response) {
+        try {
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "attachment; filename=estadisticas.pdf");
+
+            Document document = new Document();
+            PdfWriter.getInstance(document, response.getOutputStream());
+            document.open();
+
+            document.add(new Paragraph("📊 Reporte de Estadísticas"));
+            document.add(new Paragraph("Generado: " + java.time.LocalDateTime.now()));
+            document.add(new Paragraph(" "));
+
+            // Decodificar la imagen Base64
+            String base64Image = graficoBase64.split(",")[1];
+            byte[] imageBytes = java.util.Base64.getDecoder().decode(base64Image);
+            com.lowagie.text.Image image = com.lowagie.text.Image.getInstance(imageBytes);
+
+            image.scaleToFit(500, 300);
+            document.add(image);
+
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @GetMapping("/mensajes-masivos")
     public String mostrarFormularioMensajes(Authentication authentication, Model model) {
@@ -198,30 +243,38 @@ public class AdminUserController {
 
         return "admin/correosMasivos";
     }
+    @Autowired
+    private NotificacionService notificacionService;
+
     @PostMapping("/enviar-correo-masivo")
     public String enviarCorreoMasivo(
             @RequestParam("asunto") String asunto,
             @RequestParam("mensaje") String mensaje,
             Model model,
-            Authentication authentication, RedirectAttributes redirectAttributes) {
+            Authentication authentication,
+            RedirectAttributes redirectAttributes) {
 
-        // AGREGAR ESTA LÍNEA
         agregarAdminAlModelo(authentication, model);
 
         try {
-            emailService.enviarCorreoATodos(asunto, mensaje);
-            redirectAttributes.addFlashAttribute("success", "✅ Correos enviados correctamente.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "❌ No se pudieron enviar los correos: " + e.getMessage());
-        }
+            List<User> usuarios = userService.listarTodos();
 
-        model.addAttribute("activePage", "dashboard");
-        model.addAttribute("totalUsuarios", userService.listarTodos().size());
-        model.addAttribute("totalClientes", userService.listarPorRol("ROLE_CLIENTE").size());
-        model.addAttribute("totalVendedores", userService.listarPorRol("ROLE_VENDEDOR").size());
+            // enviar correos
+            emailService.enviarCorreoATodos(asunto, mensaje);
+
+            // registrar notificaciones
+            for (User usuario : usuarios) {
+                notificacionService.crearNotificacion(usuario, asunto, mensaje);
+            }
+
+            redirectAttributes.addFlashAttribute("success", "✅ Correos enviados y notificaciones creadas.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "❌ Error: " + e.getMessage());
+        }
 
         return "admin/correosMasivos";
     }
+
 
 }
 

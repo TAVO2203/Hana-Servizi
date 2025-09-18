@@ -330,7 +330,10 @@
 
         .btn-back {
             margin-top: 30px;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
             text-decoration: none;
             font-weight: 600;
             color: #007bff;
@@ -338,7 +341,7 @@
         }
 
         .btn-back:hover {
-            text-decoration: underline;
+            text-decoration: none;
             color: #0056b3;
         }
 
@@ -516,12 +519,13 @@
             <span class="discount">20% OFF</span>
         </div>
 
-        <p class="detail"><strong>Descripción:</strong> <span th:text="${producto.descripcion}">Lorem ipsum dolor sit amet.</span></p>
-        <p class="detail"><strong>Marca:</strong> <span th:text="${producto.marca.nombreMarca}">Marca Ejemplo</span></p>
-        <p class="detail"><strong>Categoría:</strong> <span th:text="${producto.categorias.nombreCategoria}">Categoría</span></p>
-        <p class="detail"><strong>Fecha de agregado:</strong> <span th:text="${producto.fechaAgregacion}">2024-06-20</span></p>
-        <p class="detail"><strong>Envío:</strong> Gratis • Entrega estimada: 3-5 días</p>
-        <p class="detail"><strong>Stock:</strong> Disponible</p>
+        <p class="detail"><strong>Descripción: </strong> <span th:text="${producto.descripcion}">Lorem ipsum dolor sit amet.</span></p>
+        <p class="detail"><strong>Marca: </strong> <span th:text="${producto.marca.nombreMarca}">Marca Ejemplo</span></p>
+        <p class="detail"><strong>Categoría: </strong> <span th:text="${producto.categorias.nombreCategoria}">Categoría</span></p>
+        <p class="detail"><strong>Fecha de agregado: </strong> <span th:text="${producto.fechaAgregacion}">2024-06-20</span></p>
+        <p class="detail"><strong>Estado del producto: </strong><span th:text="${producto.estadoProducto}"></span></p>
+        <p class="detail"><strong>Envío: </strong> Gratis • Entrega estimada: 3-5 días</p>
+        <p class="detail"><strong>Stock: </strong><span th:text="${producto.stock}"></span></p>
 
 
         <div class="product-actions">

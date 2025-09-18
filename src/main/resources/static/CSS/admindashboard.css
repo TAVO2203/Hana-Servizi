@@ -114,7 +114,7 @@ body {
     width: 0;
     overflow: hidden;
 }
-.btn-volver {
+.btn-return{
     position: fixed;
     top: 70px;
     right: 20px;
@@ -132,7 +132,7 @@ body {
     transition: all 0.3s ease;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
-.btn-volver:hover {
+.btn-return:hover {
     background: #a93226;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -197,6 +197,24 @@ h2 {
     margin-top: 10px;
     font-size: 2rem;
     color: #333;
+}
+.btn-PDF{
+    display: flex;
+    padding: 7px;
+    border: transparent;
+    margin-left: 65px;
+    border-radius: 7px;
+    background-color: #FF6161;
+    font-weight: 700;
+    font-size: 16px;
+    color: #1a1a1a;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+.btn-PDF:hover{
+    transform: translateY(-5px);
+    background-color: #E83210;
+    color: white;
 }
 /* Contenido principal */
 .dashboard-main {

@@ -14,16 +14,20 @@
 <body>
 <header class="header">
     <div class="header_container">
-        <div class="bars">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-        </div>
         <div class="logo">
             <img th:src="@{/img/icon.png}" alt="Logo De HanaServizi">
             <h2 class="name-project"> HanaServizi</h2>
         </div>
         <nav class="nav-menu">
+
+            <!--not logged-->
+            <div th:unless="${nombreUsuario}" class="nav-not-logged">
+                <a th:href="@{/productos/catalogo}" class="btn-catalog">Catalogo De Productos</a>
+                <a th:href="@{/login}"><button class="btn6"><strong>Iniciar Sesión</strong></button></a>
+                <a th:href="@{/usuarios/registro}"><button class="btn6"><strong>Registrarse</strong></button></a>
+            </div>
+
+            <!-- log in-->
             <div th:if="${nombreUsuario}" class="nav-logged">
                 <div class="usuario-info">
                     <span class="nav-user">
@@ -42,18 +46,18 @@
                     <i class="fa-solid fa-user-shield"></i>
                 </a>
                 <a th:href="@{/productos/catalogo}" class="btn-catalog">Catalogo De Productos</a>
-                <a href="#" class="btn-icon"><i class="fa-solid fa-bell"></i></a>
+
+                <a th:href="@{/productos/notificaciones}" class="btn-icon" style="position:relative;">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="badge" th:if="${notificacionesNoLeidas != null and notificacionesNoLeidas.size() > 0}"
+                          th:text="${notificacionesNoLeidas.size()}"
+                          style="position:absolute; top:-6px; right:-6px; background:#2196f3; color:#fff; font-size:12px; border-radius:50%; padding:3px 6px;">
+                    </span>
+                </a>
+
                 <a th:href="@{/carrito}" class="btn-icon">
                     <i class="fa-solid fa-cart-shopping"></i>
                 </a>
-            </div>
-
-            <div th:unless="${nombreUsuario}" class="nav-not-logged">
-                <a href="#" class="btn-icon"><i class="fa-solid fa-user"></i></a>
-                <a href="#" class="btn-icon"><i class="fa-solid fa-bell"></i></a>
-                <a th:href="@{/productos/catalogo}" class="btn-catalog">Catalogo De Productos</a>
-                <a th:href="@{/login}"><button class="btn6"><strong>Iniciar Sesión</strong></button></a>
-                <a th:href="@{/usuarios/registro}"><button class="btn6"><strong>Registrarse</strong></button></a>
             </div>
 
             <button id="toggle-dark-mode" class="modo-btn">
@@ -63,14 +67,15 @@
         </nav>
     </div>
 </header>
+
 <form th:action="@{/filtros}" method="get" class="search-overlay">
     <input type="text" name="search" placeholder="Buscar Productos">
     <button class="btn1" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
 </form>
 
-
 <div th:replace="fragments/carousel :: carrusel"></div>
 <script th:src="@{/JS/script.js}" defer></script>
+
 <!-- barra lateral -->
 <div class="sidebar">
     <div class="select-menu">
@@ -96,8 +101,8 @@
         <button>Ver más</button>
     </div>
 </div>
-
 <!-- end barra lateral-->
+
 <section id="product-1">
     <div class="productos2">
         <div class="pro" th:each="prod : ${productos}">

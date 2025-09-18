@@ -67,6 +67,17 @@ public class CarouselController {
     @GetMapping("/productos/ver/{id}")
     public String verProducto(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productoRepository.findById(Math.toIntExact(id));
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
+            String email = auth.getName();
+            User user = userService.buscarPorEmail(email).orElse(null);
+            if (user != null) {
+                model.addAttribute("nombreUsuario", user.getUsername());
+                model.addAttribute("rolUsuario", user.getRol().getRolname());
+            }
+        }
         if (producto.isPresent()) {
             model.addAttribute("producto", producto.get());
             return "detalle"; // La vista HTML que muestra los detalles

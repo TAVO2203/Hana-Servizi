@@ -1,12 +1,14 @@
 package com.example.hanaservizi_e.controller;
 
 import com.example.hanaservizi_e.dto.ProductoDto;
+import com.example.hanaservizi_e.model.Notificacion;
 import com.example.hanaservizi_e.model.User;
 import com.example.hanaservizi_e.repository.CategoriaRepository;
 import com.example.hanaservizi_e.repository.MarcaRepository;
 import com.example.hanaservizi_e.repository.ProductoRepository;
 import com.example.hanaservizi_e.model.Categorias;
 import com.example.hanaservizi_e.model.Producto;
+import com.example.hanaservizi_e.service.NotificacionService;
 import com.example.hanaservizi_e.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +37,8 @@ public class ProductoController {
     private CategoriaRepository categoriaRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private NotificacionService notificacionService;
 
     @GetMapping("/index")
     public String mostrarProductosAleatorios(Model model) {
@@ -70,24 +75,6 @@ public class ProductoController {
         return "catalogo";
     }
 
-    @GetMapping("/register")
-    public String create(Model model) {
-        model.addAttribute("productoDto", new ProductoDto());
-        model.addAttribute("categorias", categoriaRepository.findAll());
-        return "registerProducto";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id){
-        Producto p = productoRepository.findById(id).orElse(null);
-        if(p != null){
-            productoRepository.delete(p);
-            logg.info("Objeto eliminado: {}", p);
-        } else {
-            logg.warn("No se encontró producto con id: {}", id);
-        }
-        return "redirect:/productos";
-    }
 
     @GetMapping("/categoria/{id}")
     public String ProductosPorCategoria(@PathVariable("id") Long id, Model model) {
@@ -103,6 +90,38 @@ public class ProductoController {
 
         return "FiltrosCategorias";
     }
+    @GetMapping("/notificaciones")
+    public String verNotificaciones(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+            User usuario = userService.buscarPorEmail(auth.getName()).orElse(null);
+
+            if (usuario != null) {
+                List<Notificacion> notificaciones = notificacionService.obtenerPorUsuario(usuario);
+                model.addAttribute("notificaciones", notificaciones);
+            }
+        }
+
+        agregarDatosUsuario(model);
+        return "Notificaciones";
+    }
+
+
+
+    @PostMapping("/notificaciones/marcar-leida/{id}")
+    public String marcarNotificacionLeida(@PathVariable Long id, Authentication authentication, RedirectAttributes ra) {
+
+        notificacionService.marcarComoLeida(id);
+        return "redirect:/productos/notificaciones";
+    }
+
+    @PostMapping("/notificaciones/eliminar/{id}")
+    public String eliminarNotificacion(@PathVariable Long id, Authentication authentication) {
+        notificacionService.eliminarPorId(id);
+        return "redirect:/productos/notificaciones";
+    }
+
 
     private void agregarDatosUsuario(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -113,6 +132,19 @@ public class ProductoController {
             if (user != null) {
                 model.addAttribute("nombreUsuario", user.getUsername());
                 model.addAttribute("rolUsuario", user.getRol().getRolname());
+            }
+        }
+    }
+    @ModelAttribute
+    public void agregarNotificacionesNoLeidas(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+            User usuario = userService.buscarPorEmail(auth.getName()).orElse(null);
+
+            if (usuario != null) {
+                List<Notificacion> noLeidas = notificacionService.obtenerNoLeidas(usuario);
+                model.addAttribute("notificacionesNoLeidas", noLeidas);
             }
         }
     }

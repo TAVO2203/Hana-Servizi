@@ -7,6 +7,7 @@ import com.example.hanaservizi_e.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserService {
@@ -41,9 +42,7 @@ public interface UserService {
 
     Optional<User> buscarInactivoPorEmail(String email);
 
-
-
-
+    Map<String, Long> obtenerUsuariosPorMes();
 
 }
 
