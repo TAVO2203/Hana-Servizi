@@ -56,13 +56,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/usuarios/registro", "/admin/usuarios/enviar-correo-masivo", "/admin/usuarios/mensajes-masivos")
+                        .ignoringRequestMatchers("/usuarios/registro", "/admin/usuarios/enviar-correo-masivo", "/admin/usuarios/mensajes-masivos", "/api/ws/users/**", "/api/dashboard/**")
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/", "/login", "/usuarios/registro", "/usuarios/registro/**",
                                 "/CSS/**", "/JS/**", "/img/**", "/fondos/**", "/error", "/redireccionar-por-rol", "/productos/**",
-                                "/uploads/**", "/filtros", "/api/chat/**", "/cuenta-desactivada", "/Notificaciones/**"
+                                "/uploads/**", "/filtros", "/api/chat/**", "/cuenta-desactivada", "/Notificaciones/**","/api/ws/users/**", "/api/dashboard/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/vendedor/**").hasAnyRole("VENDEDOR", "ADMIN")

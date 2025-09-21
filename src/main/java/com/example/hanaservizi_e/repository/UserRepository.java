@@ -21,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT FUNCTION('MONTH', u.createdAt) as mes, COUNT(u) as cantidad " +
             "FROM User u GROUP BY FUNCTION('MONTH', u.createdAt) ORDER BY mes")
     List<Object[]> contarUsuariosPorMes();
+
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
 }
