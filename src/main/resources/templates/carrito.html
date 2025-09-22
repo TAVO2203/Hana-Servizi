@@ -767,7 +767,7 @@
         <span class="warning-text">La disponibilidad y el precio de los artículos no están garantizados hasta que se finalice el pago.</span>
         <span class="warning-text">No se te cobrará hasta que revises este pedido en la página siguiente</span>
 
-        <button id="place-order" class="btn btn-success">Realizar Pedido</button>
+        <a th:href="@{/pago(total=${#numbers.formatInteger(totalFinal,0)})}" class="btn btn-success">Realizar Pedido</a>
 
         <div class="security-icons">
             <i class="fas fa-lock"></i> Pago seguro &nbsp; | &nbsp;

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Pago - HanaServizi</title>
+    <link rel="icon" type="image" th:href="@{/img/icon.png}"/>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous"/>
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- Si usas un CSS/SCSS global, puedes quitar este <style> y usar tu archivo -->
+    <style>
+        /* --------- estilos reciclados / resumidos (usa tu scss si prefieres) --------- */
+        *{margin:0;padding:0;box-sizing:border-box;line-height:1.2}
+        body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#fff;color:#333}
+        body.dark-mode{background:#121212;color:#fff}
+
+        /* header */
+        .header{background:#ff0000;height:105px;padding:20px 0;box-shadow:0 5px 15px rgba(0,0,0,0.06)}
+        .header_container{display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:auto;padding:0 15px}
+        .logo{display:flex;align-items:center;gap:12px}
+        .logo img{height:70px}
+        .name-project{color:#fff;font-weight:500}
+        .nav-menu{display:flex;align-items:center;gap:10px}
+        .btn6{background:#fff;color:#000;border-radius:20px;padding:8px 12px;border:none;cursor:pointer}
+        .modo-btn{background:#fff;color:#000;padding:8px 12px;border-radius:10px;border:none;cursor:pointer;display:flex;gap:8px;align-items:center}
+
+        /* layout pago */
+        .payment-container{max-width:1200px;margin:30px auto;display:flex;gap:20px;padding:0 15px;flex-wrap:wrap}
+        .payment-form{flex:1 1 60%;background:#f9f9f9;padding:20px;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+        .payment-summary{flex:1 1 35%;background:#fff7f9;padding:20px;border:2px solid #e60023;border-radius:12px;box-shadow:0 2px 8px rgba(230,0,35,0.08)}
+        h2{color:#e60023;margin-bottom:12px}
+        .checkout-steps{display:flex;justify-content:space-between;margin:12px 0;padding:8px;background:#fff0f3;border-radius:8px;color:#999}
+        .step.active{color:#e60023;font-weight:700}
+        #payment-element, #card-element{padding:12px;border:1px solid #ddd;border-radius:8px;background:#fff}
+        .btn{background:#e60023;color:#fff;padding:10px 16px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
+        .btn-success{background:#28a745}
+        #payment-message{margin-top:12px;font-weight:600}
+        .security-icons{margin-top:10px;color:#666;font-size:14px;display:flex;gap:10px;align-items:center}
+        footer{display:flex;flex-wrap:wrap;background:#000;padding:25px 0;margin-top:30px;color:#fff}
+        .footer-col{width:25%;padding:0 15px}
+        .footer-col h4{margin-bottom:18px}
+        .copyright{width:100%;background:#000;padding:10px 0;text-align:center;color:#f8f8f8;border-top:1px solid rgba(255,255,255,0.03)}
+        @media (max-width:900px){
+            .payment-container{flex-direction:column}
+            .footer-col{width:50%}
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============ HEADER (reciclado) ============ -->
+<header class="header">
+    <div class="header_container">
+        <div class="logo">
+            <img th:src="@{/img/icon.png}" alt="Logo HanaServizi"/>
+            <h2 class="name-project">HanaServizi</h2>
+        </div>
+
+        <nav class="nav-menu">
+            <a th:href="@{/productos/index}" class="btn-icon"><strong>Inicio</strong></a>
+
+            <a th:if="${nombreUsuario != null}"
+               th:href="${rolUsuario == 'ROLE_VENDEDOR'} ? @{/vendedor/dashboard} : (${rolUsuario == 'ROLE_ADMIN'} ? @{/admin/dashboard} : @{/cliente/dashboard})"
+               class="btn-icon">
+                <i class="fa-solid fa-user"></i> <span th:text="${nombreUsuario}"></span>
+            </a>
+
+            <a th:href="@{/carrito}" class="btn-icon"><i class="fa-solid fa-cart-shopping"></i></a>
+
+            <a th:if="${nombreUsuario == null}" th:href="@{/login}"><button class="btn6">Iniciar Sesión</button></a>
+            <a th:if="${nombreUsuario == null}" th:href="@{/register}"><button class="btn6">Registrarse</button></a>
+
+            <button id="toggle-dark-mode" class="modo-btn"><i class="fa-solid fa-moon"></i><span class="modo-text">Modo Oscuro</span></button>
+        </nav>
+    </div>
+</header>
+
+<!-- ============ CONTENIDO PRINCIPAL ============ -->
+<div class="payment-container">
+
+    <!-- FORMA DE PAGO (izquierda) -->
+    <div class="payment-form">
+        <div class="checkout-steps" aria-hidden="true">
+            <span class="step">1. Carrito</span>
+            <span class="step active">2. Pago</span>
+            <span class="step">3. Confirmación</span>
+        </div>
+
+        <h2>Completar Pago</h2>
+        <p>Por favor ingresa los datos de tu tarjeta. Todas las transacciones están aseguradas y cumplen PCI DSS.</p>
+
+        <!-- Mostramos el total para confirmación visual -->
+        <p style="margin-top:10px;"><strong>Total a pagar:</strong>
+            <span style="color:#27ae60;font-size:18px;">$<span th:text="${#numbers.formatDecimal(totalFinal,1,'COMMA',2,'POINT')}"></span> COP</span>
+        </p>
+
+        <!-- FORMULARIO DE PAGO -->
+        <form id="payment-form" style="margin-top:14px;">
+            <label for="cardholder-name" style="display:block;margin-bottom:6px;font-weight:600;">Nombre en la tarjeta</label>
+            <input id="cardholder-name" name="cardholder-name" type="text" placeholder="Nombre como aparece en la tarjeta" required
+                   style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-bottom:12px;"/>
+
+            <!-- Aquí montamos Stripe Elements -->
+            <label for="card-element" style="display:block;margin-bottom:6px;font-weight:600;">Datos de la tarjeta</label>
+            <div id="card-element"></div>
+
+            <!-- Mensaje de error/estado -->
+            <div id="card-errors" role="alert" style="color:red;margin-top:8px;min-height:18px;"></div>
+
+            <button id="pay-btn" class="btn btn-success" style="margin-top:16px;">Pagar Ahora</button>
+
+            <div id="payment-message" aria-live="polite"></div>
+        </form>
+    </div>
+
+    <!-- RESUMEN (derecha) -->
+    <aside class="payment-summary">
+        <h2>Resumen del Pedido</h2>
+        <div class="totals">
+            <p><strong>Total artículos:</strong> $<span th:text="${#numbers.formatDecimal(subtotal,1,'COMMA',2,'POINT')}"></span></p>
+            <p><strong>Descuento:</strong> -$<span th:text="${#numbers.formatDecimal(descuentoAplicado,1,'COMMA',2,'POINT')}"></span></p>
+            <p><strong>Total final:</strong> <span style="color:#27ae60;font-size:18px;">$<span th:text="${#numbers.formatDecimal(totalFinal,1,'COMMA',2,'POINT')}"></span> COP</span></p>
+        </div>
+
+        <div class="security-icons">
+            <i class="fas fa-lock"></i> Pago seguro &nbsp; | &nbsp; <i class="fas fa-shield-alt"></i> Protección al comprador
+        </div>
+
+        <div class="payment-info" style="margin-top:14px">
+            <h3 style="margin-bottom:8px;">Información</h3>
+            <p style="font-size:14px;color:#444;">No se te cobrará hasta que completes el pago. Revisa el monto antes de continuar.</p>
+        </div>
+    </aside>
+</div>
+
+<!-- ============ FOOTER (reciclado) ============ -->
+<footer>
+    <div class="footer-col">
+        <h4>Nuestras Redes</h4>
+        <div class="links">
+            <a href="#" style="color:#fff;margin-right:8px;"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" style="color:#fff;margin-right:8px;"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" style="color:#fff;"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+    </div>
+
+    <div class="footer-col">
+        <h4>Acerca De Hana Servizi</h4>
+        <ul>
+            <li><a href="#" style="color:#fff">Sobre Nosotros</a></li>
+            <li><a href="#" style="color:#fff">Nuestras Políticas</a></li>
+            <li><a href="#" style="color:#fff">Términos De Servicio</a></li>
+            <li><a href="#" style="color:#fff">Políticas De Privacidad</a></li>
+            <li><a href="#" style="color:#fff">Políticas De Reembolsos</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul class="info" style="list-style:none;padding-left:0">
+            <li><span style="margin-right:6px"><i class="fa-solid fa-phone"></i></span><span>+57 123 4567 890</span></li>
+            <li style="margin-top:8px;"><span style="margin-right:6px"><i class="fa-solid fa-envelope"></i></span><span>hanaservizi@gmail.com</span></li>
+        </ul>
+    </div>
+
+    <div class="footer-col">
+        <h4>Métodos De Pago</h4>
+        <ul style="list-style:none;padding-left:0">
+            <li><img th:src="@{/img/pay.png}" alt="pay" style="max-width:120px"/></li>
+            <li style="margin-top:8px;"><img class="img3" th:src="@{/img/Nequi.webp}" alt="Nequi" style="width:32px"/></li>
+        </ul>
+    </div>
+</footer>
+<div class="copyright"><p>©2024 HanaServizi. ALL Rights Reserved.</p></div>
+
+<!-- ============ SCRIPTS ============ -->
+<script th:inline="javascript">
+    /* <![CDATA[ */
+        // Variables Thymeleaf inyectadas al JS
+        const stripePublicKey = /*[[${stripePublicKey}]]*/ 'pk_test_xxx_reemplaza';
+        const totalFinal = /*[[${totalFinal}]]*/ 0; // en pesos COP, integer/decimal
+
+        // CSRF (si tu app requiere token, lo tomamos si existe)
+        const csrfMeta = document.querySelector('meta[name="_csrf"]');
+        const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : null;
+    /* ]]> */
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Inicializar Stripe
+        const stripe = Stripe(stripePublicKey);
+        const elements = stripe.elements();
+
+        // Usaremos un solo "card" element (numero + expiry + cvc)
+        const style = {
+            base: {
+                fontSize: '16px',
+                color: '#32325d',
+                '::placeholder': { color: '#aab7c4' }
+            },
+            invalid: {
+                color: '#e53935'
+            }
+        };
+        const card = elements.create('card', { style: style });
+        card.mount('#card-element');
+
+        const cardErrors = document.getElementById('card-errors');
+        card.on('change', function (event) {
+            if (event.error) {
+                cardErrors.textContent = event.error.message;
+            } else {
+                cardErrors.textContent = '';
+            }
+        });
+
+        const form = document.getElementById('payment-form');
+        const payBtn = document.getElementById('pay-btn');
+        const messageEl = document.getElementById('payment-message');
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            // Desactivar botón
+            payBtn.disabled = true;
+            payBtn.textContent = 'Procesando...';
+
+            messageEl.textContent = '';
+
+            // Obtener nombre en tarjeta
+            const cardholderName = document.getElementById('cardholder-name').value || 'Cliente';
+
+            // 1) Crear PaymentIntent en backend
+            try {
+                const body = {
+                    description: 'Pago en HanaServizi',
+                    amount: Math.round(Number(totalFinal)), // Para COP: enviar en pesos (no multiplicar por 100)
+                    currency: 'cop'
+                };
+
+                const headers = { 'Content-Type': 'application/json' };
+                if (csrfToken) headers['X-CSRF-TOKEN'] = csrfToken;
+
+                const resp = await fetch('/stripe/paymentintent', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(body)
+                });
+
+                if (!resp.ok) {
+                    const txt = await resp.text();
+                    throw new Error('Error creando PaymentIntent: ' + txt);
+                }
+
+                const paymentIntentObj = await resp.json(); // PaymentIntent JSON desde backend
+                const clientSecret = paymentIntentObj.client_secret || paymentIntentObj['client_secret'];
+
+                if (!clientSecret) throw new Error('No se recibió client_secret desde el backend');
+
+                // 2) Confirmar con Stripe (tarjeta)
+                const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: card,
+                        billing_details: {
+                            name: cardholderName
+                        }
+                    }
+                });
+
+                if (error) {
+                    // Error de validación (tarjeta inválida, expiry, cvc, etc.)
+                    messageEl.textContent = '❌ ' + error.message;
+                    messageEl.style.color = 'red';
+                    payBtn.disabled = false;
+                    payBtn.textContent = 'Pagar Ahora';
+                    return;
+                }
+
+                // Si llegamos aquí, el intento fue procesado (status puede ser 'succeeded' o requerir acciones)
+                if (paymentIntent && paymentIntent.status === 'succeeded') {
+                    messageEl.textContent = '✅ Pago exitoso. Redirigiendo...';
+                    messageEl.style.color = 'green';
+
+                    // Opcional: llamar a tu endpoint confirm si quieres guardar en BD (si existe)
+                    // Ejemplo si tu controlador tiene /stripe/confirm/{id}/{userId}
+                    // fetch(`/stripe/confirm/${paymentIntent.id}/${usuarioId}`, { method: 'POST' });
+
+                    setTimeout(() => window.location.href = '/confirmacion', 1100);
+                } else {
+                    // Otros estados (requires_action, etc.) -> mostrar info
+                    messageEl.textContent = 'Estado del pago: ' + (paymentIntent ? paymentIntent.status : 'unknown');
+                    messageEl.style.color = 'orange';
+                    payBtn.disabled = false;
+                    payBtn.textContent = 'Pagar Ahora';
+                }
+
+            } catch (err) {
+                console.error(err);
+                messageEl.textContent = '⚠️ ' + (err.message || 'Error al procesar el pago.');
+                messageEl.style.color = 'red';
+                payBtn.disabled = false;
+                payBtn.textContent = 'Pagar Ahora';
+            }
+        });
+
+        // Toggle dark mode (usa el mismo botón del header)
+        const toggle = document.getElementById('toggle-dark-mode');
+        if (toggle) {
+            toggle.addEventListener('click', () => document.body.classList.toggle('dark-mode'));
+        }
+    });
+</script>
+
+<!-- si tienes script para cambio de colores reutilízalo -->
+<script th:src="@{/JS/cambioColor.js}" defer></script>
+</body>
+</html>
+
