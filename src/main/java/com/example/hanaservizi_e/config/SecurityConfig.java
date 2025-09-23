@@ -23,10 +23,10 @@ public class SecurityConfig {
 
     public SecurityConfig(CustomUserDetailsService customUserDetailsService,
                           CustomOAuth2UserService oAuth2UserService,
-                          CustomOidcUserService oidcUserService) { // NUEVO
+                          CustomOidcUserService oidcUserService) {
         this.customUserDetailsService = customUserDetailsService;
         this.oAuth2UserService = oAuth2UserService;
-        this.oidcUserService = oidcUserService; // NUEVO
+        this.oidcUserService = oidcUserService;
     }
 
     @Bean
@@ -34,7 +34,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Configuramos el AuthenticationManager usando AuthenticationConfiguration
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
@@ -56,13 +56,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/usuarios/registro", "/admin/usuarios/enviar-correo-masivo", "/admin/usuarios/mensajes-masivos", "/api/ws/users/**", "/api/dashboard/**")
+                        .ignoringRequestMatchers("/usuarios/registro", "/admin/usuarios/enviar-correo-masivo", "/admin/usuarios/mensajes-masivos", "/api/ws/users/**", "/api/dashboard/**", "/stripe/**")
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/", "/login", "/usuarios/registro", "/usuarios/registro/**",
                                 "/CSS/**", "/JS/**", "/img/**", "/fondos/**", "/error", "/redireccionar-por-rol", "/productos/**",
-                                "/uploads/**", "/filtros", "/api/chat/**", "/cuenta-desactivada", "/Notificaciones/**","/api/ws/users/**", "/api/dashboard/**"
+                                "/uploads/**", "/filtros", "/api/chat/**", "/cuenta-desactivada", "/Notificaciones/**","/api/ws/users/**", "/api/dashboard/**","/stripe/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/vendedor/**").hasAnyRole("VENDEDOR", "ADMIN")

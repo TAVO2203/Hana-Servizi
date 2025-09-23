@@ -16,14 +16,33 @@ public class Pago {
     private String estado;
 
     private String stripePaymentId;
-
+    private String metodo;
     private LocalDateTime fecha;
+    private String telefono;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private User usuario;
 
     // Getters y Setters
+
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getMetodo() {
+        return metodo;
+    }
+
+    public void setMetodo(String metodo) {
+        this.metodo = metodo;
+    }
+
     public Long getId() {
         return id;
     }

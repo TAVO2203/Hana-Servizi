@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Confirmación de Pago - HanaServizi</title>
+  <link rel="icon" type="image" th:href="@{/img/icon.png}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous"/>
+
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background:#f5f5f5; margin:0; padding:0; }
+    .recibo-container { max-width:600px; margin:40px auto; background:#fff; padding:30px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+    h1 { text-align:center; color:#27ae60; margin-bottom:20px; }
+    .detalle { margin:20px 0; }
+    .detalle p { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee; }
+    .detalle p span { font-weight:600; }
+    .check { text-align:center; font-size:60px; color:#27ae60; margin-bottom:20px; }
+    .btn-volver { display:block; text-align:center; margin-top:20px; background:#e60023; color:#fff; padding:12px; border-radius:8px; text-decoration:none; font-weight:bold; }
+    .btn-volver:hover { background:#c1001d; }
+  </style>
+</head>
+<body>
+
+<div class="recibo-container">
+  <div class="check"><i class="fa-solid fa-circle-check"></i></div>
+  <h1>¡Pago Exitoso!</h1>
+
+  <div class="detalle">
+    <p><span>Método:</span> <span th:text="${pago.metodo}"></span></p>
+    <p><span>Monto:</span> <span th:text="${#numbers.formatDecimal(pago.total,1,'COMMA',2,'POINT')}"></span> COP</p>
+    <p><span>Teléfono:</span> <span th:text="${pago.telefono != null ? pago.telefono : 'N/A'}"></span></p>
+    <p><span>Estado:</span> <span th:text="${pago.estado}"></span></p>
+    <p><span>Fecha:</span> <span th:text="${#temporals.format(pago.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
+    <p><span>ID Transacción:</span> <span th:text="${pago.stripePaymentId != null ? pago.stripePaymentId : '---'}"></span></p>
+  </div>
+
+  <a th:href="@{/productos/index}" class="btn-volver">Volver a la tienda</a>
+</div>
+
+</body>
+</html>

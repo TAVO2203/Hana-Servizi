@@ -38,9 +38,14 @@ public class PaymentService {
 
         Map<String, Object> params = new HashMap<>();
         params.put("amount", paymentIntentDto.getAmount()); // en centavos
-        params.put("currency", paymentIntentDto.getCurrency());
+        params.put("currency", paymentIntentDto.getCurrency().toString());
         params.put("description", paymentIntentDto.getDescription());
         params.put("payment_method_types", paymentMethodTypes);
+
+        System.out.println("Creando PaymentIntent -> amount=" + paymentIntentDto.getAmount() +
+                " currency=" + paymentIntentDto.getCurrency() +
+                " description=" + paymentIntentDto.getDescription());
+
 
         return PaymentIntent.create(params);
     }
@@ -87,5 +92,35 @@ public class PaymentService {
 
         return paymentIntent;
     }
+
+    public Pago procesarPagoNequi(String telefono, Double total, User user) {
+        Pago pago = new Pago();
+        pago.setMetodo("nequi");
+        pago.setTelefono(telefono);
+        pago.setTotal(total);
+        pago.setFecha(LocalDateTime.now());
+        pago.setEstado("success");
+        pago.setUsuario(user);
+
+        return pagoRepository.save(pago); // retorna el objeto guardado
+    }
+
+
+    public Pago procesarPagoDaviplata(String telefono, Double monto, User user) {
+        Pago pago = new Pago();
+        pago.setMetodo("daviplata");
+        pago.setTelefono(telefono);
+        pago.setTotal(monto);
+        pago.setFecha(LocalDateTime.now());
+        pago.setEstado("success");
+        pago.setUsuario(user);
+
+        return pagoRepository.save(pago);
+    }
+
+    public PaymentIntent retrievePaymentIntent(String paymentIntentId) throws StripeException {
+        return PaymentIntent.retrieve(paymentIntentId);
+    }
+
 }
 

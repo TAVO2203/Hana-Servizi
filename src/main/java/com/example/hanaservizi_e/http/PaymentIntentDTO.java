@@ -2,7 +2,7 @@ package com.example.hanaservizi_e.http;
 
 public class PaymentIntentDTO {
     public enum Currency{
-        cop;
+        cop, usd;
     }
 
     private String description;

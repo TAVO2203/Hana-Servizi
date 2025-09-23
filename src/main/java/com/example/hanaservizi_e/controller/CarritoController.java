@@ -23,6 +23,7 @@ public class CarritoController {
     public CarritoController(UserService userService) {
         this.userService = userService;
     }
+
     @GetMapping
     public String mostrarCarrito(HttpSession session, Model model) {
         Map<String, Map<String, Object>> carrito = obtenerCarrito(session);
