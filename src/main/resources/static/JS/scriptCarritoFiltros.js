@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (productoActual.categoria && productoActual.categoria.toLowerCase() === "moda") {
                 document.getElementById("modal-nombre").innerText = productoActual.nombre;
                 document.getElementById("modal-precio").innerText = "$ " + productoActual.precio;
-                document.getElementById("modal-imagen").src = productoActual.imagen;
+                document.getElementById("modal-imagen").src = "/uploads/" + productoActual.imagen;
 
                 let selectTalla = document.getElementById("modal-talla");
                 selectTalla.innerHTML = "";

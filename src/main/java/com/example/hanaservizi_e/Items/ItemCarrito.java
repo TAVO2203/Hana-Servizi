@@ -1,4 +1,4 @@
-package com.example.hanaservizi_e.carrito;
+package com.example.hanaservizi_e.Items;
 
 public class ItemCarrito {
     private String id;

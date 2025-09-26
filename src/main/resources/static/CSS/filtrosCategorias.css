@@ -464,13 +464,15 @@ body.dark-mode .btn-outline-secondary:hover {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente más ligero */
+    backdrop-filter: blur(6px); /* Borroso */
     justify-content: center;
     align-items: center;
     z-index: 2000;
     opacity: 0;
     transition: opacity 0.4s ease;
 }
+
 .modal-overlay.active {
     display: flex;
     opacity: 1;
@@ -478,85 +480,72 @@ body.dark-mode .btn-outline-secondary:hover {
 
 /* Caja modal */
 .modal-content {
-    background: #fff;
-    border-radius: 16px;
-    padding: 25px 20px;
-    width: 400px;
-    max-width: 95%;
+    border-radius: 12px;
+    padding: 20px 25px;
+    width: 300px; /* un poco más pequeño */
+    max-width: 50%;
     text-align: center;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    transform: translateY(-20px);
-    transition: transform 0.3s ease;
-}
-.modal-overlay.active .modal-content {
-    transform: translateY(0);
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    backdrop-filter: blur(4px);
 }
 
 /* Botón cerrar */
 .modal-close {
     position: absolute;
-    top: 12px;
-    right: 15px;
+    top: 10px;
+    right: 12px;
     background: transparent;
     border: none;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     cursor: pointer;
-    color: #666;
+    color: #fff;
+    transition: color 0.2s ease;
 }
 .modal-close:hover {
-    color: #ff3c83;
+    color: red;
+}
+
+/* Título */
+.modal-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #fff;
 }
 
 /* Imagen */
 .modal-img {
-    max-width: 200px;
-    border-radius: 10px;
+    max-width: 130px;
     margin: 10px auto;
     display: block;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    border-radius: 8px;
 }
 
-/* Título y precio */
-#modal-nombre {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-top: 10px;
-}
-#modal-precio {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #ff3c83;
-    margin-bottom: 15px;
-}
-
-/* Selector de talla */
-.modal-label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 500;
-}
+/* Selector */
 .modal-select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    border: 2px solid red;
+    border-radius: 6px;
+    margin: 15px 0;
+    font-size: 0.95rem;
 }
 
 /* Botón confirmar */
 .btn-confirm {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     border: none;
-    border-radius: 25px;
-    background: linear-gradient(45deg, #ff3c83, #ff8c42);
+    border-radius: 6px;
+    background: red;
     color: white;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: bold;
     cursor: pointer;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    transition: background 0.2s ease;
 }
 .btn-confirm:hover {
-    transform: scale(1.03);
-    opacity: 0.9;
+    background: darkred;
 }
+

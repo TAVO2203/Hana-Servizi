@@ -2,7 +2,9 @@ package com.example.hanaservizi_e.controller;
 
 import com.example.hanaservizi_e.CustomOidcUser;
 import com.example.hanaservizi_e.dto.PerfilDto;
+import com.example.hanaservizi_e.model.Pedido;
 import com.example.hanaservizi_e.model.User;
+import com.example.hanaservizi_e.repository.PedidoRepository;
 import com.example.hanaservizi_e.service.CustomUserDetails;
 import com.example.hanaservizi_e.service.UserService;
 import com.example.hanaservizi_e.service.impl.CustomUserDetailsImpl;
@@ -16,16 +18,23 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/cliente")
 public class ClienteController {
 
     private final UserService userService;
+    private final PedidoRepository pedidoRepository;
 
-    public ClienteController(UserService userService) {
+    public ClienteController(UserService userService, PedidoRepository pedidoRepository) {
         this.userService = userService;
+        this.pedidoRepository = pedidoRepository;
     }
 
     // Mostrar dashboard del cliente
@@ -155,5 +164,14 @@ public class ClienteController {
         // Redirigir al login
         return "redirect:/login?cuentaDesactivada";
     }
+
+    @GetMapping("/compras")
+    public String verCompras(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        User cliente = userDetails.getUsuario();
+        List<Pedido> pedidos = pedidoRepository.findByClienteWithItems(cliente);
+        model.addAttribute("pedidos", pedidos);
+        return "cliente/compras";
+    }
+
 
 }

@@ -25,16 +25,29 @@
   <div class="check"><i class="fa-solid fa-circle-check"></i></div>
   <h1>¡Pago Exitoso!</h1>
 
-  <div class="detalle">
-    <p><span>Método:</span> <span th:text="${pago.metodo}"></span></p>
-    <p><span>Monto:</span> <span th:text="${#numbers.formatDecimal(pago.total,1,'COMMA',2,'POINT')}"></span> COP</p>
-    <p><span>Teléfono:</span> <span th:text="${pago.telefono != null ? pago.telefono : 'N/A'}"></span></p>
-    <p><span>Estado:</span> <span th:text="${pago.estado}"></span></p>
-    <p><span>Fecha:</span> <span th:text="${#temporals.format(pago.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
-    <p><span>ID Transacción:</span> <span th:text="${pago.stripePaymentId != null ? pago.stripePaymentId : '---'}"></span></p>
-  </div>
+    <div class="detalle">
+        <p><span>Método:</span> <span th:text="${pago.metodo}"></span></p>
+        <p><span>Monto:</span> <span th:text="${#numbers.formatDecimal(pago.total,1,'COMMA',2,'POINT')}"></span> COP</p>
+        <p><span>Teléfono:</span> <span th:text="${pago.telefono != null ? pago.telefono : 'N/A'}"></span></p>
+        <p><span>Dirección:</span> <span th:text="${pago.direccion != null ? pago.direccion : 'N/A'}"></span></p>
+        <p><span>Estado:</span> <span th:text="${pago.estado}"></span></p>
+        <p><span>Fecha:</span> <span th:text="${#temporals.format(pago.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
+        <p><span>ID Transacción:</span> <span th:text="${pago.stripePaymentId != null ? pago.stripePaymentId : '---'}"></span></p>
+    </div>
 
-  <a th:href="@{/productos/index}" class="btn-volver">Volver a la tienda</a>
+    <h3>Productos adquiridos:</h3>
+    <div th:each="item : ${items}">
+        <p><strong th:text="${item.nombreProducto}"></strong></p>
+        <p>Talla: <span th:text="${item.talla}"></span></p>
+        <p>Cantidad: <span th:text="${item.cantidad}"></span></p>
+        <p>Precio unitario: $<span th:text="${item.precio}"></span></p>
+        <p>Subtotal: $<span th:text="${item.precio * item.cantidad}"></span></p>
+        <hr/>
+    </div>
+
+
+
+    <a th:href="@{/productos/index}" class="btn-volver">Volver a la tienda</a>
 </div>
 
 </body>

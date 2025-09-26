@@ -69,7 +69,7 @@
     </div>
     <div class="productos">
         <div class="producto" th:each="producto : ${productos}">
-            <img th:src="${producto.imagen}" alt="Imagen del producto">
+            <img th:src="@{'/uploads/' + ${producto.imagen}}" alt="Imagen del producto">
             <h3 th:text="${producto.nombre}">Nombre del producto</h3>
             <p th:text="'Precio: $' + ${producto.precio}">Precio</p>
             <p th:text="${producto.descripcion}">Descripción</p>

@@ -47,8 +47,6 @@ public class ProductoDto {
 
     private List<TallasStockDTO> tallas = new ArrayList<>();
 
-    @NotNull(message = "El stock es obligatorio.")
-    @Positive(message = "El stock debe ser mayor a 0.")
     private Integer stock;   // 👈 este es el stock general
 
     private String convertirTallasAJson(List<TallaStock> tallas) {

@@ -38,10 +38,10 @@
     <main class="dashboard-main">
         <h1>Hola, <span th:text="${usuario.username}">Usuario</span></h1>
         <div class="cards">
-            <a th:href="@{/carrito}" class="card">
+            <a th:href="@{/cliente/compras}" class="card">
                 <i class="fas fa-shopping-cart"></i>
-                <h3>Mis Compras</h3>
-                <p>Revisa tus compras recientes.</p>
+                <h3>Mis Pedidos</h3>
+                <p>Revisa tus pedidos recientes.</p>
             </a>
             <a th:href="@{/cliente/perfil}" class="card">
                 <i class="fas fa-user-cog"></i>

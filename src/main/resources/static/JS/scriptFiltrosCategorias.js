@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let productoActual = {};
     const modal = document.getElementById("modalCarrito");
     const closeModal = document.getElementById("closeModal");
+    const selectTalla = document.getElementById("modal-talla");
+    const btnConfirmar = document.getElementById("btnConfirmarAgregar");
 
     // Abrir modal
     document.querySelectorAll(".btn-add-cart").forEach(btn => {
@@ -16,12 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             if (productoActual.categoria && productoActual.categoria.toLowerCase() === "moda") {
-                document.getElementById("modal-nombre").innerText = productoActual.nombre;
-                document.getElementById("modal-precio").innerText = "$ " + productoActual.precio;
+                // Cargar imagen en modal
                 document.getElementById("modal-imagen").src = "/uploads/" + productoActual.imagen;
 
-                let selectTalla = document.getElementById("modal-talla");
-                selectTalla.innerHTML = "";
+                // Llenar select de tallas
+                selectTalla.innerHTML = '<option disabled selected>Selecciona una talla</option>';
 
                 if (productoActual.tallas && productoActual.tallas.includes(":")) {
                     productoActual.tallas.split(";").forEach(t => {
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (talla && parseInt(stock) > 0) {
                             let option = document.createElement("option");
                             option.value = talla;
-                            option.text = `${talla} (stock: ${stock})`;
+                            option.text = `${talla} (Stock: ${stock})`;
                             selectTalla.add(option);
                         }
                     });
@@ -40,25 +41,32 @@ document.addEventListener("DOMContentLoaded", () => {
                     selectTalla.add(option);
                 }
 
-                modal.classList.add("active");
+                // Mostrar modal
+                modal.style.display = "flex";
+                setTimeout(() => modal.classList.add("active"), 10);
             } else {
+                // Si no es de moda, agregar directo
                 window.location.href = `/carrito/agregar?id=${productoActual.id}&nombre=${encodeURIComponent(productoActual.nombre)}&precio=${productoActual.precio}&cantidad=1&imagen=${encodeURIComponent(productoActual.imagen)}`;
             }
         });
     });
 
     // Confirmar agregar
-    document.getElementById("btnConfirmarAgregar").addEventListener("click", () => {
-        let talla = document.getElementById("modal-talla").value;
+    btnConfirmar.addEventListener("click", () => {
+        let talla = selectTalla.value;
+        if (!talla || talla === "Selecciona una talla") {
+            alert("Por favor selecciona una talla.");
+            return;
+        }
         window.location.href = `/carrito/agregar?id=${productoActual.id}&nombre=${encodeURIComponent(productoActual.nombre)}&precio=${productoActual.precio}&cantidad=1&talla=${encodeURIComponent(talla)}&imagen=${encodeURIComponent(productoActual.imagen)}`;
     });
 
-    // Cerrar modal con transición suave
+    // Cerrar modal con transición
     const cerrarModal = () => {
         modal.classList.remove("active");
         setTimeout(() => {
             modal.style.display = "none";
-        }, 400); // mismo tiempo que el transition
+        }, 300);
     };
 
     closeModal.addEventListener("click", cerrarModal);

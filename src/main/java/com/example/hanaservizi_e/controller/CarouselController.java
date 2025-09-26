@@ -45,11 +45,6 @@ public class CarouselController {
             productos = productoRepository.findAll();
         }
 
-        for (Producto producto : productos) {
-            if (producto.getImagen() != null && !producto.getImagen().startsWith("/uploads/")) {
-                producto.setImagen("/uploads/" + producto.getImagen());
-            }
-        }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {

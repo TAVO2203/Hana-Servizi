@@ -1,7 +1,10 @@
 package com.example.hanaservizi_e.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "pagos")
@@ -20,6 +23,13 @@ public class Pago {
     private LocalDateTime fecha;
     private String telefono;
     private String Direccion;
+
+    // En Pago.java
+    @Transient
+    private List<Map<String, Object>> productos;
+
+    public List<Map<String, Object>> getProductos() { return productos; }
+    public void setProductos(List<Map<String, Object>> productos) { this.productos = productos; }
 
 
     @ManyToOne

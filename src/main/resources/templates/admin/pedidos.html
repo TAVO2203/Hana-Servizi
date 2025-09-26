@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Pedidos</title>
+    <link rel="stylesheet" th:href="@{/CSS/pedidosUsuarios.css}">
+    <link rel="icon" type="image" th:href="@{/img/icon.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+<header class="top-navbar">
+    <div id="logoToggle" class="logo">HS</div>
+    <div class="navbar-title">Perfil del Cliente</div>
+    <div class="user-info"></div>
+</header>
+
+<div class="wrapper">
+    <aside id="sidebar" class="sidebar collapsed">
+        <ul>
+            <li><a th:href="@{/productos/index}"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
+            <li><a th:href="@{/cliente/perfil}"><i class="fas fa-user"></i> <span>Perfil</span></a></li>
+            <li><a th:href="@{/cliente/compras}"><i class="fas fa-shopping-bag"></i> <span>Mis Compras</span></a></li>
+            <li>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> <span>Salir</span>
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="btn-field">
+            <a th:href="@{/cliente/dashboard}" class="btn-volver">
+                <i class="fa-solid fa-arrow-left"></i> Volver
+            </a>
+        </div>
+
+    <h1>Panel de Pedidos</h1>
+
+    <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="pedido : ${pedidos}">
+                    <td th:text="${pedido.id}"></td>
+                    <td th:text="${pedido.cliente.username}"></td>
+                    <td th:text="${#temporals.format(pedido.fecha, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${pedido.total}"></td>
+                    <td th:text="${pedido.estado}"></td>
+                    <td>
+                        <form th:action="@{'/admin/pedidos/' + ${pedido.id} + '/estado'}" method="post">
+                            <select name="estado">
+                                <option th:each="e : ${estados}" th:value="${e}" th:text="${e}"
+                                        th:selected="${e.equals(pedido.estado)}"></option>
+                            </select>
+                            <button type="submit">Actualizar</button>
+                        </form>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    <script>
+        document.querySelectorAll('table tbody tr').forEach(tr => {
+            const tdEstado = tr.querySelector('td:nth-child(5)');
+            switch(tdEstado.textContent.trim()) {
+                case 'Pendiente': tdEstado.style.color = '#ffc107'; break;
+                case 'Pagado': tdEstado.style.color = '#17a2b8'; break;
+                case 'En Preparación': tdEstado.style.color = '#6c757d'; break;
+                case 'Enviado': tdEstado.style.color = '#007bff'; break;
+                case 'Entregado': tdEstado.style.color = '#28a745'; break;
+            }
+        });
+
+    </script>
+</div>
+</body>
+</html>

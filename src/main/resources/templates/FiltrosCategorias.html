@@ -103,25 +103,26 @@
         </div>
     </div>
 </div>
-<!-- Modal personalizado -->
+
 <div id="modalCarrito" class="modal-overlay">
     <div class="modal-content">
         <button class="modal-close" id="closeModal">&times;</button>
 
-        <div class="modal-body">
-            <img id="modal-imagen" src="" alt="Imagen producto" class="modal-img">
-            <h2 id="modal-nombre"></h2>
-            <p id="modal-precio"></p>
+        <h2 class="modal-title">Selecciona una talla</h2>
+        <img id="modal-imagen" src="" alt="Imagen producto" class="modal-img">
 
-            <label for="modal-talla" class="modal-label">Selecciona una talla:</label>
-            <select id="modal-talla" class="modal-select"></select>
-        </div>
+        <select id="modal-talla" class="modal-select">
+            <option>Selecciona una talla</option>
+        </select>
 
         <div class="modal-footer">
-            <button id="btnConfirmarAgregar" class="btn-confirm">Agregar al carrito</button>
+            <button id="btnConfirmarAgregar" class="btn-confirm">
+                <i class="fas fa-shopping-cart"></i> CONFIRMAR
+            </button>
         </div>
     </div>
 </div>
+
 
 <script th:src="@{/JS/scriptFiltrosCategorias.js}"></script>
 <script th:src="@{/JS/cambioColor.js}" defer></script>

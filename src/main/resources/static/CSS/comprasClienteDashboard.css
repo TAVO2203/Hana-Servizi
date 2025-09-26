@@ -55,7 +55,6 @@ body {
     padding-top: 1rem;
 }
 
-/* Colapsado: solo muestra íconos */
 .sidebar.collapsed {
     width: 60px;
 }
@@ -83,6 +82,7 @@ body {
 .sidebar li a:hover {
     background: rgba(169, 50, 38, 0.8);
 }
+
 .logout-btn {
     display: flex;
     align-items: center;
@@ -109,21 +109,17 @@ body {
     text-align: center;
 }
 
-/* Texto del sidebar */
 .sidebar span {
     margin-left: 10px;
     white-space: nowrap;
     transition: opacity 0.3s;
 }
 
-/* Oculta el texto cuando colapsa */
 .sidebar.collapsed span {
     opacity: 0;
     width: 0;
     overflow: hidden;
 }
-
-/* Contenido principal */
 .dashboard-main {
     margin-left: 200px;
     padding: 1.5rem;
@@ -134,145 +130,123 @@ body {
 .sidebar.collapsed ~ .dashboard-main {
     margin-left: 60px;
 }
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 1rem;
+h1 {
     text-align: center;
-    text-decoration: none;
+    margin-bottom: 30px;
     color: #333;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.card i {
-    font-size: 1.8rem;
-    color: #c0392b;
-}
-
-.card h3 {
-    margin: 0.5rem 0;
-}
-
-.card p {
-    font-size: 0.9rem;
-    color: #555;
-}
-/* ----------- CARD DE PERFIL ----------- */
-.profile-card {
-    background: #fff;
+/* Cards de pedidos */
+.pedido-card {
+    background-color: #fff;
     border-radius: 12px;
-    padding: 2rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 600px;
-    margin: 2rem auto;
-    animation: fadeIn 0.6s ease-in-out;
+    padding: 20px 25px;
+    margin: 20px auto;
+    max-width: 900px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.profile-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 1rem;
-    margin-bottom: 1.5rem;
+.pedido-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
 }
 
-.profile-header i {
-    font-size: 2.5rem;
-    color: #c0392b;
+.pedido-card h3 {
+    margin-top: 0;
+    color: #d32f2f;
 }
 
-.profile-header h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #2c3e50;
+.pedido-card p {
+    margin: 6px 0;
+    color: #555;
+    font-size: 0.95rem;
 }
 
-/* Lista de info */
-.profile-info {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.pedido-card ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 10px;
 }
 
-.profile-info li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-    color: #333;
-}
-
-.profile-info strong {
-    margin-right: 0.5rem;
-    color: #2c3e50;
-}
-
-.profile-info i {
-    margin-right: 10px;
-    color: #c0392b;
-    width: 25px;
-    text-align: center;
-    font-size: 1.1rem;
-}
-
-/* Acciones */
-.profile-actions {
-    margin-top: 2rem;
+.pedido-card ul li {
+    background-color: #f9f9f9;
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    border-radius: 6px;
     display: flex;
     justify-content: space-between;
-    gap: 1rem;
-}
-
-.profile-actions a,
-.profile-actions button {
-    flex: 1;
-    padding: 0.8rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    text-decoration: none;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.pedido-card ul li span {
+    margin-right: 6px;
+}
+
+/* Colores de estado */
+.pedido-card p span {
+    font-weight: 600;
+}
+
+.estado-pendiente {
+    color: #ff9800; /* naranja */
+}
+
+.estado-enviado {
+    color: #2196f3; /* azul */
+}
+
+.estado-entregado {
+    color: #4caf50; /* verde */
+}
+
+/* Botón volver */
+.btn-volver {
+    display: flex;
+    justify-content: flex-start; /* alineado a la izquierda */
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+.btn-volver {
+    background: linear-gradient(45deg, #FF5454, #E01212);
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
     color: white;
-    transition: background 0.3s ease;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
 }
 
-.profile-actions a {
-    background: #2980b9;
+.btn-volver i {
+    margin-right: 8px;
+    font-size: 16px;
 }
 
-.profile-actions a:hover {
-    background: #1f618d;
+.btn-volver:hover {
+    background: linear-gradient(45deg, #E01212, #FF5454);
+    transform: translateY(-2px);
 }
 
-.profile-actions button {
-    background: #c0392b;
-}
+/* Responsive */
+@media (max-width: 768px) {
+    .pedido-card {
+        padding: 15px;
+        margin: 15px;
+    }
 
-.profile-actions button:hover {
-    background: #a93226;
-}
-
-/* Animación */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    .pedido-card ul li {
+        font-size: 0.9rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }

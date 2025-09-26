@@ -1,7 +1,5 @@
 package com.example.hanaservizi_e.controller;
 
-import com.example.hanaservizi_e.carrito.ItemCarrito;
-import com.example.hanaservizi_e.model.Producto;
 import com.example.hanaservizi_e.model.User;
 import com.example.hanaservizi_e.repository.ProductoRepository;
 import com.example.hanaservizi_e.service.UserService;

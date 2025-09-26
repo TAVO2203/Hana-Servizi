@@ -454,7 +454,10 @@ button:hover{
     color: #27ae60;
     font-weight: 700;
 }
-
+.producto-img{
+    display: flex;
+    width: 100px;
+}
 /* ICONOS DE SEGURIDAD */
 .security-icons {
     margin-top: 20px;

@@ -138,15 +138,16 @@
         <!-- Lista de productos -->
         <div class="productos-resumen">
             <div th:each="item : ${carrito}" class="producto-item">
-                <img th:src="${item.imagen}" alt="Imagen producto" class="producto-img"/>
-
+                <img th:src="@{'/uploads/' + ${item.imagen}}" class="producto-img"/>
                 <div class="producto-detalle">
                     <p><strong th:text="${item.nombre}"></strong></p>
+                    <p>Talla: <span th:text="${item.talla}"></span></p>
                     <p>Cantidad: <span th:text="${item.cantidad}"></span></p>
                     <p>Precio: $<span th:text="${#numbers.formatDecimal(item.precio,1,'COMMA',2,'POINT')}"></span></p>
                     <p>Subtotal: $<span th:text="${#numbers.formatDecimal(item.precio * item.cantidad,1,'COMMA',2,'POINT')}"></span></p>
                 </div>
             </div>
+
         </div>
 
         <!-- Totales -->
@@ -218,112 +219,6 @@
     const totalFinal = /*[[${totalFinal}]]*/ 0;
     const usuarioId = /*[[${usuarioId}]]*/ 0;
 </script>
-
-<script>
-
-        document.addEventListener('DOMContentLoaded', function () {
-        const stripe = Stripe(stripePublicKey);
-        const elements = stripe.elements();
-        const card = elements.create('card');
-        card.mount('#card-element');
-
-        const metodoPago = document.getElementById('metodo-pago');
-        const tarjetaForm = document.getElementById('tarjeta-form');
-        const nequiForm = document.getElementById('nequi-form');
-        const daviplataForm = document.getElementById('daviplata-form');
-        const payBtn = document.getElementById('pay-btn');
-        const messageEl = document.getElementById('payment-message');
-
-        metodoPago.addEventListener('change', () => {
-        tarjetaForm.style.display = metodoPago.value === 'tarjeta' ? 'block' : 'none';
-        nequiForm.style.display = metodoPago.value === 'nequi' ? 'block' : 'none';
-        daviplataForm.style.display = metodoPago.value === 'daviplata' ? 'block' : 'none';
-    });
-
-        document.getElementById('payment-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        payBtn.disabled = true;
-        payBtn.textContent = "Procesando...";
-        messageEl.textContent = "";
-
-        const metodo = metodoPago.value;
-
-            try {
-                if (metodo === 'tarjeta') {
-                    const resp = await fetch('/stripe/paymentintent', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            description: "Pago HanaServizi",
-                            amount: Math.round(totalFinal * 100),
-                            currency: "cop"
-                        })
-                    });
-                    const data = await resp.json();
-
-                    const result = await stripe.confirmCardPayment(data.client_secret, {
-                        payment_method: {
-                            card: card,
-                            billing_details: { name: document.getElementById('cardholder-name').value }
-                        }
-                    });
-
-                    if (result.error) {
-                        messageEl.textContent = "❌ " + result.error.message;
-                        messageEl.style.color = "red";
-                    } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
-                        const confirmResp = await fetch(`/stripe/confirm/${result.paymentIntent.id}`, { method: 'POST' });
-                        const confirmData = await confirmResp.json();
-
-                        if (confirmData.id) {
-                            messageEl.textContent = "✅ Pago con tarjeta exitoso";
-                            messageEl.style.color = "green";
-                            window.location.href = "/stripe/confirmacion?pagoId=" + confirmData.id;
-                        } else {
-                            messageEl.textContent = "⚠️ Error: No se pudo obtener el ID del pago";
-                            messageEl.style.color = "red";
-                        }
-                    }
-
-                } else if (metodo === 'nequi') {
-                    const telefono = document.getElementById('telefono-nequi').value;
-                    const resp = await fetch(`/stripe/nequi?telefono=${telefono}&total=${totalFinal}&userId=${usuarioId}`, { method: 'POST' });
-                    const result = await resp.json();
-
-                    if (result.status === "success" && result.id) {
-                        messageEl.textContent = "✅ Pago con Nequi exitoso";
-                        messageEl.style.color = "green";
-                        setTimeout(() => window.location.href = "/stripe/confirmacion?pagoId=" + result.id, 1000);
-                    } else {
-                        messageEl.textContent = "⚠️ Error en Nequi";
-                        messageEl.style.color = "red";
-                    }
-
-                } else if (metodo === 'daviplata') {
-                    const telefono = document.getElementById('telefono-daviplata').value;
-                    const resp = await fetch(`/stripe/daviplata?telefono=${telefono}&monto=${totalFinal}&userId=${usuarioId}`, { method: 'POST' });
-                    const result = await resp.json();
-
-                    if (result.status === "success" && result.id) {
-                        messageEl.textContent = "✅ Pago con Daviplata exitoso";
-                        messageEl.style.color = "green";
-                        setTimeout(() => window.location.href = "/stripe/confirmacion?pagoId=" + result.id, 1000);
-                    } else {
-                        messageEl.textContent = "⚠️ Error en Daviplata";
-                        messageEl.style.color = "red";
-                    }
-                }
-
-            } catch (err) {
-                console.error(err);
-                messageEl.textContent = "⚠️ Error: " + err.message;
-                messageEl.style.color = "red";
-            }
-
-            payBtn.disabled = false;
-            payBtn.textContent = "Pagar Ahora";
-        });
-        });
-</script>
+<script th:src="@{/JS/scriptPagos.js}"></script>
 </body>
 </html>

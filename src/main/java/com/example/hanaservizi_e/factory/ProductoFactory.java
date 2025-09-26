@@ -30,7 +30,6 @@ public class ProductoFactory {
         producto.setEstadoProducto(dto.getEstadoProducto());
         producto.setFechaAgregacion(dto.getFechaAgregacion());
         producto.setVendedor(vendedor);
-        producto.setStock(dto.getStock() != null ? dto.getStock() : 0);
         producto.setImagen(imagenGuardada);
 
         if (dto.getCategoriaId() != null) {
@@ -49,24 +48,26 @@ public class ProductoFactory {
                     .map(tallaDto -> {
                         TallaStock t = new TallaStock();
                         t.setTalla(tallaDto.getTalla());
-                        t.setStock(tallaDto.getStock());
+                        t.setStock(tallaDto.getStock() != null ? tallaDto.getStock() : 0);
                         t.setProducto(producto);
                         return t;
                     })
                     .collect(Collectors.toList());
             producto.setTallas(tallas);
 
-            // 🔹 Recalcular stock total
+            // 🔹 Recalcular stock total a partir de tallas
             int stockTotal = tallas.stream()
                     .mapToInt(TallaStock::getStock)
                     .sum();
             producto.setStock(stockTotal);
         } else {
+            // 🔹 Solo si NO hay tallas, usamos el stock general
             producto.setStock(dto.getStock() != null ? dto.getStock() : 0);
         }
 
         return producto;
     }
+
     public Producto actualizarProductoExistente(Producto producto, ProductoDto dto, String imagenGuardada) {
         producto.setNombre(dto.getNombre());
         producto.setPrecio(dto.getPrecio());
@@ -89,6 +90,7 @@ public class ProductoFactory {
             producto.setMarca(marca);
         }
 
+        // 🔹 Limpiar tallas previas
         producto.getTallas().clear();
 
         if (dto.getTallas() != null && !dto.getTallas().isEmpty()) {
@@ -102,18 +104,16 @@ public class ProductoFactory {
                 }
             }
 
-            // 🔹 Recalcular stock total solo con tallas
+            // 🔹 Stock desde tallas
             int stockTotal = producto.getTallas().stream()
                     .mapToInt(TallaStock::getStock)
                     .sum();
             producto.setStock(stockTotal);
         } else {
-            // 🔹 Si no tiene tallas, usar el stock del DTO
+            // 🔹 Stock general si no hay tallas
             producto.setStock(dto.getStock() != null ? dto.getStock() : 0);
         }
 
         return producto;
     }
-
 }
-

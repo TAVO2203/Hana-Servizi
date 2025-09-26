@@ -70,6 +70,7 @@ public class PaymentViewController {
         model.addAttribute("direccion", user.getAddress());
 
         // Pasar carrito y totales
+        // Pasar carrito y totales
         model.addAttribute("carrito", carrito.values());
         model.addAttribute("subtotal", subtotal);
         model.addAttribute("descuentoAplicado", descuentoAplicado);
