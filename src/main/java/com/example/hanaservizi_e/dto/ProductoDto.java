@@ -1,16 +1,20 @@
 package com.example.hanaservizi_e.dto;
 
+import com.example.hanaservizi_e.model.TallaStock;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+@Data
 public class ProductoDto {
 
     private int id;
@@ -46,6 +50,17 @@ public class ProductoDto {
     @NotNull(message = "El stock es obligatorio.")
     @Positive(message = "El stock debe ser mayor a 0.")
     private Integer stock;   // 👈 este es el stock general
+
+    private String convertirTallasAJson(List<TallaStock> tallas) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(tallas);
+            // Ejemplo: [{"talla":"S","stock":10},{"talla":"M","stock":5}]
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "[]";
+        }
+    }
 
     public Integer getStock() {return stock;}
 

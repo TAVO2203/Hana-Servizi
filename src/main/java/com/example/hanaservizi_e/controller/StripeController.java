@@ -1,5 +1,6 @@
 package com.example.hanaservizi_e.controller;
 
+import com.example.hanaservizi_e.dto.PagoDTO;
 import com.example.hanaservizi_e.http.PaymentIntentDTO;
 import com.example.hanaservizi_e.model.Pago;
 import com.example.hanaservizi_e.model.User;
@@ -9,12 +10,14 @@ import com.example.hanaservizi_e.service.PaymentService;
 import com.example.hanaservizi_e.service.impl.CustomUserDetailsImpl;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -50,6 +53,8 @@ public class StripeController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> confirm(
             @PathVariable String id,
+            @Valid @RequestBody PagoDTO pagoDTO,
+            BindingResult result,
             @AuthenticationPrincipal Object principal) {
 
         Map<String, Object> response = new HashMap<>();
@@ -58,6 +63,12 @@ public class StripeController {
             response.put("status", "error");
             response.put("message", "Usuario no autenticado");
             return ResponseEntity.status(401).body(response);
+        }
+
+        if (result.hasErrors()) {
+            response.put("status", "error");
+            response.put("message", result.getAllErrors().get(0).getDefaultMessage());
+            return ResponseEntity.badRequest().body(response);
         }
 
         try {
@@ -97,6 +108,8 @@ public class StripeController {
                 pago.setStripePaymentId(paymentIntent.getId());
                 pago.setFecha(LocalDateTime.now());
 
+                pago.setTelefono(pagoDTO.getTelefono());   // form
+                pago.setDireccion(pagoDTO.getDireccion());
                 pagoRepository.save(pago);
 
                 response.put("status", "success");
@@ -114,8 +127,6 @@ public class StripeController {
             return ResponseEntity.status(500).body(response);
         }
     }
-
-
 
     // Cancelar pago
     @PostMapping("/cancel/{id}")

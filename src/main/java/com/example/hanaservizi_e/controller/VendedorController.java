@@ -160,7 +160,7 @@ public class VendedorController {
 
         userService.guardar(user);
 
-        // 🔁 Refrescar autenticación
+
         CustomUserDetails nuevoUserDetails = new CustomUserDetailsImpl(user);
         UsernamePasswordAuthenticationToken nuevaAutenticacion =
                 new UsernamePasswordAuthenticationToken(
@@ -185,7 +185,7 @@ public class VendedorController {
     }
 
 
-    /* ===================== 📌 PRODUCTOS ===================== */
+    /* ===================== PRODUCTOS ===================== */
 
 
     @GetMapping("/productos")
@@ -269,7 +269,7 @@ public class VendedorController {
         Producto producto = productoFactory.crearProducto(productoDto, usuario, null);
         producto = productoRepository.save(producto);
 
-        // Guardar imagen con nombre único basado en ID
+
         if (productoDto.getImagenes() != null && !productoDto.getImagenes().isEmpty()) {
             MultipartFile archivo = productoDto.getImagenes().get(0);
             if (!archivo.isEmpty()) {

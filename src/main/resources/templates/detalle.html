@@ -3,456 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="'Detalle: ' + ${producto.nombre}">Detalle del Producto</title>
+    <link rel="stylesheet" th:href="@{/CSS/detalleProducto.css}">
     <link rel="icon" type="image" th:href="@{/img/icon.png}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            line-height: 1.2;
-        }
-
-        body{
-            font-family: "Poppins", monospace;
-            height: 220vh;
-            display: flex;
-            flex-direction: column;
-            background-color: white;
-            color: black;
-            transition: 0.3s ease;
-        }
-        .modo-btn {
-            background-color: #fff;
-            color: #000 !important;
-            padding: 12px 13px;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-
-        .modo-btn .modo-text {
-            color: #000 ;
-        }
-
-        .modo-btn i {
-            font-size: 15px;
-            color: #f4c542;
-        }
-
-        body.dark-mode {
-            background-color: #121212;
-            color: white;
-        }
-
-
-        body.dark-mode .modo-btn {
-            background-color: #222;
-            color: #fff ;
-        }
-
-        body.dark-mode .modo-btn .modo-text {
-            color: #fff ;
-        }
-        .header{
-            position: relative;
-            background-color: #ff0000;
-            height: 105px;
-            padding: 20px 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
-        }
-
-        .header_container{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .name-project{
-            color: #FFFFFF;
-            font-weight: 500;
-        }
-
-        .bars{
-            display: none;
-        }
-
-        .nav-menu a .active{
-            color: #1a1a1a;
-            background-color: #FFFFFF;
-        }
-        .logo{
-            display: flex;
-            align-items: center;
-        }
-        .logo img{
-            height: 70px;
-            margin-left: 10px;
-        }
-
-        .nav-menu{
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            gap: 10px;
-        }
-
-        .nav-logged a.btn-icon,
-        .nav-not-logged a.btn-icon {
-            color: #ffffff;
-            font-size: 1.1em;
-            padding: 8px 10px;
-            text-decoration: none;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 40px;
-            width: 40px;
-            background-color: rgba(255,255,255,0.15);
-        }
-
-        .nav-logged a.btn-icon:hover,
-        .nav-not-logged a.btn-icon:hover {
-            background-color: #7a0c0c;
-            box-shadow: 0 0 5px #7a0c0c, 0 0 10px #7a0c0c;
-            color: #fff;
-        }
-        /* Bloque contenedor si está logueado */
-        .nav-logged {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-logged .nav-user {
-            color: #ffffff;
-            font-weight: 500;
-            font-size: 0.95em;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 6px 12px;
-            border-radius: 20px;
-            transition: background-color 0.3s ease;
-        }
-
-        .nav-logged .nav-user strong {
-            color: #ffdd00; /* Color distinto para el nombre */
-        }
-
-        .nav-logged .nav-user:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            cursor: default;
-        }
-
-        /* Si no está logueado */
-        .nav-not-logged {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-
-        button{
-            background: red;
-            border: 2px;
-            border-radius: 20px;
-            color: #FFF;
-            text-transform: uppercase;
-            position: relative;
-            border: none;
-            height: 40px;
-            width: 100px;
-            transition: .3s linear;
-            cursor: pointer;
-        }
-        button:hover{
-            background: white;
-            color: #000;
-        }
-
-        .btn6:hover{
-            background-color: #FFFFFF;
-            box-shadow: 0 0 5px #FFFFFF, 0 0 25px #FFFFFF,
-            0 0 50px #FFFFFF, 0 0 100px #FFFFFF, 0 0 300px #FFFFFF;
-        }
-        /*end header*/
-
-
-
-        .product-detail-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 40px;
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 40px;
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        .product-image-box {
-            flex: 1 1 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .product-image {
-            max-width: 100%;
-            max-height: 450px;
-            object-fit: contain;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .product-info-box {
-            flex: 1 1 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .product-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: #222;
-        }
-
-        .rating {
-            font-size: 18px;
-            color: #f5a623;
-        }
-
-        .rating small {
-            font-size: 14px;
-            color: #777;
-        }
-
-        .price-box {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .price-current {
-            font-size: 26px;
-            font-weight: 700;
-            color: #28a745;
-        }
-
-        .price-old {
-            font-size: 18px;
-            color: #aaa;
-            text-decoration: line-through;
-        }
-
-        .discount {
-            font-size: 16px;
-            color: #e53935;
-            background-color: #ffeaea;
-            padding: 5px 10px;
-            border-radius: 6px;
-        }
-
-        .detail {
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        .detail strong {
-            color: #555;
-        }
-
-        .product-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .product-actions button {
-            flex: 1 1 180px;
-            padding: 12px 16px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            border: none;
-        }
-
-        .add-to-cart.btn {
-            gap:10px;
-            width: 100%;
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5em 1em;
-            background-color: #cc0000;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            text-decoration: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
-        }
-
-        .add-to-cart.btn:hover {
-            background-color: cornflowerblue;
-        }
-        .add-to-cart i {
-            margin-left:115px;
-        }
-
-        .fav-btn {
-            background-color: #f8f8f8;
-            color: #e53935;
-            border: 1px solid #ccc;
-        }
-
-        .fav-btn:hover {
-            background-color: #ffeaea;
-        }
-
-        .btn-back {
-            margin-top: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            color: #007bff;
-            transition: color 0.2s ease;
-        }
-
-        .btn-back:hover {
-            text-decoration: none;
-            color: #0056b3;
-        }
-
-        footer {
-            background-color: #000000;
-            padding: 25px 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 100%;
-            flex-shrink: 0;
-            margin-top: auto;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        .footer-col {
-            width: 25%;
-            padding: 0 15px;
-        }
-
-        .footer-col h4 {
-            position: relative;
-            margin-bottom: 35px;
-            font-weight: 500;
-            font-size: 22px;
-            color: #FFFFFF;
-            text-transform: capitalize;
-        }
-
-        .footer-col h4::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -6px;
-            background-color: #FFFFFF;
-            height: 2px;
-            width: 40px;
-        }
-
-        .footer-col ul li:not(:last-child) {
-            margin-bottom: 10px;
-        }
-
-        .footer-col ul li a {
-            font-size: 16px;
-            color: white;
-            text-decoration: none;
-            transition: all 0.4s ease;
-        }
-
-        .footer-col ul li a:hover {
-            padding-left: 8px;
-            color: white;
-        }
-
-        .links a {
-            display: inline-block;
-            height: 40px;
-            width: 40px;
-            color: #f8f8f8;
-            background-color: rgba(40, 130, 214, 0.8);
-            margin: 0 8px 8px 0;
-            text-align: center;
-            line-height: 40px;
-            border-radius: 50%;
-            transition: all 0.4s ease;
-        }
-
-        .links a:hover {
-            color: #000000;
-            background-color: #f8f8f8;
-        }
-
-        .footer-col .info li {
-            display: grid;
-            grid-template-columns: 30px 1fr;
-            margin-bottom: 16px;
-        }
-
-        .footer-col .info li span {
-            color: #FFFFFF;
-            font-size: 20px;
-        }
-
-        .footer-col p {
-            color: #FFFFFF;
-        }
-
-        .footer-col .info li a {
-            color: #FFFFFF;
-            text-decoration: none;
-        }
-
-        .img3 {
-            position: absolute;
-            width: 32px;
-            right: 59px;
-        }
-
-        .copyright {
-            width: 100%;
-            background: #000000;
-            padding: 10px 100px 20px;
-            text-align: center;
-            color: #f8f8f8;
-            border: 1px solid rgba(0,0,0,0.15);
-        }
-    </style>
 </head>
 <body>
 <header class="header">
@@ -526,22 +79,48 @@
         <p class="detail"><strong>Estado del producto: </strong><span th:text="${producto.estadoProducto}"></span></p>
         <p class="detail"><strong>Envío: </strong> Gratis • Entrega estimada: 3-5 días</p>
         <p class="detail"><strong>Stock: </strong><span th:text="${producto.stock}"></span></p>
+        <div th:if="${producto.categorias.nombreCategoria == 'Moda'}" class="talla-box">
+            <label for="talla" class="talla-label">Talla:</label>
+            <form th:action="@{/carrito/agregar}" method="get" class="talla-form">
+                <input type="hidden" name="id" th:value="${producto.id}">
+                <input type="hidden" name="nombre" th:value="${producto.nombre}">
+                <input type="hidden" name="precio" th:value="${producto.precio}">
+                <input type="hidden" name="imagen" th:value="${producto.imagen}">
+                <input type="hidden" name="cantidad" value="1">
 
+                <select name="talla" id="talla" class="talla-select" required>
+                    <option value="">Selecciona una talla</option>
+                    <option th:each="tallaStock : ${producto.tallas}"
+                            th:value="${tallaStock.talla}"
+                            th:text="${tallaStock.talla + ' (Stock: ' + tallaStock.stock + ')'}"
+                            th:disabled="${tallaStock.stock == 0}">
+                    </option>
+                </select>
 
-        <div class="product-actions">
-            <a th:href="@{/carrito/agregar(
-                                 id=${producto.id},
-                                 nombre=${producto.nombre},
-                                 precio=${producto.precio},
-                                 cantidad=1
-                            )}" class="add-to-cart btn">
-                <i class="fa-solid fa-cart-shopping"></i> Agregar al carrito
+                <button type="submit" class="btn add-to-cart">
+                    <i class="fa-solid fa-cart-shopping"></i> Agregar al carrito
+                </button>
+            </form>
+        </div>
+            <div class="product-actions" th:if="${producto.categorias.nombreCategoria != 'Moda'}">
+                <a th:href="@{/carrito/agregar(
+                         id=${producto.id},
+                         nombre=${producto.nombre},
+                         precio=${producto.precio},
+                         imagen=${producto.imagen},
+                         cantidad=1
+                    )}" class="boton-cart">
+                    <i class="fa-solid fa-cart-shopping"></i> Agregar al carrito
+                </a>
+            </div>
+
+        <div class="volver-box">
+            <a th:href="@{/productos/index}" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i> Volver
             </a>
         </div>
-
-        <a th:href="@{/productos/index}" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver</a>
     </div>
-</div>
+    </div>
 
 <footer>
     <div class="footer-col">

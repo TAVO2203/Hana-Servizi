@@ -74,18 +74,38 @@
             <p th:text="'Precio: $' + ${producto.precio}">Precio</p>
             <p th:text="${producto.descripcion}">Descripción</p>
             <p th:text="'Marca: ' + ${producto.marca.nombreMarca}">Marca</p>
-            <a th:href="@{/carrito/agregar(
-                    id=${producto.id},
-                    nombre=${producto.nombre},
-                    precio=${producto.precio},
-                    cantidad=1
-                )}" class="btn-carrito">
+            <button type="button" class="btn-carrito"
+                    th:attr="data-id=${producto.id},
+                 data-nombre=${producto.nombre},
+                 data-precio=${producto.precio},
+                 data-categoria=${producto.categorias.nombreCategoria},
+                 data-imagen=${producto.imagen},
+                 data-tallas=${#strings.arrayJoin(producto.tallas.?[stock>0].![talla + ':' + stock], ';')}">
                 <i class="fa-solid fa-cart-shopping"></i> Agregar al carrito
-            </a>
-
+            </button>
         </div>
     </div>
 </div>
+<!-- Modal personalizado -->
+<div id="modalCarrito" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" id="closeModal">&times;</button>
+
+        <div class="modal-body">
+            <img id="modal-imagen" src="" alt="Imagen producto" class="modal-img">
+            <h2 id="modal-nombre"></h2>
+            <p id="modal-precio"></p>
+
+            <label for="modal-talla" class="modal-label">Selecciona una talla:</label>
+            <select id="modal-talla" class="modal-select"></select>
+        </div>
+
+        <div class="modal-footer">
+            <button id="btnConfirmarAgregar" class="btn-confirm">Agregar al carrito</button>
+        </div>
+    </div>
+</div>
+
 <footer>
     <div class="footer-col">
         <h4>Nuestras Redes</h4>
@@ -128,6 +148,6 @@
     <p>©2024 HanaServizi. ALL Rights Reserved.</p>
 </div>
 <script th:src="@{/JS/cambioColor.js}" defer></script>
-
+<script th:src="@{/JS/scriptCarritoFiltros.js}"></script>
 </body>
 </html>

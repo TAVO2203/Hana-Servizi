@@ -186,7 +186,7 @@ public class AdminUserController {
     public String verEstadisticas(Model model) {
         long totalUsuarios = userRepository.count();
 
-        // 🔹 traer los usuarios agrupados por mes
+        // traer los usuarios agrupados por mes
         Map<String, Long> usuariosPorMes = userService.obtenerUsuariosPorMes();
 
         // asegurar que salgan los 12 meses, aunque estén en 0
@@ -221,7 +221,7 @@ public class AdminUserController {
             document.add(new Paragraph("Generado: " + java.time.LocalDateTime.now()));
             document.add(new Paragraph(" "));
 
-            // Decodificar la imagen Base64
+
             String base64Image = graficoBase64.split(",")[1];
             byte[] imageBytes = java.util.Base64.getDecoder().decode(base64Image);
             com.lowagie.text.Image image = com.lowagie.text.Image.getInstance(imageBytes);

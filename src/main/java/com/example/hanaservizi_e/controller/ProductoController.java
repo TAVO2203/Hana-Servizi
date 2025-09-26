@@ -75,7 +75,6 @@ public class ProductoController {
         return "catalogo";
     }
 
-
     @GetMapping("/categoria/{id}")
     public String ProductosPorCategoria(@PathVariable("id") Long id, Model model) {
         List<Producto> productos = productoRepository.findByCategoriasIdAndActivoTrue(id);

@@ -19,6 +19,8 @@ public class Pago {
     private String metodo;
     private LocalDateTime fecha;
     private String telefono;
+    private String Direccion;
+
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -26,6 +28,14 @@ public class Pago {
 
     // Getters y Setters
 
+
+    public String getDireccion() {
+        return Direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        Direccion = direccion;
+    }
 
     public String getTelefono() {
         return telefono;

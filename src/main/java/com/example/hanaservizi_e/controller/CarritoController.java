@@ -1,6 +1,9 @@
 package com.example.hanaservizi_e.controller;
 
+import com.example.hanaservizi_e.carrito.ItemCarrito;
+import com.example.hanaservizi_e.model.Producto;
 import com.example.hanaservizi_e.model.User;
+import com.example.hanaservizi_e.repository.ProductoRepository;
 import com.example.hanaservizi_e.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +20,11 @@ import java.util.Map;
 @Controller
 @RequestMapping("/carrito")
 public class CarritoController {
-    @Autowired
-    private final UserService userService;
 
-    public CarritoController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private ProductoRepository productoRepository;
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public String mostrarCarrito(HttpSession session, Model model) {
@@ -38,7 +40,7 @@ public class CarritoController {
         double descuentoAplicado = 0;
         double totalFinal = subtotal - descuentoAplicado;
 
-        model.addAttribute("carrito", carrito.values());
+        model.addAttribute("carrito", carrito.entrySet());
         model.addAttribute("subtotal", subtotal);
         model.addAttribute("descuentoAplicado", descuentoAplicado);
         model.addAttribute("totalFinal", totalFinal);
@@ -54,29 +56,36 @@ public class CarritoController {
             }
         }
 
-                return "carrito";
+        return "carrito";
 
     }
 
     @GetMapping("/agregar")
     public String agregarAlCarrito(@RequestParam String id,
-                                      @RequestParam String nombre,
-                                      @RequestParam double precio,
-                                      @RequestParam int cantidad,
-                                      HttpSession session) {
+                                   @RequestParam String nombre,
+                                   @RequestParam double precio,
+                                   @RequestParam String imagen,
+                                   @RequestParam int cantidad,
+                                   @RequestParam(required = false) String talla,
+                                   HttpSession session) {
 
         Map<String, Map<String, Object>> carrito = obtenerCarrito(session);
 
-        if (carrito.containsKey(id)) {
-            int cantidadExistente = (int) carrito.get(id).get("cantidad");
-            carrito.get(id).put("cantidad", cantidadExistente + cantidad);
+        // La clave será id + talla para diferenciar productos del mismo id pero distinta talla
+        String key = talla != null ? id + "-" + talla : id;
+
+        if (carrito.containsKey(key)) {
+            int cantidadExistente = (int) carrito.get(key).get("cantidad");
+            carrito.get(key).put("cantidad", cantidadExistente + cantidad);
         } else {
             Map<String, Object> producto = new HashMap<>();
             producto.put("id", id);
             producto.put("nombre", nombre);
             producto.put("precio", precio);
+            producto.put("imagen", imagen);
             producto.put("cantidad", cantidad);
-            carrito.put(id, producto);
+            producto.put("talla", talla); 
+            carrito.put(key, producto);
         }
 
         session.setAttribute("carrito", carrito);
@@ -113,6 +122,23 @@ public class CarritoController {
         session.setAttribute("carrito", carrito);
         return "redirect:/carrito";
     }
+    @PostMapping("/actualizar/{id}")
+    public String actualizarCantidad(@PathVariable String id,
+                                     @RequestParam int cantidad,
+                                     HttpSession session) {
+        Map<String, Map<String, Object>> carrito = obtenerCarrito(session);
+
+        if (carrito.containsKey(id)) {
+            if (cantidad > 0) {
+                carrito.get(id).put("cantidad", cantidad);
+            } else {
+                carrito.remove(id); // si el input es 0, elimina
+            }
+        }
+        session.setAttribute("carrito", carrito);
+        return "redirect:/carrito";
+    }
+
 
     @PostMapping("/decrementar/{id}")
     public String decrementarCantidad(@PathVariable String id, HttpSession session) {

@@ -124,14 +124,35 @@
                 <h4 th:text="${prod.precio}"></h4>
             </div>
             <div class="shop">
-                <a th:href="@{'/carrito/agregar'(id=${prod.id}, nombre=${prod.nombre}, precio=${prod.precio}, cantidad=1)}">
+                <button type="button"
+                        class="btn-add-cart"
+                        th:data-id="${prod.id}"
+                        th:data-nombre="${prod.nombre}"
+                        th:data-precio="${prod.precio}"
+                        th:data-imagen="${prod.imagen}"
+                        th:data-categoria="${prod.categorias.nombreCategoria}"
+                        th:data-tallas="${#strings.listJoin(prod.tallas.?[true].![talla + ':' + stock], ';')}">
                     <i class="fa-solid fa-cart-shopping"></i>
-                </a>
+                </button>
+
+
             </div>
         </div>
     </div>
 </section>
-
+<div id="tallaModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeTallaModal()">&times;</span>
+        <h2>Selecciona una talla</h2>
+        <img id="modalProductoImagen" src="" alt="Producto" style="width:120px; margin:10px auto; display:block;">
+        <select id="tallaSelect" class="form-select">
+            <option value="">Selecciona una talla</option>
+        </select>
+        <button class="btn-confirm" onclick="confirmarTalla()">
+            <i class="fa-solid fa-cart-shopping"></i> CONFIRMAR
+        </button>
+    </div>
+</div>
 <footer>
     <div class="footer-col">
         <h4>Nuestras Redes</h4>
@@ -174,5 +195,6 @@
     <p>©2024 HanaServizi. ALL Rights Reserved.</p>
 </div>
 <script th:src="@{/JS/cambioColor.js}" defer></script>
+<script th:src="@{/JS/agregarCarritoIndex.js}"></script>
 </body>
 </html>
